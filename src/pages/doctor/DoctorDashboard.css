@@ -1,0 +1,192 @@
+.doctor-dashboard-page {
+  min-height: 100vh;
+  padding: 20px 20px 48px;
+  background: linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%);
+  color: #0f172a;
+}
+
+.doctor-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.doctor-dashboard-header h1 {
+  margin: 4px 0 6px;
+  font-size: 1.7rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.75rem;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.doctor-subtitle {
+  margin: 0;
+  color: #475569;
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 1.5rem;
+  margin-top: 8px;
+}
+
+.summary-label {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.alert-banner {
+  background: linear-gradient(90deg, #fee2e2 0%, #ffe4e6 100%);
+  border: 1px solid #ef4444;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.alert-banner h2 {
+  margin: 0 0 4px;
+  color: #991b1b;
+}
+
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.alert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255,255,255,0.8);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.dashboard-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.dashboard-tabs button {
+  border: 0;
+  background: #e2e8f0;
+  color: #334155;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-tabs button.active {
+  background: #1d4ed8;
+  color: white;
+}
+
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.case-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.case-patient-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.case-patient-row h3 {
+  margin: 0;
+}
+
+.pill {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 0.85rem;
+}
+
+.case-meta {
+  display: flex;
+  gap: 14px;
+  color: #64748b;
+  margin: 6px 0 8px;
+  font-size: 0.92rem;
+  flex-wrap: wrap;
+}
+
+.case-complaint {
+  margin: 0;
+  color: #1e293b;
+}
+
+.review-btn {
+  min-width: 110px;
+}
+
+.empty-state {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  text-align: center;
+  color: #64748b;
+}
+
+.btn-primary {
+  border: 0;
+  background: #1d4ed8;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-primary.small {
+  padding: 8px 12px;
+}
+
+@media (max-width: 768px) {
+  .summary-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .case-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}

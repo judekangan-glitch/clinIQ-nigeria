@@ -9,6 +9,9 @@ import PatientProfile from './pages/chew/PatientProfile';
 import NewConsultation from './pages/chew/NewConsultation';
 import AiDiagnosis from './pages/chew/AiDiagnosis';
 import LabInterpreter from './pages/chew/LabInterpreter';
+import CodeRed from './pages/chew/CodeRed';
+import DoctorDashboard from './pages/doctor/DoctorDashboard';
+import CaseReview from './pages/doctor/CaseReview';
 
 // ── Lazy placeholder dashboards (built in later sections) ─────────────
 // These stubs allow the router to work now; they will be replaced.
@@ -116,11 +119,12 @@ export default function App() {
           <Route path="/chew/consultation/new" element={<RequireAuth><NewConsultation /></RequireAuth>} />
           <Route path="/chew/consultation/:id/diagnosis" element={<RequireAuth><AiDiagnosis /></RequireAuth>} />
           <Route path="/chew/lab-interpreter" element={<RequireAuth><LabInterpreter /></RequireAuth>} />
+          <Route path="/chew/code-red" element={<RequireAuth><CodeRed /></RequireAuth>} />
 
-          {/* Doctor routes (Section 5+) */}
-          <Route path="/doctor/*" element={
-            <RequireAuth><PlaceholderDash role="doctor" /></RequireAuth>
-          } />
+          {/* Doctor routes */}
+          <Route path="/doctor/dashboard" element={<RequireAuth><DoctorDashboard /></RequireAuth>} />
+          <Route path="/doctor/cases/:id" element={<RequireAuth><CaseReview /></RequireAuth>} />
+          <Route path="/doctor/*" element={<Navigate to="/doctor/dashboard" replace />} />
 
           {/* LGA Officer routes (Section 9+) */}
           <Route path="/lga/*" element={
