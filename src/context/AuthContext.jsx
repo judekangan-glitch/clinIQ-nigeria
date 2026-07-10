@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { isSupabaseConfigured, supabase } from '../lib/supabase';
 
 const AuthContext = createContext(null);
 
@@ -9,17 +9,35 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Restore session on page load
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(session.user);
-        fetchProfile(session.user.id);
-      } else {
-        setLoading(false);
+    if (!isSupabaseConfigured || !supabase) {
+      setLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+
+    async function restoreSession() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!isMounted) return;
+
+        if (session?.user) {
+          setUser(session.user);
+          fetchProfile(session.user.id);
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        console.error('Unable to restore Supabase session:', error);
+        if (isMounted) setLoading(false);
       }
-    });
+    }
+
+    restoreSession();
 
     const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!isMounted) return;
+
       if (session?.user) {
         setUser(session.user);
         fetchProfile(session.user.id);
@@ -30,23 +48,40 @@ export function AuthProvider({ children }) {
       }
     });
 
-    return () => listener.subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      listener.subscription.unsubscribe();
+    };
   }, []);
 
   async function fetchProfile(authUserId) {
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', authUserId)
-      .single();
-
-    if (!error && data) {
-      setProfile(data);
+    if (!isSupabaseConfigured || !supabase) {
+      setLoading(false);
+      return;
     }
+
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authUserId)
+        .single();
+
+      if (!error && data) {
+        setProfile(data);
+      }
+    } catch (error) {
+      console.error('Unable to load user profile:', error);
+    }
+
     setLoading(false);
   }
 
   async function login(phoneNumber, password) {
+    if (!isSupabaseConfigured || !supabase) {
+      throw new Error('Authentication is not configured for this deployment.');
+    }
+
     // Supabase Auth uses email. We store phone as email: phone@cliniq.ng
     const email = `${phoneNumber.replace(/\s+/g, '')}@cliniq.ng`;
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -55,13 +90,19 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
+    if (!isSupabaseConfigured || !supabase) {
+      setUser(null);
+      setProfile(null);
+      return;
+    }
+
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, profile, loading, login, logout, isSupabaseConfigured }}>
       {children}
     </AuthContext.Provider>
   );
