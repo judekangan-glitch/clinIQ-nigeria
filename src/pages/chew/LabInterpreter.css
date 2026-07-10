@@ -1,0 +1,128 @@
+.lab-interpreter-page {
+  padding: 16px;
+  max-width: 500px;
+  margin: 0 auto 100px;
+}
+
+.lab-header {
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.lab-header h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1b4f8a;
+}
+
+.patient-context {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.lab-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+.interpret-btn {
+  width: 100%;
+  padding: 15px;
+  background: #1B4F8A;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(27,79,138,0.3);
+  transition: background 0.2s, transform 0.1s;
+}
+
+.interpret-btn:hover:not(:disabled) {
+  background: #153d6e;
+}
+
+.interpret-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.interpreting-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 0;
+  color: #1B4F8A;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* Lab Analysis Card Layout */
+.interpretation-result-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.result-card-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #1b4f8a;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 10px;
+  margin-bottom: 16px;
+}
+
+.result-section {
+  margin-bottom: 16px;
+}
+
+.result-heading {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #0E7C7B; /* Bold Teal headings */
+  letter-spacing: 0.6px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.result-text {
+  font-size: 0.9rem;
+  color: #374151;
+  font-family: Georgia, serif;
+  line-height: 1.5;
+}
+
+.critical-alert {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.btn-back-diagnosis {
+  width: 100%;
+  padding: 12px;
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-back-diagnosis:active {
+  background: #e5e7eb;
+}

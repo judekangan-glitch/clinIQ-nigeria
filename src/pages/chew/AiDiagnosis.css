@@ -1,0 +1,289 @@
+.ai-diagnosis-page {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto 100px;
+}
+
+/* Loading animations */
+.ai-diagnosis-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  gap: 20px;
+}
+
+.spinner-pulsing {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #1B4F8A;
+  animation: pulse-blue 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-blue {
+  0% { transform: scale(0.6); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 0.4; }
+  100% { transform: scale(0.6); opacity: 0.8; }
+}
+
+.loading-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1b4f8a;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* Warning banners */
+.offline-warning-banner {
+  background: #fef08a;
+  color: #854d0e;
+  border: 1px solid #fef08a;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.ocr-error-banner {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  margin-bottom: 16px;
+}
+
+/* Patient Header */
+.patient-diagnosis-header {
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+}
+
+.p-header-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #111827;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.p-header-subtitle {
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-family: 'Inter', Arial, sans-serif;
+  margin-top: 2px;
+}
+
+.diagnosis-results-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 12px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* Differential diagnosis cards */
+.differentials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.diff-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.top-diff {
+  border-left: 6px solid #1B4F8A;
+}
+
+.diff-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.diff-rank {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: white;
+  background: #1B4F8A;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.diff-condition {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #111827;
+  flex: 1;
+  margin-left: 10px;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.diff-confidence {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0E7C7B;
+}
+
+.confidence-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0E7C7B;
+  border-radius: 99px;
+}
+
+.diff-reasoning {
+  font-size: 0.85rem;
+  color: #4b5563;
+  font-family: Georgia, serif;
+}
+
+/* Investigations checkboxes */
+.investigations-list {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.investigation-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #374151;
+  cursor: pointer;
+}
+
+.investigation-checkbox-row:last-child {
+  border-bottom: none;
+}
+
+.investigation-checkbox-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #1B4F8A;
+  cursor: pointer;
+}
+
+/* Treatment Box */
+.treatment-box {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.treatment-box p {
+  color: #166534;
+  font-size: 0.92rem;
+  font-family: Georgia, serif;
+  margin: 0;
+}
+
+/* Red Flags / Escalation Warning Box */
+.red-flags-box {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-left: 5px solid #dc2626;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.red-flags-box .box-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #dc2626;
+  font-weight: 800;
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.red-flags-list {
+  padding-left: 20px;
+  color: #991b1b;
+  font-size: 0.88rem;
+  font-family: Georgia, serif;
+}
+
+.red-flags-list li {
+  margin-bottom: 4px;
+}
+
+.code-red-btn {
+  width: 100%;
+  padding: 14px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+  transition: transform 0.1s;
+}
+
+.code-red-btn:active {
+  transform: scale(0.98);
+}
+
+/* Action buttons footer layout */
+.diagnosis-bottom-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.diagnosis-bottom-actions button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+
+.diagnosis-bottom-actions .btn-primary {
+  background: #1B4F8A;
+  color: white;
+}
+
+.diagnosis-bottom-actions .btn-secondary {
+  background: #0E7C7B;
+  color: white;
+}

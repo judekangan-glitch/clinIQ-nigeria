@@ -1,0 +1,48 @@
+.connectivity-banner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 16px;
+  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.connectivity-banner.online {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.connectivity-banner.offline {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.connectivity-banner .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.connectivity-banner.online .dot {
+  background: #10b981;
+  box-shadow: 0 0 0 2px #a7f3d0;
+}
+
+.connectivity-banner.offline .dot {
+  background: #ef4444;
+  box-shadow: 0 0 0 2px #fecaca;
+  animation: pulse-red 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 2px #fecaca; }
+  50%       { box-shadow: 0 0 0 5px #fee2e2; }
+}

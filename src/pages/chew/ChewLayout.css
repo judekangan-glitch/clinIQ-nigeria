@@ -1,0 +1,106 @@
+.chew-layout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: #f3f4f6;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+/* ─── Header ─────────────────────────────────────────────────────────── */
+.chew-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 24px; /* below connectivity banner */
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+}
+
+.chew-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.header-brand {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #1B4F8A;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.header-user {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.header-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+.chew-header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: none;
+  background: #f9fafb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+.header-icon-btn:hover { background: #f3f4f6; color: #1B4F8A; }
+
+.logout-btn:hover { background: #fee2e2; color: #dc2626; }
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: none;
+  background: #f3f4f6;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ─── Main content ───────────────────────────────────────────────────── */
+.chew-main {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}

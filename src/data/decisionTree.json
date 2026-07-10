@@ -1,0 +1,61 @@
+{
+  "rules": [
+    {
+      "condition": "malaria",
+      "trigger_symptoms": ["fever", "headache", "body pain", "vomiting"],
+      "min_match": 2,
+      "confidence": 75,
+      "guidance": "Perform malaria RDT. If positive: treat with Artemether-Lumefantrine (Coartem). Check for anaemia. Give paracetamol for fever."
+    },
+    {
+      "condition": "typhoid fever",
+      "trigger_symptoms": ["fever", "abdominal pain", "headache", "weakness"],
+      "min_match": 2,
+      "confidence": 65,
+      "guidance": "Perform Widal test and blood culture if available. Treat with Ciprofloxacin 500mg twice daily for 7 days. Ensure adequate hydration."
+    },
+    {
+      "condition": "respiratory tract infection",
+      "trigger_symptoms": ["cough", "difficulty breathing", "fever", "chest pain"],
+      "min_match": 2,
+      "confidence": 70,
+      "guidance": "If mild: Amoxicillin 500mg three times daily for 5 days. If severe or no improvement: escalate to doctor."
+    },
+    {
+      "condition": "hypertension",
+      "trigger_symptoms": ["headache", "dizziness", "blurred vision"],
+      "min_match": 1,
+      "blood_pressure_high": true,
+      "confidence": 80,
+      "guidance": "Check BP twice. If above 160/100: start Amlodipine 5mg once daily. Advise low salt diet. Refer for confirmation if newly diagnosed."
+    },
+    {
+      "condition": "acute diarrhoeal disease",
+      "trigger_symptoms": ["diarrhoea", "vomiting", "abdominal pain", "weakness"],
+      "min_match": 2,
+      "confidence": 80,
+      "guidance": "Start oral rehydration salts immediately. If bloody diarrhoea: add Metronidazole 400mg three times daily for 5 days. Monitor hydration status."
+    },
+    {
+      "condition": "urinary tract infection",
+      "trigger_symptoms": ["painful urination", "frequent urination", "abdominal pain", "fever"],
+      "min_match": 2,
+      "confidence": 72,
+      "guidance": "Perform urinalysis. Treat with Nitrofurantoin 100mg twice daily for 5 days. Encourage increased water intake."
+    },
+    {
+      "condition": "anaemia",
+      "trigger_symptoms": ["weakness", "dizziness", "pallor", "shortness of breath"],
+      "min_match": 2,
+      "confidence": 68,
+      "guidance": "Check PCV or FBC. Give Ferrous Sulphate 200mg twice daily. Check for underlying cause. Review diet."
+    },
+    {
+      "condition": "skin infection",
+      "trigger_symptoms": ["rash", "swelling", "pain", "fever"],
+      "min_match": 2,
+      "confidence": 65,
+      "guidance": "Clean wound thoroughly. Give Amoxicillin-Clavulanate 625mg twice daily for 5 days if infected. Apply topical antiseptic."
+    }
+  ]
+}
