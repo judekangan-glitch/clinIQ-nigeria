@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import Login from './pages/Login';
-import ChewDashboard from './pages/chew/ChewDashboard';
-import PatientSearch from './pages/chew/PatientSearch';
-import NewPatient from './pages/chew/NewPatient';
-import PatientProfile from './pages/chew/PatientProfile';
-import NewConsultation from './pages/chew/NewConsultation';
-import AiDiagnosis from './pages/chew/AiDiagnosis';
-import LabInterpreter from './pages/chew/LabInterpreter';
-import CodeRed from './pages/chew/CodeRed';
-import DoctorDashboard from './pages/doctor/DoctorDashboard';
-import CaseReview from './pages/doctor/CaseReview';
+
+const Login = lazy(() => import('./pages/Login'));
+const ChewDashboard = lazy(() => import('./pages/chew/ChewDashboard'));
+const PatientSearch = lazy(() => import('./pages/chew/PatientSearch'));
+const NewPatient = lazy(() => import('./pages/chew/NewPatient'));
+const PatientProfile = lazy(() => import('./pages/chew/PatientProfile'));
+const NewConsultation = lazy(() => import('./pages/chew/NewConsultation'));
+const AiDiagnosis = lazy(() => import('./pages/chew/AiDiagnosis'));
+const LabInterpreter = lazy(() => import('./pages/chew/LabInterpreter'));
+const CodeRed = lazy(() => import('./pages/chew/CodeRed'));
+const DoctorDashboard = lazy(() => import('./pages/doctor/DoctorDashboard'));
+const CaseReview = lazy(() => import('./pages/doctor/CaseReview'));
 
 // ── Lazy placeholder dashboards (built in later sections) ─────────────
 // These stubs allow the router to work now; they will be replaced.
@@ -103,42 +104,44 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Routes>
-          {/* Public */}
-          <Route path="/login" element={<Login />} />
+        <Suspense fallback={<LoadingScreen />}>
+          <Routes>
+            {/* Public */}
+            <Route path="/login" element={<Login />} />
 
-          {/* Root: redirect based on role */}
-          <Route path="/" element={<RoleRouter />} />
+            {/* Root: redirect based on role */}
+            <Route path="/" element={<RoleRouter />} />
 
-          {/* CHEW routes (Section 2+) */}
-          <Route path="/chew" element={<Navigate to="/chew/dashboard" replace />} />
-          <Route path="/chew/dashboard" element={<RequireAuth><ChewDashboard /></RequireAuth>} />
-          <Route path="/chew/patients" element={<RequireAuth><PatientSearch /></RequireAuth>} />
-          <Route path="/chew/patients/new" element={<RequireAuth><NewPatient /></RequireAuth>} />
-          <Route path="/chew/patients/:id" element={<RequireAuth><PatientProfile /></RequireAuth>} />
-          <Route path="/chew/consultation/new" element={<RequireAuth><NewConsultation /></RequireAuth>} />
-          <Route path="/chew/consultation/:id/diagnosis" element={<RequireAuth><AiDiagnosis /></RequireAuth>} />
-          <Route path="/chew/lab-interpreter" element={<RequireAuth><LabInterpreter /></RequireAuth>} />
-          <Route path="/chew/code-red" element={<RequireAuth><CodeRed /></RequireAuth>} />
+            {/* CHEW routes (Section 2+) */}
+            <Route path="/chew" element={<Navigate to="/chew/dashboard" replace />} />
+            <Route path="/chew/dashboard" element={<RequireAuth><ChewDashboard /></RequireAuth>} />
+            <Route path="/chew/patients" element={<RequireAuth><PatientSearch /></RequireAuth>} />
+            <Route path="/chew/patients/new" element={<RequireAuth><NewPatient /></RequireAuth>} />
+            <Route path="/chew/patients/:id" element={<RequireAuth><PatientProfile /></RequireAuth>} />
+            <Route path="/chew/consultation/new" element={<RequireAuth><NewConsultation /></RequireAuth>} />
+            <Route path="/chew/consultation/:id/diagnosis" element={<RequireAuth><AiDiagnosis /></RequireAuth>} />
+            <Route path="/chew/lab-interpreter" element={<RequireAuth><LabInterpreter /></RequireAuth>} />
+            <Route path="/chew/code-red" element={<RequireAuth><CodeRed /></RequireAuth>} />
 
-          {/* Doctor routes */}
-          <Route path="/doctor/dashboard" element={<RequireAuth><DoctorDashboard /></RequireAuth>} />
-          <Route path="/doctor/cases/:id" element={<RequireAuth><CaseReview /></RequireAuth>} />
-          <Route path="/doctor/*" element={<Navigate to="/doctor/dashboard" replace />} />
+            {/* Doctor routes */}
+            <Route path="/doctor/dashboard" element={<RequireAuth><DoctorDashboard /></RequireAuth>} />
+            <Route path="/doctor/cases/:id" element={<RequireAuth><CaseReview /></RequireAuth>} />
+            <Route path="/doctor/*" element={<Navigate to="/doctor/dashboard" replace />} />
 
-          {/* LGA Officer routes (Section 9+) */}
-          <Route path="/lga/*" element={
-            <RequireAuth><PlaceholderDash role="lga_officer" /></RequireAuth>
-          } />
+            {/* LGA Officer routes (Section 9+) */}
+            <Route path="/lga/*" element={
+              <RequireAuth><PlaceholderDash role="lga_officer" /></RequireAuth>
+            } />
 
-          {/* Admin routes (Section 11+) */}
-          <Route path="/admin/*" element={
-            <RequireAuth><PlaceholderDash role="admin" /></RequireAuth>
-          } />
+            {/* Admin routes (Section 11+) */}
+            <Route path="/admin/*" element={
+              <RequireAuth><PlaceholderDash role="admin" /></RequireAuth>
+            } />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </AuthProvider>
   );
