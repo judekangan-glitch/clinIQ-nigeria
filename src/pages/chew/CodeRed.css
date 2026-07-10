@@ -53,8 +53,8 @@
 
 .result-pill {
   border: 0;
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: #ecfdf5;
+  color: var(--color-primary-dk);
   padding: 8px 10px;
   border-radius: 999px;
   cursor: pointer;
