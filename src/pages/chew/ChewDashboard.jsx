@@ -98,7 +98,7 @@ export default function ChewDashboard() {
     {
       id: 'new-consultation',
       label: 'New Consultation',
-      color: '#1B4F8A',
+      color: 'var(--color-primary)',
       route: '/chew/consultation/new',
       icon: (
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none"

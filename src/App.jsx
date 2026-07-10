@@ -24,13 +24,13 @@ function PlaceholderDash({ role }) {
   }
   return (
     <div style={{ fontFamily: 'Inter, Arial, sans-serif', padding: 32, textAlign: 'center' }}>
-      <h2 style={{ color: '#1B4F8A' }}>Welcome, {profile?.full_name}</h2>
+    <h2 style={{ color: 'var(--color-primary)' }}>Welcome, {profile?.full_name}</h2>
       <p style={{ color: '#6b7280' }}>Dashboard for role: <strong>{role}</strong></p>
       <p style={{ color: '#9ca3af', fontSize: 14 }}>This section will be built next.</p>
       <button
         onClick={handleLogout}
         style={{
-          marginTop: 24, padding: '12px 28px', background: '#1B4F8A',
+          marginTop: 24, padding: '12px 28px', background: 'var(--color-primary)',
           color: '#fff', border: 'none', borderRadius: 8, cursor: 'pointer',
           fontWeight: 700, fontFamily: 'Inter, Arial, sans-serif',
         }}
@@ -89,7 +89,7 @@ function LoadingScreen() {
       <div style={{
         width: 48, height: 48,
         border: '4px solid #e5e7eb',
-        borderTopColor: '#1B4F8A',
+        borderTopColor: 'var(--color-primary)',
         borderRadius: '50%',
         animation: 'spin 0.75s linear infinite',
       }} />

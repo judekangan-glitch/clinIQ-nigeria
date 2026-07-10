@@ -18,11 +18,11 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #1B4F8A;
-  animation: pulse-blue 1.5s ease-in-out infinite;
+  background: var(--color-primary);
+  animation: pulse-green 1.5s ease-in-out infinite;
 }
 
-@keyframes pulse-blue {
+@keyframes pulse-green {
   0% { transform: scale(0.6); opacity: 0.8; }
   50% { transform: scale(1.1); opacity: 0.4; }
   100% { transform: scale(0.6); opacity: 0.8; }
@@ -31,7 +31,7 @@
 .loading-text {
   font-size: 1rem;
   font-weight: 700;
-  color: #1b4f8a;
+  color: var(--color-primary);
   font-family: 'Inter', Arial, sans-serif;
 }
 
@@ -111,7 +111,7 @@
 }
 
 .top-diff {
-  border-left: 6px solid #1B4F8A;
+  border-left: 6px solid var(--color-primary);
 }
 
 .diff-card-header {
@@ -125,7 +125,7 @@
   font-size: 0.78rem;
   font-weight: 700;
   color: white;
-  background: #1B4F8A;
+  background: var(--color-primary);
   padding: 2px 8px;
   border-radius: 99px;
   font-family: 'Inter', Arial, sans-serif;
@@ -143,7 +143,7 @@
 .diff-confidence {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #0E7C7B;
+  color: var(--color-secondary);
 }
 
 .confidence-progress-bar {
@@ -157,7 +157,7 @@
 
 .progress-fill {
   height: 100%;
-  background: #0E7C7B;
+  background: var(--color-secondary);
   border-radius: 99px;
 }
 
@@ -194,7 +194,7 @@
 .investigation-checkbox-row input {
   width: 18px;
   height: 18px;
-  accent-color: #1B4F8A;
+  accent-color: var(--color-primary);
   cursor: pointer;
 }
 
@@ -279,7 +279,7 @@
 }
 
 .diagnosis-bottom-actions .btn-primary {
-  background: #1B4F8A;
+  background: var(--color-primary);
   color: white;
 }
 

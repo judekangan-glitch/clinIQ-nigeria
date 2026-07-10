@@ -8,7 +8,7 @@
 .back-btn {
   border: 0;
   background: transparent;
-  color: #1d4ed8;
+  color: var(--color-primary);
   font-weight: 700;
   cursor: pointer;
   margin-bottom: 12px;
@@ -81,7 +81,7 @@
 }
 
 .timeline-item {
-  border-left: 3px solid #60a5fa;
+  border-left: 3px solid rgba(16,185,129,0.6);
   padding-left: 10px;
 }
 
@@ -94,8 +94,8 @@
 
 .chip {
   padding: 6px 10px;
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #d1fae5;
+  color: var(--color-primary);
   border-radius: 999px;
   font-size: 0.88rem;
 }
@@ -111,7 +111,7 @@
 
 .progress-bar div {
   height: 100%;
-  background: linear-gradient(90deg, #1d4ed8 0%, #38bdf8 100%);
+  background: linear-gradient(90deg, var(--color-primary-dk) 0%, var(--color-primary) 100%);
 }
 
 .diagnosis-card,

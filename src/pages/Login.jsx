@@ -48,7 +48,7 @@ export default function Login() {
         <div className="login-brand">
           <div className="login-logo">
             <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-              <rect width="40" height="40" rx="10" fill="#1B4F8A"/>
+              <rect width="40" height="40" rx="10" fill="var(--color-primary)"/>
               <path d="M20 8C13.4 8 8 13.4 8 20s5.4 12 12 12 12-5.4 12-12S26.6 8 20 8z" fill="none" stroke="white" strokeWidth="2"/>
               <path d="M20 14v12M14 20h12" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
             </svg>

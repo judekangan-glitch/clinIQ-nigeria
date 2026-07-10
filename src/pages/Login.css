@@ -34,7 +34,7 @@
   font-family: 'Inter', Arial, sans-serif;
   font-size: 2rem;
   font-weight: 800;
-  color: #1B4F8A;
+  color: var(--color-primary);
   letter-spacing: -0.5px;
   margin: 0 0 8px 0;
 }
@@ -42,7 +42,7 @@
 .login-tagline {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: 0.95rem;
-  color: #0E7C7B;
+  color: var(--color-secondary);
   font-style: italic;
   margin: 0;
   line-height: 1.5;
@@ -84,9 +84,9 @@
 
 .form-input:focus {
   outline: none;
-  border-color: #1B4F8A;
+  border-color: var(--color-primary);
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(27, 79, 138, 0.1);
+  box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
 }
 
 .form-input::placeholder {
@@ -115,7 +115,7 @@
   gap: 10px;
   width: 100%;
   padding: 16px;
-  background: #1B4F8A;
+  background: var(--color-primary);
   color: #ffffff;
   border: none;
   border-radius: 12px;
@@ -130,8 +130,8 @@
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #153d6e;
-  box-shadow: 0 6px 20px rgba(27, 79, 138, 0.45);
+  background: var(--color-primary-dk);
+  box-shadow: 0 6px 20px rgba(5,150,105,0.45);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -197,7 +197,7 @@
   left: 0;
   right: 0;
   height: 45vh;
-  background: linear-gradient(160deg, rgba(27, 79, 138, 0.04) 0%, rgba(14, 124, 123, 0.03) 100%);
+  background: linear-gradient(160deg, rgba(16,185,129,0.04) 0%, rgba(5,150,105,0.03) 100%);
   pointer-events: none;
   z-index: 0;
 }

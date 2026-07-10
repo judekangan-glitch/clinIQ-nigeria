@@ -7,8 +7,8 @@
 }
 
 :root {
-  --color-primary:    #1B4F8A;
-  --color-primary-dk: #153d6e;
+  --color-primary:    #10B981; /* Bright green */
+  --color-primary-dk: #059669; /* Darker green */
   --color-secondary:  #0E7C7B;
   --color-secondary-dk: #0a5e5d;
   --color-danger:     #dc2626;

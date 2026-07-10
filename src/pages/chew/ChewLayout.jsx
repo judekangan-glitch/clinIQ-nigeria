@@ -35,7 +35,7 @@ export default function ChewLayout({ children, title, showBack = false, backTo }
           ) : (
             <div className="header-logo">
               <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
-                <rect width="40" height="40" rx="9" fill="#1B4F8A"/>
+                <rect width="40" height="40" rx="9" fill="var(--color-primary)"/>
                 <path d="M20 14v12M14 20h12" stroke="white" strokeWidth="2.5" strokeLinecap="round"/>
               </svg>
               <div className="header-logo-text">

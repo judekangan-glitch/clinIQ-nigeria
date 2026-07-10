@@ -30,7 +30,7 @@
 }
 
 .step-indicator.active {
-  background: #1B4F8A;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .patient-select-card:hover, .patient-select-card:active {
-  border-color: #1B4F8A;
+  border-color: var(--color-primary);
 }
 
 .p-select-name {
@@ -134,16 +134,16 @@
 }
 
 .card-scan {
-  background: #1B4F8A;
+  background: var(--color-primary);
   color: white;
   border: none;
-  box-shadow: 0 4px 14px rgba(27, 79, 138, 0.25);
+  box-shadow: 0 4px 14px rgba(16,185,129,0.25);
 }
 
 .card-manual {
   background: white;
-  color: #1b4f8a;
-  border: 2px solid #1B4F8A;
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
@@ -173,7 +173,7 @@
 
 .camera-upload-label {
   padding: 14px 24px;
-  background: #0E7C7B;
+  background: var(--color-secondary);
   color: white;
   border-radius: 12px;
   font-weight: 700;
@@ -194,7 +194,7 @@
   max-width: 100%;
   max-height: 280px;
   border-radius: 12px;
-  border: 2px dashed #0E7C7B;
+  border: 2px dashed var(--color-secondary);
   object-fit: contain;
 }
 
@@ -216,7 +216,7 @@
 }
 
 .btn-primary {
-  background: #1B4F8A;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -232,7 +232,7 @@
   align-items: center;
   gap: 10px;
   padding: 20px 0;
-  color: #1B4F8A;
+  color: var(--color-primary);
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -274,10 +274,10 @@
   cursor: pointer;
 }
 
-.checkbox-label input {
+  .checkbox-label input {
   width: 16px;
   height: 16px;
-  accent-color: #1B4F8A;
+  accent-color: var(--color-primary);
 }
 
 .other-symptom-input {
@@ -293,10 +293,10 @@
   margin-bottom: 12px;
 }
 
-.photo-collapsible summary {
+photo-collapsible summary {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #1B4F8A;
+  color: var(--color-primary);
   cursor: pointer;
   outline: none;
 }

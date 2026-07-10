@@ -13,7 +13,7 @@
 .lab-header h2 {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #1b4f8a;
+  color: var(--color-primary);
 }
 
 .patient-context {
@@ -36,19 +36,19 @@
 .interpret-btn {
   width: 100%;
   padding: 15px;
-  background: #1B4F8A;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 12px;
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(27,79,138,0.3);
+  box-shadow: 0 4px 14px rgba(16,185,129,0.3);
   transition: background 0.2s, transform 0.1s;
 }
 
 .interpret-btn:hover:not(:disabled) {
-  background: #153d6e;
+  background: var(--color-primary-dk);
 }
 
 .interpret-btn:active:not(:disabled) {
@@ -61,7 +61,7 @@
   justify-content: center;
   gap: 10px;
   padding: 20px 0;
-  color: #1B4F8A;
+  color: var(--color-primary);
   font-weight: 700;
   font-size: 0.9rem;
 }
@@ -79,7 +79,7 @@
 .result-card-title {
   font-size: 1.1rem;
   font-weight: 800;
-  color: #1b4f8a;
+  color: var(--color-primary);
   border-bottom: 2px solid #f3f4f6;
   padding-bottom: 10px;
   margin-bottom: 16px;

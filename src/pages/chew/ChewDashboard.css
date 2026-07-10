@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 16px 16px;
-  background: linear-gradient(135deg, #1B4F8A 0%, #0E7C7B 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
 }
 
@@ -127,7 +127,7 @@
 
 .glance-card.glance-warning { border-top: 3px solid #f59e0b; }
 .glance-card.glance-success { border-top: 3px solid #10b981; }
-.glance-card:not(.glance-warning):not(.glance-success) { border-top: 3px solid #1B4F8A; }
+.glance-card:not(.glance-warning):not(.glance-success) { border-top: 3px solid var(--color-primary); }
 
 .glance-number {
   font-size: 1.6rem;
