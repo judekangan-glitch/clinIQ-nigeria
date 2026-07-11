@@ -77,6 +77,13 @@ export default function NewPatient() {
         if (insertError.code === '23505') {
           throw new Error('A patient with this phone number already exists.');
         }
+
+        if (insertError.status === 403 || insertError.code === '42501') {
+          throw new Error(
+            'Failed to save patient: database row-level security prevents this action. Please update Supabase policies for the patients table.'
+          );
+        }
+
         throw insertError;
       }
 
