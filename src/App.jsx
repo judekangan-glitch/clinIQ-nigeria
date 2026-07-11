@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, Component } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Error Boundary component
@@ -168,7 +168,7 @@ export default function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Suspense fallback={<LoadingScreen />}>
             <Routes>
               {/* Public */}
@@ -207,7 +207,7 @@ export default function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>
-        </BrowserRouter>
+        </HashRouter>
       </AuthProvider>
     </ErrorBoundary>
   );
