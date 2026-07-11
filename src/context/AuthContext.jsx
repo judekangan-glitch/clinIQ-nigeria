@@ -67,11 +67,16 @@ export function AuthProvider({ children }) {
         .eq('id', authUserId)
         .maybeSingle();
 
-      if (!error && data) {
-        setProfile(data);
-      } else {
-        console.warn('Profile lookup skipped or failed:', error?.message || error);
+      if (error) {
+        console.warn('Profile lookup failed:', error?.message || error);
         setProfile(null);
+      } else if (!data) {
+        // No profile row found for this auth user. This is expected for newly created
+        // auth-only users; log as info to avoid noisy warnings in the console.
+        console.info(`No profile row found for user id ${authUserId}`);
+        setProfile(null);
+      } else {
+        setProfile(data);
       }
     } catch (error) {
       console.warn('Unable to load user profile:', error?.message || error);
