@@ -72,21 +72,32 @@ export function AuthProvider({ children }) {
         setProfile(null);
       } else if (!data) {
         const fallbackName = authUser?.user_metadata?.full_name || authUser?.email?.split('@')[0] || 'New user';
-        const { data: createdProfile, error: createError } = await supabase
-          .from('users')
-          .insert({
-            id: authUserId,
-            full_name: fallbackName,
-            role: 'chew',
-          })
-          .select('*')
-          .maybeSingle();
+        const fallbackProfile = {
+          id: authUserId,
+          full_name: fallbackName,
+          role: 'chew',
+        };
 
-        if (!createError && createdProfile) {
-          setProfile(createdProfile);
-        } else {
-          console.warn('Unable to create a profile row:', createError?.message || createError);
-          setProfile(null);
+        try {
+          const { data: createdProfile, error: createError } = await supabase
+            .from('users')
+            .insert({
+              id: authUserId,
+              full_name: fallbackName,
+              role: 'chew',
+            })
+            .select('*')
+            .maybeSingle();
+
+          if (!createError && createdProfile) {
+            setProfile(createdProfile);
+          } else {
+            console.info('Using local fallback profile because the users table is protected or unavailable.');
+            setProfile(fallbackProfile);
+          }
+        } catch (insertError) {
+          console.info('Using local fallback profile because the users table is protected or unavailable.');
+          setProfile(fallbackProfile);
         }
       } else {
         setProfile(data);
