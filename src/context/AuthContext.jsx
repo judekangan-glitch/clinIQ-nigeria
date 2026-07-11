@@ -69,9 +69,13 @@ export function AuthProvider({ children }) {
 
       if (!error && data) {
         setProfile(data);
+      } else {
+        console.warn('Profile lookup skipped or failed:', error?.message || error);
+        setProfile(null);
       }
     } catch (error) {
-      console.error('Unable to load user profile:', error);
+      console.warn('Unable to load user profile:', error?.message || error);
+      setProfile(null);
     }
 
     setLoading(false);
@@ -85,7 +89,10 @@ export function AuthProvider({ children }) {
     // Supabase Auth uses email. We store phone as email: phone@cliniq.ng
     const email = `${phoneNumber.replace(/\s+/g, '')}@cliniq.ng`;
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase login failed:', error);
+      throw error;
+    }
     return data;
   }
 
