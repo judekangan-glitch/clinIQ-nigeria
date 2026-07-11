@@ -81,13 +81,20 @@ export function AuthProvider({ children }) {
     setLoading(false);
   }
 
-  async function login(phoneNumber, password) {
+  async function login(identifier, password) {
     if (!isSupabaseConfigured || !supabase) {
       throw new Error('Authentication is not configured for this deployment.');
     }
 
-    // Supabase Auth uses email. We store phone as email: phone@cliniq.ng
-    const email = `${phoneNumber.replace(/\s+/g, '')}@cliniq.ng`;
+    const value = String(identifier || '').trim();
+    let email;
+    // Accept either an email or a phone number; if phone is provided map to phone@cliniq.ng
+    if (value.includes('@')) {
+      email = value;
+    } else {
+      email = `${value.replace(/\s+/g, '')}@cliniq.ng`;
+    }
+
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       console.error('Supabase login failed:', error);
