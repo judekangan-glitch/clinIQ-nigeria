@@ -32,8 +32,7 @@ export default function Login() {
 
     try {
       await login(identifier.trim(), password);
-      // Profile is loaded by AuthContext; navigate based on role
-      // The App router will redirect once profile is set.
+      navigate('/', { replace: true });
     } catch (err) {
       console.error('Login error:', err);
       setError('Incorrect phone/email or password. Please try again.');
