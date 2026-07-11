@@ -13,29 +13,49 @@ const ROLE_ROUTES = {
 };
 
 export default function Login() {
-  const { login } = useAuth();
+  const { login, sendMagicLink } = useAuth();
   const navigate = useNavigate();
 
-  const [phone, setPhone] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [magicEmail, setMagicEmail] = useState('');
   const [error, setError] = useState('');
+  const [magicMessage, setMagicMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [magicLoading, setMagicLoading] = useState(false);
 
   async function handleLogin(e) {
     e.preventDefault();
     setError('');
+    setMagicMessage('');
     setLoading(true);
 
     try {
-      await login(phone.trim(), password);
+      await login(identifier.trim(), password);
       // Profile is loaded by AuthContext; navigate based on role
-      // We wait for profile via a small poll (AuthContext triggers re-render)
       // The App router will redirect once profile is set.
     } catch (err) {
       console.error('Login error:', err);
-      setError('Incorrect phone number or password. Please try again.');
+      setError('Incorrect phone/email or password. Please try again.');
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleMagicLink(e) {
+    e.preventDefault();
+    setError('');
+    setMagicMessage('');
+    setMagicLoading(true);
+
+    try {
+      await sendMagicLink(magicEmail.trim());
+      setMagicMessage(`A sign-in link was sent to ${magicEmail.trim()}. Open it to continue.`);
+    } catch (err) {
+      console.error('Magic-link error:', err);
+      setMagicMessage('We could not send the sign-in link. Please try again.');
+    } finally {
+      setMagicLoading(false);
     }
   }
 
@@ -62,17 +82,16 @@ export default function Login() {
         {/* Login form */}
         <form className="login-form" onSubmit={handleLogin} noValidate>
           <div className="form-group">
-            <label htmlFor="phone-number" className="form-label">Phone Number</label>
+            <label htmlFor="identifier" className="form-label">Phone or email</label>
             <input
-              id="phone-number"
-              type="tel"
+              id="identifier"
+              type="text"
               className="form-input"
-              placeholder="e.g. 08012345678"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              placeholder="e.g. 08012345678 or name@domain.com"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
               required
-              autoComplete="tel"
-              inputMode="tel"
+              autoComplete="username"
             />
           </div>
 
@@ -103,7 +122,7 @@ export default function Login() {
             id="login-btn"
             type="submit"
             className={`btn-primary login-btn ${loading ? 'loading' : ''}`}
-            disabled={loading || !phone || !password}
+            disabled={loading || !identifier || !password}
           >
             {loading ? (
               <>
@@ -114,6 +133,34 @@ export default function Login() {
               'Log In'
             )}
           </button>
+
+          <div className="form-group" style={{ marginTop: '1rem' }}>
+            <label htmlFor="magic-email" className="form-label">Or send a magic link</label>
+            <input
+              id="magic-email"
+              type="email"
+              className="form-input"
+              placeholder="name@domain.com"
+              value={magicEmail}
+              onChange={(e) => setMagicEmail(e.target.value)}
+              autoComplete="email"
+            />
+            <button
+              type="button"
+              className="btn-secondary login-btn"
+              onClick={handleMagicLink}
+              disabled={magicLoading || !magicEmail}
+              style={{ marginTop: '0.75rem' }}
+            >
+              {magicLoading ? 'Sending…' : 'Send magic link'}
+            </button>
+          </div>
+
+          {magicMessage && (
+            <div className="login-error" role="status" aria-live="polite" style={{ marginTop: '0.75rem' }}>
+              {magicMessage}
+            </div>
+          )}
 
           <p className="login-footer-text">
             Forgot password? Contact your PHC administrator.

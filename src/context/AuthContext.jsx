@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
 
         if (session?.user) {
           setUser(session.user);
-          fetchProfile(session.user.id);
+          fetchProfile(session.user.id, session.user);
         } else {
           setLoading(false);
         }
@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
 
       if (session?.user) {
         setUser(session.user);
-        fetchProfile(session.user.id);
+        fetchProfile(session.user.id, session.user);
       } else {
         setUser(null);
         setProfile(null);
@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
     };
   }, []);
 
-  async function fetchProfile(authUserId) {
+  async function fetchProfile(authUserId, authUser = null) {
     if (!isSupabaseConfigured || !supabase) {
       setLoading(false);
       return;
@@ -71,10 +71,23 @@ export function AuthProvider({ children }) {
         console.warn('Profile lookup failed:', error?.message || error);
         setProfile(null);
       } else if (!data) {
-        // No profile row found for this auth user. This is expected for newly created
-        // auth-only users; log as info to avoid noisy warnings in the console.
-        console.info(`No profile row found for user id ${authUserId}`);
-        setProfile(null);
+        const fallbackName = authUser?.user_metadata?.full_name || authUser?.email?.split('@')[0] || 'New user';
+        const { data: createdProfile, error: createError } = await supabase
+          .from('users')
+          .insert({
+            id: authUserId,
+            full_name: fallbackName,
+            role: 'chew',
+          })
+          .select('*')
+          .maybeSingle();
+
+        if (!createError && createdProfile) {
+          setProfile(createdProfile);
+        } else {
+          console.warn('Unable to create a profile row:', createError?.message || createError);
+          setProfile(null);
+        }
       } else {
         setProfile(data);
       }
@@ -108,6 +121,32 @@ export function AuthProvider({ children }) {
     return data;
   }
 
+  async function sendMagicLink(emailAddress) {
+    if (!isSupabaseConfigured || !supabase) {
+      throw new Error('Authentication is not configured for this deployment.');
+    }
+
+    const value = String(emailAddress || '').trim().toLowerCase();
+    if (!value) {
+      throw new Error('Please enter an email address.');
+    }
+
+    const { error } = await supabase.auth.signInWithOtp({
+      email: value,
+      options: {
+        shouldCreateUser: true,
+        emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined,
+      },
+    });
+
+    if (error) {
+      console.error('Supabase magic-link request failed:', error);
+      throw error;
+    }
+
+    return true;
+  }
+
   async function logout() {
     if (!isSupabaseConfigured || !supabase) {
       setUser(null);
@@ -121,7 +160,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, login, logout, isSupabaseConfigured }}>
+    <AuthContext.Provider value={{ user, profile, loading, login, sendMagicLink, logout, isSupabaseConfigured }}>
       {children}
     </AuthContext.Provider>
   );
