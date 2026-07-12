@@ -275,13 +275,27 @@ export default function NoteScan({ onConfirm, onSkip }) {
       setScanStep('review');
     } catch (err) {
       console.error('OCR error:', err);
-      setOcrError(
-        err.message?.includes('JSON')
-          ? 'Could not parse the AI response. Please fill in details manually.'
-          : 'Could not read the note automatically. Please fill in the consultation details manually.'
-      );
+      setOcrError(err.message || 'Could not read the note automatically. Please try again.');
       setScanStep('error');
     }
+  }
+
+  function handleSimulateScan() {
+    setNullFields(['respiratory_rate', 'weight']);
+    setFields({
+      chief_complaint: 'Fever, headache and severe body pains',
+      duration_days: 3,
+      associated_symptoms: ['Fever', 'Headache', 'Body pain'],
+      temperature: '38.5',
+      blood_pressure: '120/80',
+      pulse_rate: '78',
+      respiratory_rate: '',
+      weight: '',
+      provisional_diagnosis: 'Uncomplicated Malaria',
+      investigations_ordered: ['Malaria RDT', 'Blood Film'],
+      drugs_prescribed: 'Artemether-Lumefantrine 80/480mg twice daily for 3 days',
+    });
+    setScanStep('review');
   }
 
   // ── Field change handler ─────────────────────────────────────────────
@@ -609,12 +623,22 @@ export default function NoteScan({ onConfirm, onSkip }) {
             </svg>
           </div>
           <p className="notescan-error-msg">{ocrError}</p>
-          <div className="notescan-error-actions">
-            <button type="button" className="btn-secondary" onClick={resetToChoose}>
-              Try Again
-            </button>
-            <button type="button" className="btn-primary" onClick={onSkip}>
-              Fill in Manually
+          <div className="notescan-error-actions" style={{ flexDirection: 'column', gap: '8px', width: '100%' }}>
+            <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
+              <button type="button" className="btn-secondary" style={{ flex: 1 }} onClick={resetToChoose}>
+                Try Again
+              </button>
+              <button type="button" className="btn-primary" style={{ flex: 1 }} onClick={onSkip}>
+                Fill in Manually
+              </button>
+            </div>
+            <button
+              type="button"
+              className="btn-secondary"
+              style={{ width: '100%', borderColor: 'var(--color-secondary)', color: 'var(--color-secondary)' }}
+              onClick={handleSimulateScan}
+            >
+              ✨ Simulate Scan (Demo Mode)
             </button>
           </div>
         </div>
