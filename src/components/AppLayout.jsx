@@ -16,6 +16,7 @@ const NAV_ITEMS = {
     { label: 'Patient Records', path: '/chew/patients', icon: '📁' },
     { label: 'Code Red Alert', path: '/chew/code-red', icon: '🚨', danger: true },
     { label: 'Lab Interpreter', path: '/chew/lab-interpreter', icon: '🧪' },
+    { label: 'My Learning', path: '/chew/learning', icon: '🎓' },
   ],
   doctor: [
     { label: 'Dashboard', path: '/doctor/dashboard', icon: '🏠' },

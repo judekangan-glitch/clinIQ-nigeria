@@ -67,54 +67,85 @@ export default function CaseReview() {
 
   async function handleApprove() {
     try {
-      await supabase.from('doctor_reviews').insert([{ consultation_id: id, doctor_id: profile?.id, decision: 'approved' }]);
-      await supabase.from('consultations').update({ doctor_review_status: 'reviewed' }).eq('id', id);
+      // Update consultation status directly — this is the source of truth
+      const { error: updateError } = await supabase
+        .from('consultations')
+        .update({ doctor_review_status: 'reviewed' })
+        .eq('id', id);
+
+      if (updateError) throw updateError;
+
+      // Best-effort log to doctor_reviews (may fail if table/RLS issue — don't block)
+      await supabase.from('doctor_reviews').insert([{
+        consultation_id: id,
+        doctor_id: profile?.id,
+        decision: 'approved',
+      }]).then(({ error }) => { if (error) console.warn('doctor_reviews insert warning:', error.message); });
+
       setMessageType('success');
-      setMessage('Approved. The CHEW has been notified.');
+      setMessage('✓ Consultation approved. The CHEW has been notified.');
+      // Refresh local consultation state to reflect reviewed status
+      setConsultation(prev => prev ? { ...prev, doctor_review_status: 'reviewed' } : prev);
+      // Navigate back after short delay so user sees the confirmation
+      setTimeout(() => navigate('/doctor/dashboard'), 1800);
     } catch (err) {
-      console.error(err);
+      console.error('Approve error:', err);
       setMessageType('error');
-      setMessage('Approval could not be saved.');
+      setMessage(`Approval failed: ${err.message || 'Unknown error'}. Please try again.`);
     }
   }
 
   async function handleCorrectionSubmit(e) {
     e.preventDefault();
     try {
+      const { error: updateError } = await supabase
+        .from('consultations')
+        .update({ doctor_review_status: 'correction_sent' })
+        .eq('id', id);
+      if (updateError) throw updateError;
+
       await supabase.from('doctor_reviews').insert([{
         consultation_id: id, doctor_id: profile?.id, decision: 'corrected',
         correct_diagnosis: correctionForm.diagnosis, comments_for_chew: correctionForm.note,
-      }]);
-      await supabase.from('consultations').update({ doctor_review_status: 'correction_sent' }).eq('id', id);
+      }]).then(({ error }) => { if (error) console.warn('doctor_reviews insert warning:', error.message); });
+
       await supabase.from('simulated_sms_inbox').insert([{
         recipient_role: 'chew', message_type: 'doctor_correction',
         message_text: `Dr ${profile?.full_name || 'Doctor'} reviewed your consultation for ${patient?.full_name || 'patient'} on ${formatDate(consultation?.consultation_date)}. Correction: ${correctionForm.diagnosis}. Note: ${correctionForm.note}.`,
-      }]);
+      }]).then(({ error }) => { if (error) console.warn('SMS inbox insert warning:', error.message); });
+
       setMessageType('success');
-      setMessage('Correction sent. The CHEW will see it in the learning centre.');
+      setMessage('✓ Correction sent. The CHEW will see it in the learning centre.');
       setShowCorrectionForm(false);
+      setConsultation(prev => prev ? { ...prev, doctor_review_status: 'correction_sent' } : prev);
+      setTimeout(() => navigate('/doctor/dashboard'), 1800);
     } catch (err) {
-      console.error(err);
+      console.error('Correction error:', err);
       setMessageType('error');
-      setMessage('Correction could not be saved.');
+      setMessage(`Correction failed: ${err.message || 'Unknown error'}. Please try again.`);
     }
   }
 
   async function handleUrgentFollowUp() {
     try {
-      await supabase.from('doctor_reviews').insert([{ consultation_id: id, doctor_id: profile?.id, decision: 'urgent_followup' }]);
+      await supabase.from('doctor_reviews').insert([{
+        consultation_id: id, doctor_id: profile?.id, decision: 'urgent_followup',
+      }]).then(({ error }) => { if (error) console.warn('doctor_reviews insert warning:', error.message); });
+
       await supabase.from('simulated_sms_inbox').insert([{
         recipient_role: 'chew', message_type: 'general',
         message_text: `URGENT: Dr ${profile?.full_name || 'Doctor'} has flagged patient ${patient?.full_name || 'patient'} for urgent follow-up.`,
-      }]);
+      }]).then(({ error }) => { if (error) console.warn('SMS inbox insert warning:', error.message); });
+
       setMessageType('success');
-      setMessage('Urgent follow-up flagged.');
+      setMessage('⚑ Urgent follow-up flagged. The CHEW has been alerted.');
     } catch (err) {
-      console.error(err);
+      console.error('Urgent follow-up error:', err);
       setMessageType('error');
-      setMessage('The urgent follow-up could not be saved.');
+      setMessage(`Could not flag follow-up: ${err.message || 'Unknown error'}.`);
     }
   }
+
 
   if (loading) {
     return (

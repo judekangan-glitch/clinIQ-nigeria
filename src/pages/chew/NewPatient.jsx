@@ -38,6 +38,13 @@ export default function NewPatient() {
     }));
   }
 
+  /** Generate a hospital number like CLINIQ-2025-04821 */
+  function generateHospitalNumber() {
+    const year = new Date().getFullYear();
+    const rand = Math.floor(10000 + Math.random() * 90000); // 5-digit
+    return `CLINIQ-${year}-${rand}`;
+  }
+
   async function handleSave(e) {
     e.preventDefault();
     setError('');
@@ -65,6 +72,7 @@ export default function NewPatient() {
         known_allergies: formData.allergies.trim() || 'None',
         chronic_conditions: formData.chronicConditions.trim() || 'None',
         phc_id: profile?.phc_id || null,
+        hospital_number: generateHospitalNumber(),
       };
 
       const { data, error: insertError } = await supabase

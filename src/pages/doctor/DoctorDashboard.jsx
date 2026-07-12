@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useDemoRole } from '../../context/DemoRoleContext';
 import { supabase } from '../../lib/supabase';
 import AppLayout from '../../components/AppLayout';
 import './DoctorDashboard.css';
@@ -27,6 +28,7 @@ function getAge(dob) {
 export default function DoctorDashboard() {
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { currentUser } = useDemoRole();
 
   const [activeTab, setActiveTab] = useState('pending');
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,7 @@ export default function DoctorDashboard() {
   const [activeAlerts, setActiveAlerts] = useState([]);
 
   useEffect(() => {
-    if (profile?.id) fetchDashboardData();
+    fetchDashboardData();
   }, [profile?.id]);
 
   async function fetchDashboardData() {
@@ -66,7 +68,7 @@ export default function DoctorDashboard() {
           .lte('created_at', endOfDay.toISOString()),
         supabase
           .from('code_red_alerts')
-          .select('id, consultation_id, created_at, patient_id, phc_id')
+          .select('id, consultation_id, created_at, patient_id, phc_id, description, temperature, blood_pressure, pulse_rate')
           .is('doctor_response_at', null)
           .order('created_at', { ascending: false }),
       ]);
@@ -139,9 +141,9 @@ export default function DoctorDashboard() {
         <header className="doctor-header">
           <div>
             <p className="eyebrow-label">Doctor Review Dashboard</p>
-            <h1 className="doctor-name">Dr. {profile?.full_name || 'Doctor'}</h1>
+            <h1 className="doctor-name">{currentUser?.name || `Dr. ${profile?.full_name || 'Doctor'}`}</h1>
             <p className="doctor-subtitle">
-              {profile?.specialty || 'Primary Health Care'} · {profile?.hospital_name || 'ClinIQ Network'}
+              {currentUser?.specialty || profile?.specialty || 'General Practice'} · {currentUser?.hospital || profile?.hospital_name || 'ClinIQ Network'}
             </p>
           </div>
         </header>
@@ -184,13 +186,28 @@ export default function DoctorDashboard() {
                   <div className="alert-patient-info">
                     <span className="alert-patient-name">{alert.patient?.full_name || 'Unknown patient'}</span>
                     <span className="alert-phc">{alert.phc?.name || 'PHC'} · {formatRelativeTime(alert.created_at)}</span>
+                    {alert.description && (
+                      <span style={{ fontSize: 12, color: '#991B1B', marginTop: 2, display: 'block', fontStyle: 'italic' }}>
+                        {alert.description}
+                      </span>
+                    )}
                   </div>
                   <button
                     className="btn-danger alert-respond-btn"
-                    onClick={() => alert.consultation_id
-                      ? navigate(`/doctor/cases/${alert.consultation_id}`)
-                      : navigate('/doctor/dashboard')
-                    }
+                    onClick={async () => {
+                      // Mark alert as responded
+                      await supabase
+                        .from('code_red_alerts')
+                        .update({ doctor_response_at: new Date().toISOString() })
+                        .eq('id', alert.id)
+                        .then(({ error }) => { if (error) console.warn('Alert update error:', error.message); });
+                      // Remove from local state immediately
+                      setActiveAlerts(prev => prev.filter(a => a.id !== alert.id));
+                      // Navigate to consultation if available, otherwise stay
+                      if (alert.consultation_id) {
+                        navigate(`/doctor/cases/${alert.consultation_id}`);
+                      }
+                    }}
                   >
                     Respond
                   </button>

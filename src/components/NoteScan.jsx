@@ -162,10 +162,20 @@ export default function NoteScan({ onConfirm, onSkip }) {
 
   // ── Gemini API call ──────────────────────────────────────────────────
   async function callGemini(file, existingBase64 = null, existingMime = null) {
-    const base64 = existingBase64 || (await toBase64(file));
-    const mimeType = existingMime || file?.type || 'image/jpeg';
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error(
+        'Gemini API key is not configured. Please add VITE_GEMINI_API_KEY to your .env.local file.'
+      );
+    }
 
-    const response = await fetch(GEMINI_URL, {
+    const base64 = existingBase64 || (await toBase64(file));
+    // PDF needs to be sent as application/pdf; images as-is
+    const mimeType = existingMime || file?.type || 'image/jpeg';
+    const safeMime = mimeType === 'application/pdf' ? 'application/pdf' : mimeType.startsWith('image/') ? mimeType : 'image/jpeg';
+
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -174,7 +184,7 @@ export default function NoteScan({ onConfirm, onSkip }) {
             parts: [
               {
                 inline_data: {
-                  mime_type: mimeType,
+                  mime_type: safeMime,
                   data: base64,
                 },
               },
@@ -186,16 +196,24 @@ export default function NoteScan({ onConfirm, onSkip }) {
     });
 
     if (!response.ok) {
-      throw new Error(`Gemini API error: ${response.status}`);
+      const errBody = await response.json().catch(() => ({}));
+      throw new Error(
+        errBody?.error?.message || `Gemini API error: ${response.status} ${response.statusText}`
+      );
     }
 
     const data = await response.json();
     const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    if (!rawText) throw new Error('Gemini returned an empty response. The image may be unreadable.');
     const cleanText = rawText
       .replace(/```json/g, '')
       .replace(/```/g, '')
       .trim();
-    return JSON.parse(cleanText);
+    try {
+      return JSON.parse(cleanText);
+    } catch {
+      throw new Error('Could not parse the extracted note. The AI response was not valid JSON.');
+    }
   }
 
   // ── Process note handler ─────────────────────────────────────────────

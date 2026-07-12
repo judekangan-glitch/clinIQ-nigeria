@@ -82,12 +82,16 @@ export default function PatientProfile() {
     <AppLayout showBack backTo="/chew/patients" title="Patient Profile">
       <div className="profile-page">
 
-        {/* Patient header */}
-        <div className="profile-hero">
+          <div className="profile-hero">
           <div className="profile-avatar-lg">
             {patient.full_name.charAt(0).toUpperCase()}
           </div>
           <h1 className="profile-name">{patient.full_name}</h1>
+          {patient.hospital_number && (
+            <p style={{ fontSize: 12, color: 'var(--color-text-muted)', margin: '2px 0 8px', fontWeight: 600, letterSpacing: '0.05em' }}>
+              🏥 {patient.hospital_number}
+            </p>
+          )}
           <div className="profile-chips">
             <span className="profile-chip">{age} yrs</span>
             <span className="profile-chip">{sexLabel}</span>
@@ -102,6 +106,7 @@ export default function PatientProfile() {
             )}
           </div>
         </div>
+
 
         <div className="profile-body">
 
