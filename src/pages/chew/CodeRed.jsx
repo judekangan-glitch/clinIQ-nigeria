@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { useDemoRole } from '../../context/DemoRoleContext';
 import { useConnectivity } from '../../hooks/useConnectivity';
 import AppLayout from '../../components/AppLayout';
 import './CodeRed.css';
@@ -9,6 +10,7 @@ import './CodeRed.css';
 export default function CodeRed() {
   const navigate = useNavigate();
   const { profile } = useAuth();
+  const { currentUser } = useDemoRole();
   const online = useConnectivity();
   const [searchParams] = useSearchParams();
 
@@ -69,8 +71,8 @@ export default function CodeRed() {
     try {
       const payload = {
         patient_id: selectedPatient.id,
-        chew_id: profile?.id,
-        phc_id: profile?.phc_id,
+        chew_id: profile?.id || null,
+        phc_id: profile?.phc_id || null,
         description: description.trim() || summaryText,
         temperature: temperature || null,
         blood_pressure: bloodPressure || null,
@@ -78,7 +80,34 @@ export default function CodeRed() {
         channel: online ? 'app' : 'sms_simulated',
       };
 
-      await supabase.from('code_red_alerts').insert([payload]);
+      // Best effort remote insert (in case RLS allows it)
+      const { data, error } = await supabase.from('code_red_alerts').insert([payload]).select();
+      if (error) {
+        console.warn('Supabase code_red_alerts insert warning:', error.message);
+      }
+
+      // Always save locally to support instant role switching / demo fallback
+      const localAlerts = JSON.parse(localStorage.getItem('cliniq_demo_alerts') || '[]');
+      const newAlert = {
+        id: data?.[0]?.id || `demo-alert-${Date.now()}`,
+        patient_id: selectedPatient.id,
+        chew_id: profile?.id || 'demo-chew',
+        phc_id: profile?.phc_id || 'demo-phc',
+        description: description.trim() || summaryText,
+        temperature: temperature || null,
+        blood_pressure: bloodPressure || null,
+        pulse_rate: pulseRate || null,
+        created_at: new Date().toISOString(),
+        doctor_response_at: null,
+        patient: {
+          full_name: selectedPatient.full_name,
+        },
+        phc: {
+          name: currentUser?.phc || 'Langtang North PHC',
+        }
+      };
+      localAlerts.push(newAlert);
+      localStorage.setItem('cliniq_demo_alerts', JSON.stringify(localAlerts));
 
       if (!online) {
         await supabase.from('simulated_sms_inbox').insert([
@@ -87,7 +116,7 @@ export default function CodeRed() {
             message_type: 'code_red',
             message_text: `CLINIQ CODE RED: Patient ${selectedPatient.full_name}, ${selectedPatient.sex || 'Unknown'} at ${profile?.phc_id || 'PHC'}. Emergency: ${payload.description}. Vitals: Temp ${payload.temperature || 'N/A'}, BP ${payload.blood_pressure || 'N/A'}, PR ${payload.pulse_rate || 'N/A'}. Contact CHEW immediately.`,
           },
-        ]);
+        ]).then(({ error: smsError }) => { if (smsError) console.warn('SMS insert error:', smsError.message); });
       }
 
       setMessage(online ? 'Code Red alert sent to the doctor dashboard.' : 'Code Red SMS sent to the doctor inbox.');

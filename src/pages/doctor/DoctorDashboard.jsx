@@ -102,7 +102,8 @@ export default function DoctorDashboard() {
       const reviewedEnriched = await Promise.all((reviewedConsultations.data || []).map(enrichCase));
       const allEnriched = await Promise.all((allConsultations.data || []).map(enrichCase));
 
-      const alertEnriched = await Promise.all(alertsData.map(async (alert) => {
+      // Fetch remote alerts
+      const remoteAlertEnriched = await Promise.all(alertsData.map(async (alert) => {
         const [patientRes, phcRes] = await Promise.all([
           supabase.from('patients').select('full_name').eq('id', alert.patient_id).maybeSingle(),
           supabase.from('phcs').select('name').eq('id', alert.phc_id).maybeSingle(),
@@ -110,14 +111,26 @@ export default function DoctorDashboard() {
         return { ...alert, patient: patientRes.data || null, phc: phcRes.data || null };
       }));
 
+      // Fetch local fallback alerts
+      const localAlerts = JSON.parse(localStorage.getItem('cliniq_demo_alerts') || '[]');
+      const activeLocalAlerts = localAlerts.filter(a => !a.doctor_response_at);
+
+      // Merge alerts (prioritise local object patient info to avoid DB fetches for mock alerts)
+      const mergedAlertsMap = new Map();
+      remoteAlertEnriched.forEach(a => mergedAlertsMap.set(a.id, a));
+      activeLocalAlerts.forEach(a => mergedAlertsMap.set(a.id, a));
+      const mergedAlerts = Array.from(mergedAlertsMap.values()).sort(
+        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+
       setPendingCases(pendingEnriched);
       setReviewedCases(reviewedEnriched);
       setAllCases(allEnriched);
-      setActiveAlerts(alertEnriched);
+      setActiveAlerts(mergedAlerts);
       setSummary({
         pending: pendingData.length,
         reviewedToday: reviewedData.length,
-        codeRedToday: (codeRedRes.data || []).length,
+        codeRedToday: (codeRedRes.data || []).length + activeLocalAlerts.length,
       });
     } catch (error) {
       console.error('Doctor dashboard error:', error);
@@ -195,12 +208,20 @@ export default function DoctorDashboard() {
                   <button
                     className="btn-danger alert-respond-btn"
                     onClick={async () => {
-                      // Mark alert as responded
+                      // Mark alert as responded in DB
                       await supabase
                         .from('code_red_alerts')
                         .update({ doctor_response_at: new Date().toISOString() })
                         .eq('id', alert.id)
                         .then(({ error }) => { if (error) console.warn('Alert update error:', error.message); });
+
+                      // Also mark as responded in localStorage
+                      const localAlerts = JSON.parse(localStorage.getItem('cliniq_demo_alerts') || '[]');
+                      const updatedLocalAlerts = localAlerts.map(a => 
+                        a.id === alert.id ? { ...a, doctor_response_at: new Date().toISOString() } : a
+                      );
+                      localStorage.setItem('cliniq_demo_alerts', JSON.stringify(updatedLocalAlerts));
+
                       // Remove from local state immediately
                       setActiveAlerts(prev => prev.filter(a => a.id !== alert.id));
                       // Navigate to consultation if available, otherwise stay
