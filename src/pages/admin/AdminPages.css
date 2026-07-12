@@ -1,0 +1,269 @@
+/* ─── Admin Pages Styling (Staff, Digitisation, Settings) ─────────── */
+
+.admin-page-container {
+  padding-bottom: var(--space-4);
+}
+
+.admin-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 767.98px) {
+  .admin-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.admin-page-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 6px;
+}
+
+.admin-page-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Double column layouts */
+.admin-double-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+@media (max-width: 991.98px) {
+  .admin-double-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel-title-lg {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-2);
+}
+
+/* ── Staff management list ────────────────────────────────────────── */
+.staff-cards-vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.staff-profile-card {
+  border-radius: 12px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+}
+
+.staff-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.profile-name-bold {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.profile-role-sub {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.status-pill-badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+
+.status-pill-badge.on-duty { background: #ECFDF5; color: #065F46; }
+.status-pill-badge.off-duty { background: #F3F4F6; color: #4B5563; }
+
+.profile-contact-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.profile-card-action-bar {
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+}
+
+/* ── Digitisation metrics ────────────────────────────────────────── */
+.target-summary-box {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  background-color: var(--color-bg);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  border: 1px solid var(--color-border);
+}
+
+.target-metric-item {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.target-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+
+.target-value {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.target-subtext {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+/* Speed track bar */
+.speed-track-visualization {
+  background-color: #EFF6FF;
+  border-radius: 12px;
+  padding: var(--space-2);
+  border: 1px solid #BFDBFE;
+}
+
+.speed-bar-track {
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.speed-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+}
+
+.speed-percent-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+  display: block;
+}
+
+/* Categories distribution list */
+.distribution-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dist-category-card {
+  border-radius: 12px;
+  padding: 14px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.dist-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.category-title-lbl {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.category-status-tag {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.dist-progress-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.track-bar-thin {
+  flex: 1;
+  height: 6px;
+  background-color: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.fill-bar-thin {
+  height: 100%;
+  border-radius: 99px;
+}
+
+.category-ratio-lbl {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+/* ── PHC Settings specific ────────────────────────────────────────── */
+.admin-form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.field-help-text {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+  display: block;
+}
+
+.checkbox-field {
+  padding: 8px 0;
+}
+
+.checkbox-label-settings {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+.checkbox-label-settings input {
+  margin-top: 3px;
+}

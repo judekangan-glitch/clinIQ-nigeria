@@ -33,9 +33,9 @@ const NAV_ITEMS = {
   ],
   admin: [
     { label: 'Dashboard', path: '/admin/dashboard', icon: '🏠' },
-    { label: 'Staff Management', path: '/admin/dashboard', icon: '👥' },
-    { label: 'Digitisation Progress', path: '/admin/dashboard', icon: '📷' },
-    { label: 'PHC Settings', path: '/admin/dashboard', icon: '⚙️' },
+    { label: 'Staff Management', path: '/admin/staff', icon: '👥' },
+    { label: 'Digitisation Progress', path: '/admin/digitisation', icon: '📷' },
+    { label: 'PHC Settings', path: '/admin/settings', icon: '⚙️' },
   ],
   digitisation_officer: [
     { label: 'Scan Records', path: '/digitisation/scan', icon: '📷' },

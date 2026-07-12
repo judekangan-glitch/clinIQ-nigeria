@@ -1,0 +1,291 @@
+/* ─── PHC Admin Dashboard Styling ───────────────────────────────────── */
+
+.admin-dashboard-container {
+  padding-bottom: var(--space-4);
+}
+
+.admin-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.admin-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.admin-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+
+.admin-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.admin-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Stats Cards */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.admin-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: var(--space-2);
+}
+
+.admin-stat-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.admin-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-stat-val {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.admin-stat-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 2px 0;
+}
+
+.admin-stat-detail {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+/* Grid Layouts */
+.admin-grid-main {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 991.98px) {
+  .admin-grid-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.admin-panel-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* On duty list */
+.admin-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.staff-duty-row-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+  gap: 12px;
+}
+
+.staff-meta-col {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.staff-avatar-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.staff-name-lbl {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.staff-role-lbl {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.staff-shift-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.shift-time-lbl {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.on-duty-badge {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.on-duty-badge.active {
+  background-color: #ECFDF5;
+  color: #065F46;
+}
+
+.on-duty-badge.inactive {
+  background-color: #F3F4F6;
+  color: #4B5563;
+}
+
+/* Progress analysis box */
+.progress-analysis-box {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+}
+
+.overall-percent-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #EFF6FF;
+  border-radius: 16px;
+  padding: var(--space-2);
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  border: 1px solid #BFDBFE;
+}
+
+.overall-pct {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+.overall-lbl {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--color-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.progress-stack-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.progress-row-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.prog-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  width: 90px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.prog-track-bar {
+  flex: 1;
+  height: 6px;
+  background-color: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.prog-fill-bar {
+  height: 100%;
+  border-radius: 99px;
+}
+
+.prog-pct-val {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  width: 30px;
+  text-align: right;
+}
+
+@media (max-width: 575.98px) {
+  .admin-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .progress-analysis-box {
+    flex-direction: column;
+    align-items: center;
+  }
+}

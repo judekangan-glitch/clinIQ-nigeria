@@ -55,6 +55,9 @@ const DiseaseTrends          = lazy(() => import('./pages/lga/DiseaseTrends'));
 const PhcPerformance         = lazy(() => import('./pages/lga/PhcPerformance'));
 const SupplyAlerts           = lazy(() => import('./pages/lga/SupplyAlerts'));
 const AdminDashboard         = lazy(() => import('./pages/admin/AdminDashboard'));
+const StaffManagement        = lazy(() => import('./pages/admin/StaffManagement'));
+const DigitisationProgress   = lazy(() => import('./pages/admin/DigitisationProgress'));
+const PhcSettings            = lazy(() => import('./pages/admin/PhcSettings'));
 const DigitisationDashboard  = lazy(() => import('./pages/digitisation/DigitisationDashboard'));
 
 // Role → default route map (for login redirect)
@@ -150,6 +153,9 @@ export default function App() {
 
                 {/* ── Admin routes ──────────────────────────── */}
                 <Route path="/admin/dashboard" element={<RequireAuth><AdminDashboard /></RequireAuth>} />
+                <Route path="/admin/staff" element={<RequireAuth><StaffManagement /></RequireAuth>} />
+                <Route path="/admin/digitisation" element={<RequireAuth><DigitisationProgress /></RequireAuth>} />
+                <Route path="/admin/settings" element={<RequireAuth><PhcSettings /></RequireAuth>} />
                 <Route path="/admin/*" element={<Navigate to="/admin/dashboard" replace />} />
 
                 {/* ── Digitisation routes ───────────────────── */}
