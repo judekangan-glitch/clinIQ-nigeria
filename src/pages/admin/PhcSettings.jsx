@@ -68,10 +68,14 @@ export default function PhcSettings() {
       const payload = DEMO_PATIENTS.map((p, idx) => ({
         ...p,
         hospital_number: getNum(idx),
-        phc_id: 'a0b1c2d3-e4f5-6789-abcd-ef0123456789' // placeholder or generic PHC id
+        phc_id: null // set to null to avoid foreign key errors!
       }));
 
-      const { error } = await supabase.from('patients').insert(payload);
+      // Safely upsert on conflict of phone_number so it never fails if clicked multiple times
+      const { error } = await supabase
+        .from('patients')
+        .upsert(payload, { onConflict: 'phone_number' });
+
       if (error) throw error;
 
       setSuccess('🎉 30 Demo Patients with diverse conditions and generated Hospital Numbers onboarded successfully!');
@@ -80,7 +84,7 @@ export default function PhcSettings() {
       setSuccess(`❌ Seeding failed: ${err.message || 'database error'}`);
     } finally {
       setSeeding(false);
-      setTimeout(() => setSuccess(''), 5000);
+      setTimeout(() => setSuccess(''), 6000);
     }
   };
 
