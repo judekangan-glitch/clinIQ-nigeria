@@ -5,6 +5,11 @@ import { supabase } from '../../lib/supabase';
 import { STATE_TO_FOOD_ZONE } from '../../data/nigeriaData';
 import './Nutrition.css';
 
+function calcAge(dob) {
+  if (!dob) return '—';
+  return Math.floor((Date.now() - new Date(dob).getTime()) / (1000 * 60 * 60 * 24 * 365.25));
+}
+
 // Localised Foods Database mapped by Nigerian Food Zones
 const FOODS_BY_ZONE = {
   north_central: {
@@ -133,6 +138,7 @@ export default function Nutrition() {
   }, [patientId, consultationId]);
 
   // Determine localized food zone
+  const pAge = calcAge(patient?.date_of_birth);
   const stateVal = patient?.state || 'Plateau';
   const lgaVal = patient?.lga || 'Langtang North';
   const foodZoneKey = STATE_TO_FOOD_ZONE[stateVal] || 'north_central';
