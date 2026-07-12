@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import './PatientSearch.css';
 
 function calcAge(dob) {
@@ -58,19 +58,19 @@ export default function PatientSearch() {
   }, [query, search]);
 
   return (
-    <ChewLayout showBack backTo="/chew/dashboard" title="Patient Records">
+    <AppLayout showBack backTo="/chew/dashboard" title="Patient Records">
       <div className="patient-search-page">
 
         {/* Search bar */}
         <div className="search-bar-wrap">
           <div className="search-bar">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-              stroke="#9ca3af" strokeWidth="2" strokeLinecap="round">
+            <svg className="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" strokeWidth="2" strokeLinecap="round">
               <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
             </svg>
             <input
               id="patient-search-input"
-              type="search"
+              type="text"
               className="search-input"
               placeholder="Search by name or phone number"
               value={query}
@@ -79,9 +79,9 @@ export default function PatientSearch() {
               autoComplete="off"
             />
             {query && (
-              <button className="clear-btn" onClick={() => setQuery('')}>
+              <button className="clear-btn" onClick={() => setQuery('')} aria-label="Clear search">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                  stroke="#9ca3af" strokeWidth="2" strokeLinecap="round">
+                  stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                   <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
                 </svg>
               </button>
@@ -93,32 +93,36 @@ export default function PatientSearch() {
         <div className="search-results">
           {loading && (
             <div className="search-loading">
-              <div className="mini-spinner" />
+              <div className="inline-spinner" />
               <span>Searching...</span>
             </div>
           )}
 
           {!loading && searched && results.length === 0 && (
-            <div className="no-results">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-              </svg>
-              <p>No patients found for "<strong>{query}</strong>"</p>
-              <p className="no-results-sub">Check the spelling or register a new patient below.</p>
+            <div className="empty-state">
+              <div className="empty-state-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                </svg>
+              </div>
+              <h3 className="empty-state-title">No patients found for "{query}"</h3>
+              <p className="empty-state-subtitle">Check the spelling or register a new patient below.</p>
             </div>
           )}
 
           {!loading && !searched && (
-            <div className="search-hint">
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round">
-                <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
-              </svg>
-              <p>Type a name or phone number to find a patient.</p>
+            <div className="empty-state select-prompt">
+              <div className="empty-state-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                  <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+                </svg>
+              </div>
+              <h3 className="empty-state-title">Search Patients</h3>
+              <p className="empty-state-subtitle">Type a name or phone number to find a patient.</p>
             </div>
           )}
 
@@ -152,19 +156,19 @@ export default function PatientSearch() {
                   </span>
                 )}
               </div>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                stroke="#d1d5db" strokeWidth="2" strokeLinecap="round">
+              <svg className="chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <polyline points="9 18 15 12 9 6"/>
               </svg>
             </button>
           ))}
         </div>
 
-        {/* Fixed Add Patient button */}
+        {/* Add Patient button */}
         <div className="add-patient-bar">
           <button
             id="add-new-patient-btn"
-            className="add-patient-btn"
+            className="btn-success add-patient-btn"
             onClick={() => navigate('/chew/patients/new')}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -175,6 +179,6 @@ export default function PatientSearch() {
           </button>
         </div>
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }

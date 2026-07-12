@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import { NIGERIA_STATES_LGA, STATE_TO_FOOD_ZONE } from '../../data/nigeriaData';
 import './NewPatient.css';
 
@@ -102,10 +102,10 @@ export default function NewPatient() {
   }
 
   return (
-    <ChewLayout showBack backTo="/chew/patients" title="Register Patient">
+    <AppLayout showBack backTo="/chew/patients" title="Register Patient">
       <div className="new-patient-page">
-        <form onSubmit={handleSave} className="new-patient-form">
-          {error && <div className="error-alert">{error}</div>}
+        <form onSubmit={handleSave} className="new-patient-form card">
+          {error && <div className="error-alert" role="alert">{error}</div>}
 
           <div className="form-field">
             <label htmlFor="fullName" className="field-label">Full Name *</label>
@@ -113,7 +113,7 @@ export default function NewPatient() {
               id="fullName"
               name="fullName"
               type="text"
-              className="field-input"
+              className="form-input"
               placeholder="Enter patient's full name"
               value={formData.fullName}
               onChange={handleInputChange}
@@ -127,7 +127,7 @@ export default function NewPatient() {
               id="phoneNumber"
               name="phoneNumber"
               type="tel"
-              className="field-input"
+              className="form-input"
               placeholder="e.g. 08031234567"
               value={formData.phoneNumber}
               onChange={handleInputChange}
@@ -140,7 +140,7 @@ export default function NewPatient() {
               id="dob"
               name="dob"
               type="date"
-              className="field-input"
+              className="form-input"
               value={formData.dob}
               onChange={handleInputChange}
             />
@@ -182,7 +182,7 @@ export default function NewPatient() {
                 name="state"
                 value={formData.state}
                 onChange={handleInputChange}
-                className="field-select"
+                className="form-select"
               >
                 <option value="">Select State</option>
                 {states.map((s) => (
@@ -198,7 +198,7 @@ export default function NewPatient() {
                 name="lga"
                 value={formData.lga}
                 onChange={handleInputChange}
-                className="field-select"
+                className="form-select"
                 disabled={!formData.state}
               >
                 <option value="">Select LGA</option>
@@ -216,7 +216,7 @@ export default function NewPatient() {
               name="bloodGroup"
               value={formData.bloodGroup}
               onChange={handleInputChange}
-              className="field-select"
+              className="form-select"
             >
               <option value="">Select Blood Group</option>
               {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((bg) => (
@@ -230,7 +230,7 @@ export default function NewPatient() {
             <textarea
               id="allergies"
               name="allergies"
-              className="field-textarea"
+              className="form-textarea"
               placeholder="List known food or drug allergies (or leave blank for None)"
               value={formData.allergies}
               onChange={handleInputChange}
@@ -243,7 +243,7 @@ export default function NewPatient() {
             <textarea
               id="chronicConditions"
               name="chronicConditions"
-              className="field-textarea"
+              className="form-textarea"
               placeholder="e.g. Hypertension, Diabetes (or leave blank for None)"
               value={formData.chronicConditions}
               onChange={handleInputChange}
@@ -255,14 +255,19 @@ export default function NewPatient() {
             <button
               id="save-patient-btn"
               type="submit"
-              className={`save-patient-btn ${saving ? 'loading' : ''}`}
+              className="btn-primary save-patient-btn"
               disabled={saving}
             >
-              {saving ? 'Saving...' : 'Save Patient'}
+              {saving ? (
+                <>
+                  <span className="inline-spinner" style={{ borderTopColor: '#ffffff' }} />
+                  Saving...
+                </>
+              ) : 'Save Patient'}
             </button>
           </div>
         </form>
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }

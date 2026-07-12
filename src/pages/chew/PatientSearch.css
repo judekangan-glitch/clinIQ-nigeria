@@ -1,135 +1,117 @@
+/* ─── ClinIQ Nigeria PatientSearch Styles ────────────────────────────── */
+
 .patient-search-page {
   display: flex;
   flex-direction: column;
-  min-height: calc(100dvh - 90px);
-  padding-bottom: 90px;
+  padding-bottom: 96px; /* spacing for fixed add-patient button */
 }
 
 /* ─── Search bar ─────────────────────────────────────────────────────── */
 .search-bar-wrap {
-  padding: 12px 16px;
-  background: #fff;
-  border-bottom: 1px solid #e5e7eb;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  margin-bottom: var(--space-2);
 }
 
 .search-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: #f3f4f6;
-  border-radius: 12px;
-  padding: 10px 14px;
-  border: 2px solid transparent;
-  transition: border-color 0.2s, background 0.2s;
+  gap: 12px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 0 16px;
+  border: 1px solid var(--color-border);
+  height: 48px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.15s ease;
 }
 
 .search-bar:focus-within {
-  border-color: #1B4F8A;
-  background: #fff;
+  border: 2px solid var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(27,79,138,0.15);
+}
+
+.search-icon {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
 }
 
 .search-input {
   flex: 1;
-  border: none;
-  background: transparent;
-  font-size: 0.95rem;
-  font-family: 'Inter', Arial, sans-serif;
-  color: #111827;
-  outline: none;
+  border: none !important;
+  background: transparent !important;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  outline: none !important;
+  height: 100% !important;
+  padding: 0 !important;
+  box-shadow: none !important;
 }
-
-.search-input::placeholder { color: #9ca3af; }
 
 .clear-btn {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 2px;
+  padding: 4px;
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
-  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s;
+}
+
+.clear-btn:hover {
+  color: var(--color-text-primary);
 }
 
 /* ─── Results ────────────────────────────────────────────────────────── */
 .search-results {
-  flex: 1;
-  padding: 12px 16px 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-1);
 }
 
 .search-loading {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 24px 0;
   justify-content: center;
-  color: #6b7280;
-  font-family: 'Inter', Arial, sans-serif;
-  font-size: 0.88rem;
+  gap: 12px;
+  padding: var(--space-4) 0;
+  color: var(--color-text-secondary);
 }
 
-.mini-spinner {
-  width: 18px; height: 18px;
-  border: 2px solid #e5e7eb;
-  border-top-color: #1B4F8A;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-.no-results, .search-hint {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  padding: 40px 16px;
-  text-align: center;
-  color: #9ca3af;
-}
-
-.no-results p, .search-hint p {
-  font-family: 'Inter', Arial, sans-serif;
-  font-size: 0.88rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.no-results-sub {
-  font-size: 0.8rem !important;
-  color: #9ca3af !important;
-}
-
-/* ─── Patient result card ─────────────────────────────────────────────── */
+/* Result Card */
 .patient-result-card {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-2);
   width: 100%;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px 14px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
   cursor: pointer;
   text-align: left;
-  transition: box-shadow 0.15s, border-color 0.15s;
-  -webkit-tap-highlight-color: transparent;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-card);
 }
 
-.patient-result-card:active { box-shadow: none; border-color: #1B4F8A; }
+.patient-result-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
 
 .patient-avatar {
-  width: 44px; height: 44px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1B4F8A, #0E7C7B);
-  color: white;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem; font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
   flex-shrink: 0;
-  font-family: 'Inter', Arial, sans-serif;
+  user-select: none;
 }
 
 .patient-info {
@@ -141,10 +123,9 @@
 }
 
 .patient-name {
-  font-size: 0.95rem;
+  font-size: 14px;
   font-weight: 700;
-  color: #111827;
-  font-family: 'Inter', Arial, sans-serif;
+  color: var(--color-text-primary);
 }
 
 .patient-meta {
@@ -154,48 +135,52 @@
 }
 
 .meta-chip {
-  font-size: 0.7rem;
-  font-family: 'Inter', Arial, sans-serif;
-  background: #f3f4f6;
-  color: #6b7280;
+  font-size: 11px;
+  background-color: var(--color-bg);
+  color: var(--color-text-secondary);
   padding: 2px 8px;
-  border-radius: 99px;
+  border-radius: var(--radius-full);
   font-weight: 500;
+  border: 1px solid var(--color-border);
 }
 
 .last-visit {
-  font-size: 0.72rem;
-  color: #9ca3af;
-  font-family: 'Inter', Arial, sans-serif;
+  font-size: 11px;
+  color: var(--color-text-secondary);
 }
 
-/* ─── Add patient button ─────────────────────────────────────────────── */
+.chevron-right {
+  color: var(--color-text-muted);
+}
+
+/* ─── Bottom action bar ──────────────────────────────────────────────── */
 .add-patient-bar {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
-  padding: 12px 16px 24px;
-  background: linear-gradient(to top, #f3f4f6 70%, transparent);
-  z-index: 50;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: var(--space-2) var(--space-2) var(--space-4);
+  background: linear-gradient(to top, var(--color-bg) 70%, transparent);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
 }
 
 .add-patient-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
+  max-width: 600px;
   width: 100%;
-  padding: 15px;
-  background: #0E7C7B;
-  color: white;
-  border: none;
-  border-radius: 14px;
-  font-size: 1rem;
-  font-weight: 700;
-  font-family: 'Inter', Arial, sans-serif;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(14,124,123,0.35);
-  transition: background 0.2s, transform 0.1s;
-  -webkit-tap-highlight-color: transparent;
+  padding: 14px !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.25) !important;
+  height: 48px !important;
+  border-radius: var(--radius-lg) !important;
 }
 
-.add-patient-btn:active { transform: scale(0.98); }
+/* Adjustments for desktop */
+@media (min-width: 768px) {
+  .add-patient-bar {
+    left: 240px; /* leaves space for sidebar */
+    padding: var(--space-2) var(--space-3) var(--space-3);
+  }
+}

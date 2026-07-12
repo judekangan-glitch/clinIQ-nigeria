@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import './PatientProfile.css';
 
 function calcAge(dob) {
@@ -54,23 +54,24 @@ export default function PatientProfile() {
 
   if (loading) {
     return (
-      <ChewLayout showBack title="Patient Profile">
+      <AppLayout showBack title="Patient Profile">
         <div className="profile-loading">
-          <div className="spinner-lg" />
+          <div className="inline-spinner" style={{ width: 40, height: 40 }} />
           <p>Loading patient record...</p>
         </div>
-      </ChewLayout>
+      </AppLayout>
     );
   }
 
   if (!patient) {
     return (
-      <ChewLayout showBack title="Patient Profile">
-        <div className="profile-not-found">
-          <p>Patient not found.</p>
-          <button onClick={() => navigate('/chew/patients')}>Back to Search</button>
+      <AppLayout showBack title="Patient Profile">
+        <div className="empty-state">
+          <h3 className="empty-state-title">Patient not found</h3>
+          <p className="empty-state-subtitle">We couldn't retrieve the specified patient file.</p>
+          <button className="btn-primary" onClick={() => navigate('/chew/patients')}>Back to Search</button>
         </div>
-      </ChewLayout>
+      </AppLayout>
     );
   }
 
@@ -78,7 +79,7 @@ export default function PatientProfile() {
   const sexLabel = patient.sex === 'M' ? 'Male' : patient.sex === 'F' ? 'Female' : '—';
 
   return (
-    <ChewLayout showBack backTo="/chew/patients" title="Patient Profile">
+    <AppLayout showBack backTo="/chew/patients" title="Patient Profile">
       <div className="profile-page">
 
         {/* Patient header */}
@@ -137,7 +138,7 @@ export default function PatientProfile() {
           {patient.phone_number && (
             <div className="contact-row">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                stroke="#6b7280" strokeWidth="2" strokeLinecap="round">
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round">
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.36 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.27 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
               </svg>
               <span>{patient.phone_number}</span>
@@ -149,12 +150,13 @@ export default function PatientProfile() {
             <h2 className="section-heading">Consultation History</h2>
 
             {consultations.length === 0 ? (
-              <div className="empty-history">
-                <p>No consultations recorded yet.</p>
+              <div className="empty-state empty-history">
+                <h3 className="empty-state-title">No consultations recorded yet</h3>
+                <p className="empty-state-subtitle">All future visit files will appear here.</p>
               </div>
             ) : (
               <div className="consult-list">
-                {consultations.map((c, i) => {
+                {consultations.map((c) => {
                   const badge = statusBadge(c.doctor_review_status);
                   return (
                     <button
@@ -163,7 +165,6 @@ export default function PatientProfile() {
                       onClick={() => navigate(`/chew/consultation/${c.id}`)}
                     >
                       <div className="consult-timeline-dot" />
-                      {i < consultations.length - 1 && <div className="consult-timeline-line" />}
                       <div className="consult-history-body">
                         <div className="consult-history-top">
                           <span className="consult-history-date">
@@ -193,11 +194,11 @@ export default function PatientProfile() {
           </div>
         </div>
 
-        {/* Fixed action button */}
+        {/* Action bar */}
         <div className="profile-action-bar">
           <button
             id="new-consultation-for-patient"
-            className="new-consult-btn"
+            className="btn-primary new-consult-btn"
             onClick={() => navigate(`/chew/consultation/new?patient=${id}`)}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -208,6 +209,6 @@ export default function PatientProfile() {
           </button>
         </div>
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }

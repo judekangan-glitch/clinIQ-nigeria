@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useConnectivity } from '../../hooks/useConnectivity';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import './CodeRed.css';
 
 export default function CodeRed() {
@@ -100,7 +100,7 @@ export default function CodeRed() {
   }
 
   return (
-    <ChewLayout showBack backTo="/chew/dashboard" title="Code Red Alert">
+    <AppLayout showBack backTo="/chew/dashboard" title="Code Red Alert">
       <div className="code-red-page">
         <div className="code-red-banner">CODE RED EMERGENCY ALERT</div>
         <p className="warning-text">This will immediately alert the on-call doctor. Only use for genuine emergencies.</p>
@@ -108,7 +108,7 @@ export default function CodeRed() {
         <form className="code-red-form" onSubmit={handleSubmit}>
           <label className="field-label">
             <span>Select patient</span>
-            <input value={patientQuery} onChange={(e) => setPatientQuery(e.target.value)} placeholder="Search by name or phone" />
+          <input className="form-input" value={patientQuery} onChange={(e) => setPatientQuery(e.target.value)} placeholder="Search by name or phone" />
             {patientResults.length > 0 && (
               <div className="search-results">
                 {patientResults.map((patient) => (
@@ -124,21 +124,21 @@ export default function CodeRed() {
 
           <label className="field-label">
             <span>Describe the emergency in one sentence</span>
-            <textarea maxLength={140} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe the emergency briefly" required />
+            <textarea className="form-textarea" maxLength={140} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Describe the emergency briefly" required />
           </label>
 
           <div className="vitals-row">
             <label className="field-label">
               <span>Temperature</span>
-              <input value={temperature} onChange={(e) => setTemperature(e.target.value)} placeholder="39.2" />
+              <input className="form-input" value={temperature} onChange={(e) => setTemperature(e.target.value)} placeholder="39.2" />
             </label>
             <label className="field-label">
               <span>Blood Pressure</span>
-              <input value={bloodPressure} onChange={(e) => setBloodPressure(e.target.value)} placeholder="100/60" />
+              <input className="form-input" value={bloodPressure} onChange={(e) => setBloodPressure(e.target.value)} placeholder="100/60" />
             </label>
             <label className="field-label">
               <span>Pulse Rate</span>
-              <input value={pulseRate} onChange={(e) => setPulseRate(e.target.value)} placeholder="110" />
+              <input className="form-input" value={pulseRate} onChange={(e) => setPulseRate(e.target.value)} placeholder="110" />
             </label>
           </div>
 
@@ -149,6 +149,6 @@ export default function CodeRed() {
           {message && <div className="code-red-message">{message}</div>}
         </form>
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }

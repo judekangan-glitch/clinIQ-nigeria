@@ -1,186 +1,449 @@
+/* ─── ClinIQ Nigeria CaseReview Styles ──────────────────────────────── */
+
 .case-review-page {
-  min-height: 100vh;
-  padding: 20px 20px 48px;
-  background: #f8fbff;
-  color: #14213d;
-}
-
-.back-btn {
-  border: 0;
-  background: transparent;
-  color: var(--color-primary);
-  font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 12px;
-}
-
-.review-success {
-  background: #dcfce7;
-  border: 1px solid #22c55e;
-  color: #166534;
-  padding: 12px 14px;
-  border-radius: 12px;
-  margin-bottom: 16px;
-}
-
-.review-card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-}
-
-.review-card h2 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.05rem;
-}
-
-.demographics-grid,
-.current-consultation-grid,
-.vitals-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.demographics-grid p,
-.current-consultation-grid p,
-.vitals-grid p,
-.timeline-item p,
-.timeline-item small,
-.lab-card p,
-.lab-card small {
-  margin: 4px 0 0;
-  color: #64748b;
-}
-
-.info-boxes {
-  display: flex;
-  gap: 12px;
-  margin-top: 14px;
-  flex-wrap: wrap;
-}
-
-.info-box {
-  border-radius: 12px;
-  padding: 12px 14px;
-  min-width: 180px;
-  color: white;
-  font-weight: 600;
-}
-
-.info-box.red { background: #dc2626; }
-.info-box.orange { background: #d97706; }
-
-.timeline-list {
+  max-width: 700px;
+  margin: 0 auto var(--space-4);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2);
 }
 
-.timeline-item {
-  border-left: 3px solid rgba(16,185,129,0.6);
-  padding-left: 10px;
+/* ─── Loading state ──────────────────────────────────────────────────── */
+.case-review-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: 14px;
 }
 
-.chip-row {
+.large-spinner {
+  width: 40px !important;
+  height: 40px !important;
+  border-width: 4px !important;
+}
+
+/* ─── Feedback banners ───────────────────────────────────────────────── */
+.review-feedback-banner {
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.success-banner {
+  background: #ECFDF5;
+  border: 1px solid #BBF7D0;
+  color: var(--color-success);
+}
+
+.error-banner {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: var(--color-danger);
+}
+
+/* ─── Section card ───────────────────────────────────────────────────── */
+.review-card {
+  /* inherits .card from global */
+}
+
+.review-section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0 0 var(--space-2);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+/* ─── Demographics grid ──────────────────────────────────────────────── */
+.demographics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.demo-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.demo-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.demo-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+/* Alert info boxes */
+.alert-info-boxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.info-box-alert {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.danger-box {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-left: 4px solid var(--color-danger);
+}
+
+.warning-box {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  border-left: 4px solid var(--color-warning);
+}
+
+.info-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.danger-box .info-box-label { color: var(--color-danger); }
+.warning-box .info-box-label { color: #92400E; }
+
+.info-box-val {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* ─── History timeline ───────────────────────────────────────────────── */
+.history-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-left: 2px solid var(--color-border);
+  padding-left: var(--space-2);
+  margin-left: 8px;
+}
+
+.history-item {
+  position: relative;
+  padding-bottom: var(--space-2);
+}
+
+.history-dot {
+  position: absolute;
+  left: calc(-1 * var(--space-2) - 5px);
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  border: 2px solid var(--color-surface);
+}
+
+.history-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.history-date {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.history-dx {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.history-drugs {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+/* ─── Consultation summary ───────────────────────────────────────────── */
+.consultation-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
+}
+
+.cs-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cs-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cs-val {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.symptom-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 12px 0;
+  margin-bottom: var(--space-2);
 }
 
 .chip {
-  padding: 6px 10px;
-  background: #d1fae5;
+  display: inline-block;
+  padding: 4px 12px;
+  background: #EFF6FF;
   color: var(--color-primary);
-  border-radius: 999px;
-  font-size: 0.88rem;
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: #e2e8f0;
-  border-radius: 999px;
-  overflow: hidden;
-  margin: 8px 0;
-}
-
-.progress-bar div {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary-dk) 0%, var(--color-primary) 100%);
-}
-
-.diagnosis-card,
-.lab-card {
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 10px;
-}
-
-.diagnosis-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.vitals-display-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 }
 
-.review-actions {
+.vital-display-item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 10px 8px;
   display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 12px;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  text-align: center;
 }
 
-.btn-success,
-.btn-warning,
-.btn-danger {
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 16px;
+.vital-disp-label {
+  font-size: 10px;
   font-weight: 700;
-  cursor: pointer;
-  color: white;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
 }
 
-.btn-success { background: #16a34a; }
-.btn-warning { background: #d97706; }
-.btn-danger { background: #dc2626; }
+.vital-disp-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+/* ─── AI Diagnosis list ──────────────────────────────────────────────── */
+.ai-differentials-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.ai-diff-item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+}
+
+.ai-diff-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.ai-diff-rank {
+  font-size: 11px;
+  font-weight: 800;
+  background: var(--color-primary);
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+}
+
+.ai-diff-condition {
+  flex: 1;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.ai-diff-confidence {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-secondary);
+}
+
+.ai-progress-bar {
+  height: 5px;
+  background: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.ai-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-secondary), var(--color-secondary-light));
+  border-radius: var(--radius-full);
+}
+
+.ai-diff-reasoning {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* CHEW diagnosis and drugs */
+.chew-diagnosis-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 8px;
+}
+
+.chew-drugs-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Lab results */
+.lab-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.lab-result-item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+}
+
+.lab-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.lab-result-date {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.lab-result-values {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 8px;
+}
+
+.lab-interpretation {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ─── Review action buttons ──────────────────────────────────────────── */
+.review-actions-row {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.review-action-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 12px var(--space-1);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ─── Correction form ────────────────────────────────────────────────── */
+.correction-form-wrap {
+  /* inherits .card */
+}
+
+.correction-form-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-warning);
+  margin: 0 0 var(--space-2);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--color-border);
+}
 
 .correction-form {
-  margin-top: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background: #fff7ed;
-  padding: 14px;
-  border-radius: 12px;
+  gap: var(--space-2);
 }
 
-.correction-form label {
+.correction-form-actions {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-weight: 600;
-  color: #7c2d12;
+  gap: var(--space-1);
 }
 
-.correction-form input,
-.correction-form textarea {
-  border: 1px solid #fdba74;
-  border-radius: 10px;
-  padding: 10px 12px;
-  font: inherit;
+.correction-form-actions button {
+  flex: 1;
 }
 
-@media (max-width: 768px) {
-  .demographics-grid,
-  .current-consultation-grid,
-  .vitals-grid {
+/* Helper */
+.muted-text {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .demographics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .vitals-display-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .review-actions-row {
+    flex-direction: column;
+  }
+  .review-action-btn {
+    width: 100%;
+  }
+  .alert-info-boxes {
     grid-template-columns: 1fr;
   }
 }

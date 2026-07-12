@@ -1,192 +1,324 @@
+/* ─── ClinIQ Nigeria DoctorDashboard Styles ─────────────────────────── */
+
 .doctor-dashboard-page {
-  min-height: 100vh;
-  padding: 20px 20px 48px;
-  background: linear-gradient(180deg, #f8fff9 0%, #eefcf4 100%);
-  color: var(--color-text);
+  max-width: 700px;
+  margin: 0 auto var(--space-4);
 }
 
-.doctor-dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+/* ─── Header ─────────────────────────────────────────────────────────── */
+.doctor-header {
+  margin-bottom: var(--space-3);
 }
 
-.doctor-dashboard-header h1 {
-  margin: 4px 0 6px;
-  font-size: 1.7rem;
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.75rem;
-  color: var(--color-primary);
+.eyebrow-label {
+  font-size: 11px;
   font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+}
+
+.doctor-name {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
 }
 
 .doctor-subtitle {
+  font-size: 14px;
+  color: var(--color-text-secondary);
   margin: 0;
-  color: #475569;
 }
 
-.summary-strip {
+/* ─── Summary stat strip ─────────────────────────────────────────────── */
+.doctor-stat-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  margin-bottom: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 
-.summary-card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
-}
-
-.summary-card strong {
-  display: block;
-  font-size: 1.5rem;
-  margin-top: 8px;
-}
-
-.summary-label {
-  color: #64748b;
-  font-size: 0.9rem;
-}
-
-.alert-banner {
-  background: linear-gradient(90deg, #fee2e2 0%, #ffe4e6 100%);
-  border: 1px solid #ef4444;
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 18px;
-}
-
-.alert-banner h2 {
-  margin: 0 0 4px;
-  color: #991b1b;
-}
-
-.alert-list {
+.doc-stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-top: 12px;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--shadow-card);
+  border-top: 4px solid transparent;
+  text-align: center;
 }
 
-.alert-item {
+.doc-stat-pending { border-top-color: var(--color-warning); }
+.doc-stat-reviewed { border-top-color: var(--color-success); }
+.doc-stat-alerts   { border-top-color: var(--color-danger); }
+
+.doc-stat-number {
+  font-size: 32px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  line-height: 1;
+}
+
+.doc-stat-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+/* ─── Active Code Red Alerts Banner ──────────────────────────────────── */
+.active-alerts-banner {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-left: 5px solid var(--color-danger);
+  border-radius: var(--radius-xl);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+  50%       { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.1); }
+}
+
+.alerts-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.alert-icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alerts-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-danger);
+  margin: 0 0 2px;
+}
+
+.alerts-count {
+  font-size: 12px;
+  color: #991B1B;
+  margin: 0;
+}
+
+.alert-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alert-item-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: rgba(255,255,255,0.8);
-  border-radius: 12px;
-  padding: 10px 12px;
+  gap: var(--space-2);
+  background: var(--color-surface);
+  padding: 12px var(--space-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid #FECACA;
 }
 
-.dashboard-tabs {
+.alert-patient-info {
   display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.dashboard-tabs button {
-  border: 0;
-  background: #e2e8f0;
-  color: #334155;
-  padding: 10px 14px;
-  border-radius: 999px;
+.alert-patient-name {
+  font-size: 14px;
   font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.alert-phc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.alert-respond-btn {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* ─── Cases section ──────────────────────────────────────────────────── */
+.cases-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 4px;
+  gap: 4px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px 8px;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: transparent;
   cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
 
-.dashboard-tabs button.active {
+.tab-btn.active {
   background: var(--color-primary);
-  color: white;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(27, 79, 138, 0.3);
 }
 
+/* Case cards list */
 .case-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-1);
 }
 
 .case-card {
-  background: white;
-  border-radius: 16px;
-  padding: 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-2);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  gap: var(--space-2);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.case-card:hover {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+  transform: translateY(-1px);
+}
+
+.case-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .case-patient-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.case-patient-row h3 {
+.case-patient-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
-.pill {
-  background: #d1fae5;
-  color: var(--color-primary);
-  border-radius: 999px;
-  padding: 4px 8px;
-  font-size: 0.85rem;
-}
-
-.case-meta {
+.case-meta-row {
   display: flex;
-  gap: 14px;
-  color: #64748b;
-  margin: 6px 0 8px;
-  font-size: 0.92rem;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
   flex-wrap: wrap;
 }
 
 .case-complaint {
+  font-size: 14px;
+  color: var(--color-text-secondary);
   margin: 0;
-  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.review-btn {
-  min-width: 110px;
+.case-review-btn {
+  flex-shrink: 0;
+  padding: 10px 20px;
+  font-size: 13px;
+}
+
+/* Skeleton loader for cases */
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.sk-line {
+  background: linear-gradient(90deg, #E2E8F0 25%, #F0F4F8 50%, #E2E8F0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+  height: 14px;
+}
+
+.sk-name    { width: 55%; height: 16px; }
+.sk-meta    { width: 75%; }
+.sk-complaint { width: 90%; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 
 .empty-state {
-  background: white;
-  border-radius: 16px;
-  padding: 18px;
   text-align: center;
-  color: #64748b;
+  padding: var(--space-4) var(--space-2);
+  color: var(--color-text-muted);
+  font-size: 14px;
 }
 
-.btn-primary {
-  border: 0;
-  background: var(--color-primary);
-  color: white;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.btn-primary.small {
-  padding: 8px 12px;
-}
-
-@media (max-width: 768px) {
-  .summary-strip {
-    grid-template-columns: 1fr;
+/* ─── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .doctor-stat-strip {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
+
+  .doc-stat-number { font-size: 24px; }
 
   .case-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+  }
+
+  .case-review-btn {
+    width: 100%;
+  }
+
+  .tab-btn {
+    font-size: 11px;
+    padding: 8px 4px;
   }
 }

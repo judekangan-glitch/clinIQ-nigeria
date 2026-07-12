@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../lib/supabase';
-import ConnectivityBanner from '../../components/ConnectivityBanner';
+import AppLayout from '../../components/AppLayout';
 import './DoctorDashboard.css';
 
 function formatDate(value) {
@@ -14,18 +14,14 @@ function formatDate(value) {
 
 function formatRelativeTime(value) {
   if (!value) return '—';
-  const then = new Date(value).getTime();
-  const now = Date.now();
-  const diffMins = Math.max(1, Math.round((now - then) / 60000));
+  const diffMins = Math.max(1, Math.round((Date.now() - new Date(value).getTime()) / 60000));
   if (diffMins < 60) return `${diffMins}m ago`;
-  const hrs = Math.round(diffMins / 60);
-  return `${hrs}h ago`;
+  return `${Math.round(diffMins / 60)}h ago`;
 }
 
 function getAge(dob) {
   if (!dob) return '—';
-  const diff = Date.now() - new Date(dob).getTime();
-  return Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+  return Math.floor((Date.now() - new Date(dob).getTime()) / (1000 * 60 * 60 * 24 * 365.25));
 }
 
 export default function DoctorDashboard() {
@@ -41,9 +37,7 @@ export default function DoctorDashboard() {
   const [activeAlerts, setActiveAlerts] = useState([]);
 
   useEffect(() => {
-    if (profile?.id) {
-      fetchDashboardData();
-    }
+    if (profile?.id) fetchDashboardData();
   }, [profile?.id]);
 
   async function fetchDashboardData() {
@@ -51,7 +45,7 @@ export default function DoctorDashboard() {
     try {
       const today = new Date();
       const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0, 0);
-      const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
+      const endOfDay   = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59, 999);
 
       const [pendingRes, reviewedRes, codeRedRes, alertsRes] = await Promise.all([
         supabase
@@ -79,7 +73,6 @@ export default function DoctorDashboard() {
 
       const pendingData = pendingRes.data || [];
       const reviewedData = reviewedRes.data || [];
-      const codeRedData = codeRedRes.data || [];
       const alertsData = alertsRes.data || [];
 
       const enrichCase = async (consultation) => {
@@ -88,13 +81,7 @@ export default function DoctorDashboard() {
           supabase.from('users').select('full_name').eq('id', consultation.chew_id).maybeSingle(),
           supabase.from('phcs').select('name').eq('id', consultation.phc_id).maybeSingle(),
         ]);
-
-        return {
-          ...consultation,
-          patient: patientRes.data || null,
-          chew: chewRes.data || null,
-          phc: phcRes.data || null,
-        };
+        return { ...consultation, patient: patientRes.data || null, chew: chewRes.data || null, phc: phcRes.data || null };
       };
 
       const pendingEnriched = await Promise.all(pendingData.map(enrichCase));
@@ -118,11 +105,7 @@ export default function DoctorDashboard() {
           supabase.from('patients').select('full_name').eq('id', alert.patient_id).maybeSingle(),
           supabase.from('phcs').select('name').eq('id', alert.phc_id).maybeSingle(),
         ]);
-        return {
-          ...alert,
-          patient: patientRes.data || null,
-          phc: phcRes.data || null,
-        };
+        return { ...alert, patient: patientRes.data || null, phc: phcRes.data || null };
       }));
 
       setPendingCases(pendingEnriched);
@@ -132,7 +115,7 @@ export default function DoctorDashboard() {
       setSummary({
         pending: pendingData.length,
         reviewedToday: reviewedData.length,
-        codeRedToday: codeRedData.length,
+        codeRedToday: (codeRedRes.data || []).length,
       });
     } catch (error) {
       console.error('Doctor dashboard error:', error);
@@ -141,94 +124,139 @@ export default function DoctorDashboard() {
     }
   }
 
-  const visibleCases = activeTab === 'pending'
-    ? pendingCases
-    : activeTab === 'reviewed'
-      ? reviewedCases
-      : allCases;
+  const visibleCases = activeTab === 'pending' ? pendingCases : activeTab === 'reviewed' ? reviewedCases : allCases;
+
+  const doctorNavItems = [
+    { label: 'Dashboard', path: '/doctor/dashboard', icon: '🏠' },
+    { label: 'All Cases', path: '/doctor/cases', icon: '📋' },
+  ];
 
   return (
-    <div className="doctor-dashboard-page">
-      <ConnectivityBanner />
+    <AppLayout title="Doctor Dashboard" navItems={doctorNavItems}>
+      <div className="doctor-dashboard-page">
 
-      <header className="doctor-dashboard-header">
-        <div>
-          <p className="eyebrow">Doctor Review Dashboard</p>
-          <h1>{profile?.full_name || 'Doctor'}</h1>
-          <p className="doctor-subtitle">{profile?.specialty || 'Primary Health Care'} at {profile?.hospital_name || 'ClinIQ Network'}</p>
-        </div>
-      </header>
-
-      <section className="summary-strip" aria-label="Doctor summary">
-        <div className="summary-card">
-          <span className="summary-label">Awaiting Review</span>
-          <strong>{summary.pending}</strong>
-        </div>
-        <div className="summary-card">
-          <span className="summary-label">Reviewed Today</span>
-          <strong>{summary.reviewedToday}</strong>
-        </div>
-        <div className="summary-card">
-          <span className="summary-label">Code Reds Today</span>
-          <strong>{summary.codeRedToday}</strong>
-        </div>
-      </section>
-
-      {activeAlerts.length > 0 && (
-        <section className="alert-banner" aria-label="Active code red alerts">
+        {/* Greeting Header */}
+        <header className="doctor-header">
           <div>
-            <h2>Active Code Red Alerts</h2>
-            <p>{activeAlerts.length} alert(s) need immediate review.</p>
+            <p className="eyebrow-label">Doctor Review Dashboard</p>
+            <h1 className="doctor-name">Dr. {profile?.full_name || 'Doctor'}</h1>
+            <p className="doctor-subtitle">
+              {profile?.specialty || 'Primary Health Care'} · {profile?.hospital_name || 'ClinIQ Network'}
+            </p>
           </div>
-          <div className="alert-list">
-            {activeAlerts.map((alert) => (
-              <div className="alert-item" key={alert.id}>
-                <div>
-                  <strong>{alert.patient?.full_name || 'Unknown patient'}</strong>
-                  <div>{alert.phc?.name || 'PHC'} · {formatRelativeTime(alert.created_at)}</div>
-                </div>
-                <button className="btn-primary small" onClick={() => alert.consultation_id ? navigate(`/doctor/cases/${alert.consultation_id}`) : navigate('/doctor/dashboard')}>
-                  Respond
-                </button>
-              </div>
-            ))}
+        </header>
+
+        {/* Summary Stat Cards */}
+        <section className="doctor-stat-strip" aria-label="Doctor summary statistics">
+          <div className="doc-stat-card doc-stat-pending">
+            <span className="doc-stat-number">{summary.pending}</span>
+            <span className="doc-stat-label">Awaiting Review</span>
+          </div>
+          <div className="doc-stat-card doc-stat-reviewed">
+            <span className="doc-stat-number">{summary.reviewedToday}</span>
+            <span className="doc-stat-label">Reviewed Today</span>
+          </div>
+          <div className="doc-stat-card doc-stat-alerts">
+            <span className="doc-stat-number">{summary.codeRedToday}</span>
+            <span className="doc-stat-label">Code Reds Today</span>
           </div>
         </section>
-      )}
 
-      <section className="dashboard-tabs">
-        <button className={activeTab === 'pending' ? 'active' : ''} onClick={() => setActiveTab('pending')}>Pending Review</button>
-        <button className={activeTab === 'reviewed' ? 'active' : ''} onClick={() => setActiveTab('reviewed')}>Reviewed Today</button>
-        <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')}>All Cases</button>
-      </section>
-
-      <section className="case-list">
-        {loading ? (
-          <div className="empty-state">Loading cases...</div>
-        ) : visibleCases.length === 0 ? (
-          <div className="empty-state">No cases in this view.</div>
-        ) : (
-          visibleCases.map((consultation) => (
-            <article className="case-card" key={consultation.id}>
-              <div className="case-main">
-                <div className="case-patient-row">
-                  <h3>{consultation.patient?.full_name || 'Unknown patient'}</h3>
-                  <span className="pill">{getAge(consultation.patient?.date_of_birth)} yrs · {consultation.patient?.sex || '—'}</span>
-                </div>
-                <div className="case-meta">
-                  <span>{consultation.phc?.name || 'PHC'}</span>
-                  <span>{consultation.chew?.full_name || 'CHEW'}</span>
-                  <span>{formatDate(consultation.consultation_date)}</span>
-                </div>
-                <p className="case-complaint">{consultation.chief_complaint || 'No complaint recorded'}</p>
+        {/* Active Code Red Alerts Banner */}
+        {activeAlerts.length > 0 && (
+          <section className="active-alerts-banner" aria-label="Active code red alerts">
+            <div className="alerts-header">
+              <div className="alert-icon-circle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
               </div>
-              <button className="btn-primary review-btn" onClick={() => navigate(`/doctor/cases/${consultation.id}`)}>
-                Review
-              </button>
-            </article>
-          ))
+              <div>
+                <h2 className="alerts-title">Active Code Red Alerts</h2>
+                <p className="alerts-count">{activeAlerts.length} alert(s) require immediate action</p>
+              </div>
+            </div>
+            <div className="alert-items-list">
+              {activeAlerts.map((alert) => (
+                <div className="alert-item-row" key={alert.id}>
+                  <div className="alert-patient-info">
+                    <span className="alert-patient-name">{alert.patient?.full_name || 'Unknown patient'}</span>
+                    <span className="alert-phc">{alert.phc?.name || 'PHC'} · {formatRelativeTime(alert.created_at)}</span>
+                  </div>
+                  <button
+                    className="btn-danger alert-respond-btn"
+                    onClick={() => alert.consultation_id
+                      ? navigate(`/doctor/cases/${alert.consultation_id}`)
+                      : navigate('/doctor/dashboard')
+                    }
+                  >
+                    Respond
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
         )}
-      </section>
-    </div>
+
+        {/* Cases Tab Filter */}
+        <section className="cases-section">
+          <div className="tab-bar">
+            {['pending', 'reviewed', 'all'].map(tab => (
+              <button
+                key={tab}
+                className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                onClick={() => setActiveTab(tab)}
+              >
+                {tab === 'pending' ? 'Pending Review' : tab === 'reviewed' ? 'Reviewed Today' : 'All Cases'}
+              </button>
+            ))}
+          </div>
+
+          <div className="case-list">
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="case-card skeleton-card">
+                  <div className="sk-line sk-name" />
+                  <div className="sk-line sk-meta" />
+                  <div className="sk-line sk-complaint" />
+                </div>
+              ))
+            ) : visibleCases.length === 0 ? (
+              <div className="empty-state">
+                <p>No cases in this view.</p>
+              </div>
+            ) : (
+              visibleCases.map((consultation) => (
+                <article className="case-card" key={consultation.id}>
+                  <div className="case-main">
+                    <div className="case-patient-row">
+                      <h3 className="case-patient-name">{consultation.patient?.full_name || 'Unknown patient'}</h3>
+                      <span className={`badge ${consultation.doctor_review_status === 'pending' ? 'badge-warning' : 'badge-success'}`}>
+                        {consultation.doctor_review_status === 'pending' ? 'Pending' : 'Reviewed'}
+                      </span>
+                    </div>
+                    <div className="case-meta-row">
+                      <span>{getAge(consultation.patient?.date_of_birth)} yrs · {consultation.patient?.sex || '—'}</span>
+                      <span>{consultation.phc?.name || 'PHC'}</span>
+                      <span>{formatDate(consultation.consultation_date)}</span>
+                    </div>
+                    <p className="case-complaint">{consultation.chief_complaint || 'No complaint recorded'}</p>
+                  </div>
+                  <button
+                    className="btn-primary case-review-btn"
+                    onClick={() => navigate(`/doctor/cases/${consultation.id}`)}
+                  >
+                    Review
+                  </button>
+                </article>
+              ))
+            )}
+          </div>
+        </section>
+
+      </div>
+    </AppLayout>
   );
 }

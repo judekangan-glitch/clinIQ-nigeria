@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { useConnectivity } from '../../hooks/useConnectivity';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import { geminiVision } from '../../lib/gemini';
 import { saveConsultationOffline, savePhotoOffline } from '../../utils/offlineQueue';
 import './NewConsultation.css';
@@ -256,7 +256,7 @@ export default function NewConsultation() {
   }
 
   return (
-    <ChewLayout showBack backTo="/chew/dashboard" title="New Consultation">
+    <AppLayout showBack backTo="/chew/dashboard" title="New Consultation">
       <div className="consult-wizard">
         
         {/* Progress bar */}
@@ -274,16 +274,23 @@ export default function NewConsultation() {
         {step === 1 && (
           <div className="wizard-step step-patient-select">
             <h2 className="step-title">Select Patient</h2>
-            <input
-              type="text"
-              className="patient-search-input"
-              placeholder="Search patient by name or phone number"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              autoComplete="off"
-            />
+            <div className="form-field">
+              <input
+                type="text"
+                className="form-input patient-search-input"
+                placeholder="Search patient by name or phone number"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                autoComplete="off"
+              />
+            </div>
             
-            {searching && <div className="spinner-msg">Searching...</div>}
+            {searching && (
+              <div className="spinner-msg">
+                <div className="inline-spinner" />
+                <span>Searching...</span>
+              </div>
+            )}
             
             <div className="patient-results-list">
               {searchResults.map(p => (
@@ -319,38 +326,44 @@ export default function NewConsultation() {
           <div className="wizard-step step-method-select">
             <h2 className="step-title">Choose Entry Method</h2>
             
-            <button
-              className="method-card card-scan"
-              onClick={() => setEntryMethod('scan')}
-            >
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
-              </svg>
-              <span className="method-name">Scan Handwritten Note</span>
-              <span className="method-desc">Take a photo of your paper consultation note. We will read it automatically.</span>
-            </button>
+            <div className="methods-grid">
+              <button
+                className="method-card card-scan"
+                onClick={() => setEntryMethod('scan')}
+              >
+                <div className="method-icon-circle">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                </div>
+                <span className="method-name">Scan Handwritten Note</span>
+                <span className="method-desc">Take a photo of your paper consultation note. We will read it automatically.</span>
+              </button>
 
-            <button
-              className="method-card card-manual"
-              onClick={() => {
-                setEntryMethod('manual');
-                setStep(3);
-              }}
-            >
-              <svg width="40" height="40" viewBox="0 0 24 24" fill="none"
-                stroke="#1B4F8A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-              </svg>
-              <span className="method-name">Type Manually</span>
-              <span className="method-desc">Enter consultation details by typing.</span>
-            </button>
+              <button
+                className="method-card card-manual"
+                onClick={() => {
+                  setEntryMethod('manual');
+                  setStep(3);
+                }}
+              >
+                <div className="method-icon-circle">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                    <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                  </svg>
+                </div>
+                <span className="method-name">Type Manually</span>
+                <span className="method-desc">Enter consultation details by typing.</span>
+              </button>
+            </div>
 
             {entryMethod === 'scan' && (
               <div className="camera-trigger-wrap">
-                <label className="camera-upload-label">
+                <label className="btn-primary camera-upload-label">
                   <input
                     type="file"
                     accept="image/*"
@@ -377,7 +390,7 @@ export default function NewConsultation() {
 
             {scanning && (
               <div className="ocr-scanning-loading">
-                <div className="spinner" />
+                <div className="inline-spinner" />
                 <span>Reading your note. Please wait...</span>
               </div>
             )}
@@ -390,12 +403,12 @@ export default function NewConsultation() {
           </div>
         )}
 
-        {/* STEP 3: Input Form (Editable form prefilled from OCR, or manual input) */}
+        {/* STEP 3: Input Form */}
         {step === 3 && (
           <div className="wizard-step step-form">
             <h2 className="step-title">Consultation Entry</h2>
             
-            {!online && <div className="offline-banner">Offline mode. Local data input.</div>}
+            {!online && <div className="badge badge-offline offline-form-badge">Offline mode. Local data input.</div>}
             
             {entryMethod === 'scan' && photo && (
               <div className="scan-layout-preview">
@@ -406,12 +419,12 @@ export default function NewConsultation() {
               </div>
             )}
 
-            <form className="consult-form" onSubmit={e => { e.preventDefault(); setStep(4); }}>
+            <form className="consult-form card" onSubmit={e => { e.preventDefault(); setStep(4); }}>
               <div className={`form-field ${uncertainFields.includes('chiefComplaint') ? 'uncertain' : ''}`}>
                 <label className="field-label">Chief Complaint *</label>
                 <input
                   name="chiefComplaint"
-                  className="field-input"
+                  className="form-input"
                   placeholder="Main reason for visit"
                   value={formData.chiefComplaint}
                   onChange={handleInputChange}
@@ -424,7 +437,7 @@ export default function NewConsultation() {
                 <input
                   name="durationDays"
                   type="number"
-                  className="field-input"
+                  className="form-input"
                   value={formData.durationDays}
                   onChange={handleInputChange}
                   required
@@ -447,7 +460,7 @@ export default function NewConsultation() {
                 </div>
                 <input
                   name="otherSymptom"
-                  className="field-input other-symptom-input"
+                  className="form-input other-symptom-input"
                   placeholder="Other symptoms (comma separated)"
                   value={formData.otherSymptom}
                   onChange={handleInputChange}
@@ -465,11 +478,11 @@ export default function NewConsultation() {
                         type="number"
                         step="0.1"
                         placeholder="37"
-                        className="field-input"
+                        className="form-input"
                         value={formData.temperature}
                         onChange={handleInputChange}
                       />
-                      <select name="tempUnit" className="unit-select" value={formData.tempUnit} onChange={handleInputChange}>
+                      <select name="tempUnit" className="form-select unit-select" value={formData.tempUnit} onChange={handleInputChange}>
                         <option value="C">°C</option>
                         <option value="F">°F</option>
                       </select>
@@ -481,7 +494,7 @@ export default function NewConsultation() {
                     <input
                       name="bloodPressure"
                       placeholder="e.g. 120/80"
-                      className="field-input"
+                      className="form-input"
                       value={formData.bloodPressure}
                       onChange={handleInputChange}
                     />
@@ -495,7 +508,7 @@ export default function NewConsultation() {
                       name="pulseRate"
                       type="number"
                       placeholder="72"
-                      className="field-input"
+                      className="form-input"
                       value={formData.pulseRate}
                       onChange={handleInputChange}
                     />
@@ -507,7 +520,7 @@ export default function NewConsultation() {
                       name="respiratoryRate"
                       type="number"
                       placeholder="18"
-                      className="field-input"
+                      className="form-input"
                       value={formData.respiratoryRate}
                       onChange={handleInputChange}
                     />
@@ -521,7 +534,7 @@ export default function NewConsultation() {
                       name="weight"
                       type="number"
                       placeholder="70"
-                      className="field-input"
+                      className="form-input"
                       value={formData.weight}
                       onChange={handleInputChange}
                     />
@@ -533,7 +546,7 @@ export default function NewConsultation() {
                 <label className="field-label">What do you think this is? (Provisional Diagnosis)</label>
                 <input
                   name="provisionalDiagnosis"
-                  className="field-input"
+                  className="form-input"
                   value={formData.provisionalDiagnosis}
                   onChange={handleInputChange}
                 />
@@ -543,7 +556,7 @@ export default function NewConsultation() {
                 <label className="field-label">Drugs given (if any)</label>
                 <textarea
                   name="drugsPrescribed"
-                  className="field-textarea"
+                  className="form-textarea"
                   value={formData.drugsPrescribed}
                   onChange={handleInputChange}
                   rows={2}
@@ -563,10 +576,10 @@ export default function NewConsultation() {
           <div className="wizard-step step-review">
             <h2 className="step-title">Review Details</h2>
             
-            <div className="summary-card">
+            <div className="summary-card card">
               <div className="summary-header">
-                <h3>{patient?.full_name}</h3>
-                <span>{getAge(patient?.date_of_birth)} yrs · {patient?.sex === 'M' ? 'Male' : 'Female'}</span>
+                <h3 className="patient-name">{patient?.full_name}</h3>
+                <span className="patient-meta-desc">{getAge(patient?.date_of_birth)} yrs · {patient?.sex === 'M' ? 'Male' : 'Female'}</span>
               </div>
 
               <div className="summary-grid">
@@ -622,6 +635,6 @@ export default function NewConsultation() {
           </div>
         )}
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }

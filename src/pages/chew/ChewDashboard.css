@@ -1,5 +1,7 @@
+/* ─── ClinIQ Nigeria ChewDashboard Styles ────────────────────────────── */
+
 .dashboard-content {
-  padding: 0 0 100px;
+  padding-bottom: var(--space-4);
 }
 
 /* ─── Welcome banner ─────────────────────────────────────────────────── */
@@ -7,245 +9,202 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 16px 16px;
+  padding: 24px;
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-  color: white;
+  color: #FFFFFF;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-card);
+}
+
+.welcome-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .welcome-greeting {
-  font-size: 1.1rem;
+  font-size: 20px;
   font-weight: 700;
-  color: white;
-  margin-bottom: 3px;
-  font-family: 'Inter', Arial, sans-serif;
+  color: #FFFFFF;
 }
 
 .welcome-date {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.75);
-  font-family: 'Inter', Arial, sans-serif;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
 }
 
 .welcome-avatar {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  border: 2px solid rgba(255,255,255,0.4);
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem;
+  font-size: 18px;
   font-weight: 700;
-  color: white;
+  color: #FFFFFF;
   flex-shrink: 0;
-  font-family: 'Inter', Arial, sans-serif;
+  user-select: none;
 }
 
-/* ─── Action cards grid ──────────────────────────────────────────────── */
+/* ─── Action Cards Grid ──────────────────────────────────────────────── */
 .action-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 16px;
-}
-
-.action-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 22px 12px;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-  -webkit-tap-highlight-color: transparent;
-  min-height: 120px;
-}
-
-.action-card:active {
-  transform: scale(0.96);
-  filter: brightness(0.9);
+  gap: var(--space-2); /* 16px gap */
 }
 
 .action-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255,255,255,0.15);
-  border-radius: 12px;
-  width: 56px;
-  height: 56px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-md);
+  width: 48px;
+  height: 48px;
+  margin-bottom: 4px;
 }
 
 .action-label {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFFFFF;
   text-align: center;
-  line-height: 1.3;
-  font-family: 'Inter', Arial, sans-serif;
 }
 
-/* ─── Section titles ─────────────────────────────────────────────────── */
+/* ─── Glance Section ─────────────────────────────────────────────────── */
 .section-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.6px;
-  margin-bottom: 10px;
-  font-family: 'Inter', Arial, sans-serif;
-}
-
-/* ─── Glance stats ───────────────────────────────────────────────────── */
-.glance-section {
-  padding: 4px 16px 0;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
 }
 
 .glance-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
+  gap: var(--space-2); /* 16px gap between card */
 }
-
-.glance-card {
-  background: white;
-  border-radius: 12px;
-  padding: 14px 10px;
-  text-align: center;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  border: 1px solid #e5e7eb;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.glance-card.glance-warning { border-top: 3px solid #f59e0b; }
-.glance-card.glance-success { border-top: 3px solid #10b981; }
-.glance-card:not(.glance-warning):not(.glance-success) { border-top: 3px solid var(--color-primary); }
 
 .glance-number {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #111827;
-  font-family: 'Inter', Arial, sans-serif;
-  line-height: 1;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.1;
 }
 
 .glance-label {
-  font-size: 0.68rem;
-  color: #6b7280;
+  font-size: 12px;
+  color: var(--color-text-secondary);
   font-weight: 500;
-  text-align: center;
-  line-height: 1.3;
-  font-family: 'Inter', Arial, sans-serif;
 }
 
-/* ─── Recent consultations ───────────────────────────────────────────── */
-.recent-section {
-  padding: 16px 16px 0;
-}
-
+/* ─── Recent Consultations ───────────────────────────────────────────── */
 .recent-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-1); /* 8px gap */
 }
 
 .recent-item {
   width: 100%;
-  background: white;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  padding: 12px 14px;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: var(--space-2); /* 16px */
   cursor: pointer;
   text-align: left;
-  transition: box-shadow 0.15s, transform 0.1s;
-  -webkit-tap-highlight-color: transparent;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 48px; /* touch target */
 }
 
-.recent-item:active { transform: scale(0.99); box-shadow: none; }
+.recent-item:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
 
 .recent-item-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 5px;
-  gap: 8px;
+  gap: 12px;
 }
 
 .recent-patient {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: #111827;
-  font-family: 'Inter', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .recent-item-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .recent-complaint {
-  font-size: 0.82rem;
-  color: #6b7280;
-  font-family: Georgia, serif;
-  flex: 1;
+  font-size: 12px;
+  color: var(--color-text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-right: 8px;
+  flex: 1;
 }
 
 .recent-date {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  font-family: 'Inter', Arial, sans-serif;
+  font-size: 11px;
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
-/* ─── Loading skeletons ──────────────────────────────────────────────── */
-.loading-placeholder { display: flex; flex-direction: column; gap: 8px; }
-
-.skeleton-row {
-  height: 64px;
-  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
-  background-size: 200% 100%;
-  border-radius: 12px;
-  animation: shimmer 1.4s infinite;
-}
-
-@keyframes shimmer {
-  0%   { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
-
-/* ─── Empty state ────────────────────────────────────────────────────── */
-.empty-state {
+/* ─── Loading Placeholder ────────────────────────────────────────────── */
+.loading-placeholder {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 32px 16px;
-  text-align: center;
-  color: #9ca3af;
+  gap: var(--space-1);
 }
 
-.empty-state p {
-  font-family: 'Inter', Arial, sans-serif;
-  font-size: 0.9rem;
-  margin: 0;
-  color: #6b7280;
+.skeleton-row-loader {
+  height: 64px;
+  border-radius: var(--radius-lg);
+  width: 100%;
 }
 
-.empty-sub {
-  font-size: 0.8rem !important;
-  color: #9ca3af !important;
+/* ─── Mobile View overrides ─────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+  .welcome-banner {
+    padding: var(--space-2);
+  }
+  .welcome-greeting {
+    font-size: 18px;
+  }
+  .action-grid {
+    gap: 8px; /* smaller gap for mobile action buttons */
+  }
+  .action-card {
+    padding: 16px !important;
+  }
+  .action-icon {
+    width: 40px;
+    height: 40px;
+  }
+  .action-label {
+    font-size: 12px;
+  }
+  .glance-row {
+    grid-template-columns: 1fr; /* stack stat cards on mobile */
+    gap: var(--space-1);
+  }
 }

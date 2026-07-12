@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { geminiText } from '../../lib/gemini';
 import { useConnectivity } from '../../hooks/useConnectivity';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import './LabInterpreter.css';
 
 const TEST_TYPES = [
@@ -190,7 +190,7 @@ export default function LabInterpreter() {
   }
 
   return (
-    <ChewLayout showBack backTo={`/chew/consultation/${consultationId}/diagnosis`} title="Lab Interpreter">
+    <AppLayout showBack backTo={`/chew/consultation/${consultationId}/diagnosis`} title="Lab Interpreter">
       <div className="lab-interpreter-page">
         <header className="lab-header">
           <h2>Lab Result Interpreter</h2>
@@ -210,7 +210,7 @@ export default function LabInterpreter() {
               id="testType"
               value={testType}
               onChange={e => setTestType(e.target.value)}
-              className="field-select"
+            className="form-select"
               required
             >
               <option value="">-- Choose Test --</option>
@@ -229,7 +229,7 @@ export default function LabInterpreter() {
               value={resultValues}
               onChange={e => setResultValues(e.target.value)}
               placeholder="e.g. PCV 28%, WBC 8.4 x 10^9/L, Platelets 220 x 10^9/L..."
-              className="field-textarea"
+              className="form-textarea"
               rows={4}
               required
             />
@@ -242,7 +242,7 @@ export default function LabInterpreter() {
               type="date"
               value={dateOfTest}
               onChange={e => setDateOfTest(e.target.value)}
-              className="field-input"
+              className="form-input"
               required
             />
           </div>
@@ -250,10 +250,12 @@ export default function LabInterpreter() {
           <button
             id="get-interpretation-btn"
             type="submit"
-            className={`interpret-btn ${interpreting ? 'loading' : ''}`}
+            className="btn-primary"
             disabled={interpreting}
           >
-            {interpreting ? 'Interpreting...' : 'Get Interpretation'}
+            {interpreting ? (
+              <><span className="inline-spinner" /> Interpreting...</>
+            ) : 'Get Interpretation'}
           </button>
         </form>
 
@@ -297,6 +299,6 @@ export default function LabInterpreter() {
           </div>
         )}
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }

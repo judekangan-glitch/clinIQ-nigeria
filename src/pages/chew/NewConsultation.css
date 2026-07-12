@@ -1,185 +1,216 @@
+/* ─── ClinIQ Nigeria NewConsultation Styles ──────────────────────────── */
+
 .consult-wizard {
-  padding: 16px;
   max-width: 600px;
-  margin: 0 auto 100px;
+  margin: 0 auto var(--space-4);
+  padding: 0;
 }
 
-/* Progress bar indicators */
+/* ─── Progress bar indicators ────────────────────────────────────────── */
 .wizard-progress {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
-  padding: 0 10px;
+  margin-bottom: var(--space-3); /* 24px */
+  padding: 0 var(--space-1);
 }
 
 .step-indicator {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #e5e7eb;
-  color: #6b7280;
+  background-color: var(--color-border);
+  color: var(--color-text-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 0.85rem;
-  font-family: 'Inter', Arial, sans-serif;
-  transition: background 0.3s, color 0.3s;
+  font-size: 14px;
+  transition: background-color 0.3s, color 0.3s;
   z-index: 1;
+  user-select: none;
 }
 
 .step-indicator.active {
-  background: var(--color-primary);
-  color: white;
+  background-color: var(--color-primary);
+  color: #FFFFFF;
 }
 
 .progress-line {
   flex: 1;
   height: 3px;
-  background: #e5e7eb;
+  background-color: var(--color-border);
   margin: 0 -2px;
   z-index: 0;
 }
 
 .wizard-step {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .step-title {
-  font-size: 1.2rem;
+  font-size: 18px;
   font-weight: 700;
-  color: #111827;
-  margin-bottom: 16px;
-  font-family: 'Inter', Arial, sans-serif;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
 }
 
-/* Patient select styles */
+/* Patient list select styling */
 .patient-search-input {
-  width: 100%;
-  padding: 14px;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  margin-bottom: 12px;
-  font-size: 1rem;
+  margin-bottom: var(--space-2);
+}
+
+.spinner-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  margin-bottom: var(--space-2);
 }
 
 .patient-results-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-1);
+  margin-bottom: var(--space-2);
 }
 
 .patient-select-card {
   width: 100%;
-  padding: 12px;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  padding: var(--space-2);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
   text-align: left;
   display: flex;
   flex-direction: column;
   gap: 4px;
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: all 0.15s ease;
+  box-shadow: var(--shadow-card);
 }
 
-.patient-select-card:hover, .patient-select-card:active {
+.patient-select-card:hover {
   border-color: var(--color-primary);
+  transform: translateY(-1px);
 }
 
 .p-select-name {
   font-weight: 700;
-  font-size: 0.95rem;
-  color: #111827;
+  font-size: 14px;
+  color: var(--color-text-primary);
 }
 
-.p-select-meta, .p-select-visit {
-  font-size: 0.8rem;
-  color: #6b7280;
+.p-select-meta, 
+.p-select-visit {
+  font-size: 12px;
+  color: var(--color-text-secondary);
 }
 
 .new-patient-link-wrap {
-  margin-top: 20px;
+  margin-top: var(--space-3);
   text-align: center;
 }
 
 .btn-link {
   background: none;
   border: none;
-  color: #0E7C7B;
+  color: var(--color-secondary);
   font-weight: 700;
   text-decoration: underline;
   cursor: pointer;
+  font-size: 14px;
 }
 
-/* Choose Method step */
+/* ─── Entry Methods Grid ─────────────────────────────────────────────── */
+.methods-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
 .method-card {
   width: 100%;
-  padding: 24px 16px;
-  border-radius: 16px;
+  padding: var(--space-3) var(--space-2);
+  border-radius: var(--radius-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 12px;
   text-align: center;
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-  margin-bottom: 16px;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: var(--shadow-card);
 }
 
-.method-card:active {
-  transform: scale(0.98);
+.method-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+.method-icon-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .card-scan {
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  box-shadow: 0 4px 14px rgba(16,185,129,0.25);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+  color: #FFFFFF;
 }
 
 .card-manual {
-  background: white;
+  background-color: var(--color-surface);
   color: var(--color-primary);
-  border: 2px solid var(--color-primary);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--color-border);
+}
+
+.card-manual .method-icon-circle {
+  background-color: #EFF6FF;
 }
 
 .method-name {
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .method-desc {
-  font-size: 0.8rem;
-  opacity: 0.8;
-  max-width: 320px;
+  font-size: 12px;
+  opacity: 0.85;
+  line-height: 1.4;
+  max-width: 220px;
 }
 
 .card-manual .method-desc {
-  color: #6b7280;
+  color: var(--color-text-secondary);
 }
 
-/* Camera capture styles */
+/* Camera scan controls */
 .camera-trigger-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  margin-top: 20px;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
 }
 
 .camera-upload-label {
-  padding: 14px 24px;
-  background: var(--color-secondary);
-  color: white;
-  border-radius: 12px;
+  padding: 12px 24px;
   font-weight: 700;
-  font-size: 0.95rem;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(14, 124, 123, 0.3);
 }
 
 .photo-preview-wrap {
@@ -193,7 +224,7 @@
 .photo-preview {
   max-width: 100%;
   max-height: 280px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 2px dashed var(--color-secondary);
   object-fit: contain;
 }
@@ -204,44 +235,25 @@
   width: 100%;
 }
 
-.btn-primary, .btn-secondary {
+.photo-actions button {
   flex: 1;
-  padding: 14px;
-  border-radius: 10px;
-  font-weight: 700;
-  text-align: center;
-  font-size: 0.95rem;
-  cursor: pointer;
-  border: none;
 }
 
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-}
-
-.btn-secondary {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-/* OCR scanning loading animation */
 .ocr-scanning-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 20px 0;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
   color: var(--color-primary);
   font-weight: 600;
-  font-size: 0.9rem;
 }
 
-/* Forms styling */
+/* ─── Forms Styling ─────────────────────────────────────────────────── */
 .consult-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: var(--space-2);
 }
 
 .form-field {
@@ -250,51 +262,56 @@
   gap: 6px;
 }
 
-.form-field.uncertain .field-input {
-  background-color: #fef08a !important; /* Yellow warning highlight */
-  border-color: #eab308;
+/* Yellow warning highlight for OCR uncertain fields */
+.form-field.uncertain input,
+.form-field.uncertain textarea {
+  background-color: #FEF08A; /* yellow highlight */
+  border-color: var(--color-warning);
 }
 
 .checkbox-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  background: white;
-  padding: 14px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
+  gap: 12px;
+  background-color: var(--color-bg);
+  padding: var(--space-2);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
 }
 
 .checkbox-label {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
-  color: #374151;
+  font-size: 14px;
+  color: var(--color-text-primary);
   cursor: pointer;
+  user-select: none;
 }
 
-  .checkbox-label input {
+.checkbox-label input {
   width: 16px;
   height: 16px;
   accent-color: var(--color-primary);
+  cursor: pointer;
 }
 
 .other-symptom-input {
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
-/* Collapsible note component */
+/* Paper Photo preview collapsible */
 .photo-collapsible {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: 10px;
-  margin-bottom: 12px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  margin-bottom: var(--space-2);
+  box-shadow: var(--shadow-card);
 }
 
-photo-collapsible summary {
-  font-size: 0.85rem;
+.photo-collapsible summary {
+  font-size: 14px;
   font-weight: 700;
   color: var(--color-primary);
   cursor: pointer;
@@ -303,33 +320,34 @@ photo-collapsible summary {
 
 .collapsed-photo {
   max-width: 100%;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
+  margin-top: var(--space-1);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
 }
 
-/* Vitals section */
+/* Vitals container block */
 .form-vitals-section {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 14px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
 }
 
 .vitals-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #4b5563;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
-  margin-bottom: 10px;
-  display: block;
+  letter-spacing: 0.05em;
 }
 
 .vitals-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: var(--space-2);
 }
 
 .vitals-row.single-vital {
@@ -338,85 +356,108 @@ photo-collapsible summary {
 
 .input-group {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
 .unit-select {
-  width: 64px;
-  padding: 10px;
-  border: 2px solid #e5e7eb;
-  border-radius: 10px;
-  background: white;
+  width: 72px;
+  flex-shrink: 0;
 }
 
-/* Step 4: Summary Card styling */
-.summary-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  padding: 18px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
-  margin-bottom: 20px;
+.offline-form-badge {
+  margin-bottom: var(--space-2);
+  align-self: flex-start;
 }
 
+/* ─── Review summary card ────────────────────────────────────────────── */
 .summary-header {
-  border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 12px;
-  margin-bottom: 14px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-1);
+  margin-bottom: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.summary-header h3 {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #111827;
-  margin: 0;
+.summary-header .patient-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
 }
 
-.summary-header span {
-  font-size: 0.8rem;
-  color: #6b7280;
+.summary-header .patient-meta-desc {
+  font-size: 12px;
+  color: var(--color-text-secondary);
 }
 
 .summary-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .summary-row {
   display: flex;
   justify-content: space-between;
-  padding-bottom: 6px;
-  border-bottom: 1px dashed #f3f4f6;
+  gap: var(--space-2);
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.summary-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .sum-label {
   font-weight: 600;
-  font-size: 0.85rem;
-  color: #6b7280;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
 }
 
 .sum-val {
   font-weight: 700;
-  font-size: 0.88rem;
-  color: #111827;
+  font-size: 14px;
+  color: var(--color-text-primary);
   text-align: right;
-  max-width: 60%;
+  word-break: break-word;
+  max-width: 70%;
 }
 
 .wizard-actions {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.wizard-actions button {
+  flex: 1;
 }
 
 .submit-btn {
-  flex: 2;
-  background: #1B4F8A;
-  color: white;
-  box-shadow: 0 4px 14px rgba(27, 79, 138, 0.35);
+  flex: 2 !important;
 }
 
 .wizard-back-wrap {
-  margin-top: 16px;
+  margin-top: var(--space-2);
+}
+
+.wizard-back-wrap button {
+  width: 100%;
+}
+
+/* Mobile responsive collapses */
+@media (max-width: 767.98px) {
+  .methods-grid {
+    grid-template-columns: 1fr; /* stack method cards on mobile */
+    gap: var(--space-1);
+  }
+  .checkbox-grid {
+    grid-template-columns: 1fr; /* stack symptoms on mobile */
+  }
+  .vitals-row {
+    grid-template-columns: 1fr; /* stack vitals columns */
+    gap: var(--space-1);
+  }
 }

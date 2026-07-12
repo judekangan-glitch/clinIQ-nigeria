@@ -3,7 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { geminiText } from '../../lib/gemini';
 import { useConnectivity } from '../../hooks/useConnectivity';
-import ChewLayout from './ChewLayout';
+import AppLayout from '../../components/AppLayout';
 import decisionTree from '../../data/decisionTree.json';
 import './AiDiagnosis.css';
 
@@ -211,19 +211,19 @@ export default function AiDiagnosis() {
 
   if (loading) {
     return (
-      <ChewLayout showBack title="AI Analysis">
+      <AppLayout showBack title="AI Analysis">
         <div className="ai-diagnosis-loading">
           <div className="spinner-pulsing" />
           <p className="loading-text">Analysing symptoms with AI. Please wait...</p>
         </div>
-      </ChewLayout>
+      </AppLayout>
     );
   }
 
   const pAge = calcAge(patient?.date_of_birth);
 
   return (
-    <ChewLayout showBack backTo="/chew/dashboard" title="AI Diagnosis Results">
+    <AppLayout showBack backTo="/chew/dashboard" title="AI Diagnosis Results">
       <div className="ai-diagnosis-page">
         {isOfflineMode && (
           <div className="offline-warning-banner">
@@ -339,6 +339,6 @@ export default function AiDiagnosis() {
           </div>
         )}
       </div>
-    </ChewLayout>
+    </AppLayout>
   );
 }
