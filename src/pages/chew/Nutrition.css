@@ -217,3 +217,40 @@
 .eating-rules-list li:last-child {
   margin-bottom: 0;
 }
+
+/* ── Print Media Queries ─────────────────────────────────────────── */
+@media print {
+  /* Hide all screen components */
+  body * {
+    visibility: hidden;
+  }
+  .app-layout,
+  .sidebar,
+  .mobile-header,
+  .floating-btn,
+  .role-switcher-fab,
+  .role-switcher-panel,
+  .back-btn,
+  .nutrition-profile-card,
+  .foods-selection-panel,
+  .nutrition-aside-card,
+  .btn-primary,
+  .btn-secondary {
+    display: none !important;
+  }
+  /* Show only print-friendly card */
+  .print-only-card,
+  .print-only-card * {
+    visibility: visible;
+  }
+  .print-only-card {
+    display: block !important;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+

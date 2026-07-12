@@ -161,8 +161,8 @@ export default function Nutrition() {
       alert('Please select one staple, one protein, and one local green to build the meal plan.');
       return;
     }
-    setSuccess('🖨️ Nutritional Meal Card generated and queued for printing successfully!');
-    setTimeout(() => setSuccess(''), 4000);
+    // Triggers actual browser print dialog
+    window.print();
   };
 
   return (
@@ -307,6 +307,53 @@ export default function Nutrition() {
 
           </div>
 
+        </div>
+
+        {/* ── Print-only sheet container ── */}
+        <div className="print-only-card" style={{ display: 'none' }}>
+          <div className="print-sheet-header" style={{ borderBottom: '2px solid #000', paddingBottom: '12px', marginBottom: '20px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 'bold', margin: '0 0 4px', color: '#1B4F8A' }}>ClinIQ Nigeria</h2>
+            <span style={{ fontSize: '12px', fontWeight: 'bold', textTransform: 'uppercase', color: '#64748B' }}>
+              🏥 Localised Dietary Prescription
+            </span>
+          </div>
+
+          <div className="print-patient-meta" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '20px', fontSize: '13px' }}>
+            <div>
+              <strong>Patient Name:</strong> {patient?.full_name || 'Demo Patient'}<br />
+              <strong>Sex / Age:</strong> {patient?.sex === 'M' ? 'Male' : 'Female'} · {pAge} yrs<br />
+              <strong>Hospital Number:</strong> {patient?.hospital_number || '—'}
+            </div>
+            <div>
+              <strong>Facility:</strong> {patient?.phc || 'Langtang North PHC'}<br />
+              <strong>Location:</strong> {lgaVal} LGA, {stateVal} State<br />
+              <strong>Clinical Indication:</strong> <span style={{ color: '#DC2626', fontWeight: 'bold' }}>{condition}</span>
+            </div>
+          </div>
+
+          <div className="print-meal-guidelines" style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '16px', marginBottom: '20px', backgroundColor: '#F8FAFC' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 'bold', margin: '0 0 12px', borderBottom: '1px solid #E2E8F0', paddingBottom: '6px' }}>
+              🍽️ Recommended Meal Plan ({zoneDetails.zone_name})
+            </h3>
+            <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', lineHeight: '1.8' }}>
+              <li><strong>Staple Carbohydrate:</strong> {selectedMealPlan.staple || 'Not selected'}</li>
+              <li><strong>Protein / Legumes:</strong> {selectedMealPlan.protein || 'Not selected'}</li>
+              <li><strong>Local Herbs & Greens:</strong> {selectedMealPlan.green || 'Not selected'}</li>
+            </ul>
+          </div>
+
+          <div className="print-instructions-block" style={{ border: '1px solid #E2E8F0', borderRadius: '8px', padding: '16px', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 'bold', margin: '0 0 10px' }}>📋 General Clinical Rules</h3>
+            <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', lineHeight: '1.6', color: '#4A5568' }}>
+              <li>Ensure fresh ingredients are sourced locally to guarantee micronutrient density.</li>
+              <li>Limit use of high-sodium additives (bouillon cubes, table salt) for cardiovascular health.</li>
+              <li>Avoid high glycemic carbohydrates (Akpu, Garri) if managing blood sugar; prioritize Acha or unripe plantains.</li>
+            </ul>
+          </div>
+
+          <div className="print-sheet-footer" style={{ borderTop: '1px solid #E2E8F0', paddingTop: '10px', textAlign: 'center', fontSize: '10px', color: '#A0AEC0' }}>
+            Generated on {new Date().toLocaleDateString('en-NG')} via ClinIQ Nigeria Clinical Support Module.
+          </div>
         </div>
 
       </div>
