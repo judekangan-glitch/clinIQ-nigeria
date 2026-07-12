@@ -47,6 +47,7 @@ const AiDiagnosis            = lazy(() => import('./pages/chew/AiDiagnosis'));
 const LabInterpreter         = lazy(() => import('./pages/chew/LabInterpreter'));
 const CodeRed                = lazy(() => import('./pages/chew/CodeRed'));
 const MyLearning             = lazy(() => import('./pages/chew/MyLearning'));
+const Nutrition              = lazy(() => import('./pages/chew/Nutrition'));
 const DoctorDashboard        = lazy(() => import('./pages/doctor/DoctorDashboard'));
 const CaseReview             = lazy(() => import('./pages/doctor/CaseReview'));
 const LgaDashboard           = lazy(() => import('./pages/lga/LgaDashboard'));
@@ -138,6 +139,7 @@ export default function App() {
                 <Route path="/chew/lab-interpreter" element={<RequireAuth><LabInterpreter /></RequireAuth>} />
                 <Route path="/chew/code-red" element={<RequireAuth><CodeRed /></RequireAuth>} />
                 <Route path="/chew/learning" element={<RequireAuth><MyLearning /></RequireAuth>} />
+                <Route path="/chew/nutrition" element={<RequireAuth><Nutrition /></RequireAuth>} />
 
                 {/* ── Doctor routes ─────────────────────────── */}
                 <Route path="/doctor/dashboard" element={<RequireAuth><DoctorDashboard /></RequireAuth>} />
