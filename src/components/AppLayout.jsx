@@ -39,7 +39,7 @@ const NAV_ITEMS = {
   ],
   digitisation_officer: [
     { label: 'Scan Records', path: '/digitisation/scan', icon: '📷' },
-    { label: 'My Progress', path: '/digitisation/scan', icon: '✅' },
+    { label: 'My Progress', path: '/digitisation/progress', icon: '✅' },
   ],
 };
 

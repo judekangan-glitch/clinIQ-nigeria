@@ -1,0 +1,120 @@
+/* ─── Digitisation Officer Progress Styles ─────────────────────────── */
+
+.digi-progress-container {
+  padding-bottom: var(--space-4);
+}
+
+.digi-progress-header {
+  margin-bottom: var(--space-3);
+}
+
+/* Double grid layout */
+.digi-double-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.5fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+@media (max-width: 991.98px) {
+  .digi-double-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.progress-summary-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px 0;
+}
+
+@media (max-width: 480px) {
+  .progress-summary-box {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.circle-progress-bar {
+  flex-shrink: 0;
+}
+
+.target-progress-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-headline {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+}
+
+.metric-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 700;
+  margin: 2px 0;
+}
+
+.metric-sub {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+/* Loading & History rows */
+.progress-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: var(--space-2) 0;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.no-history-box {
+  padding: 24px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.history-vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.history-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg);
+}
+
+.history-patient-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.history-details {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.sync-badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-secondary);
+  background: #F0FDFA;
+  border: 1px solid #99F6E4;
+  border-radius: 99px;
+  padding: 2px 8px;
+  letter-spacing: 0.05em;
+}

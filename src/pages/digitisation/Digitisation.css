@@ -1,0 +1,128 @@
+/* ─── Digitisation Officer Page Styles ─────────────────────────────── */
+
+.digi-workspace-container {
+  padding-bottom: var(--space-4);
+}
+
+.digi-header {
+  margin-bottom: var(--space-3);
+}
+
+.digi-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.digi-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+
+.digi-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+  max-width: 500px;
+}
+
+.max-width-600 {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Patient selection list */
+.searching-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.search-results-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.patient-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.patient-result-row:hover {
+  border-color: var(--color-primary);
+  background-color: #EFF6FF;
+}
+
+.p-result-name {
+  display: block;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.p-result-meta {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.select-row-chevron {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.no-results-box {
+  padding: 16px;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+/* Scanner panel elements */
+.selected-patient-banner {
+  border-left: 4px solid var(--color-primary);
+  margin-bottom: var(--space-2);
+}
+
+.label-sm-grey {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.patient-banner-name {
+  font-size: 16px;
+  font-weight: 850;
+  color: var(--color-text-primary);
+  margin: 2px 0;
+}
+
+.patient-banner-meta {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.scanner-component-wrap {
+  padding: var(--space-2);
+}

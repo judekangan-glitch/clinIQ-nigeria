@@ -59,6 +59,7 @@ const StaffManagement        = lazy(() => import('./pages/admin/StaffManagement'
 const DigitisationProgress   = lazy(() => import('./pages/admin/DigitisationProgress'));
 const PhcSettings            = lazy(() => import('./pages/admin/PhcSettings'));
 const DigitisationDashboard  = lazy(() => import('./pages/digitisation/DigitisationDashboard'));
+const DigitisationProgressOfficer = lazy(() => import('./pages/digitisation/DigitisationProgress'));
 
 // Role → default route map (for login redirect)
 const ROLE_ROUTES = {
@@ -160,6 +161,7 @@ export default function App() {
 
                 {/* ── Digitisation routes ───────────────────── */}
                 <Route path="/digitisation/scan" element={<RequireAuth><DigitisationDashboard /></RequireAuth>} />
+                <Route path="/digitisation/progress" element={<RequireAuth><DigitisationProgressOfficer /></RequireAuth>} />
                 <Route path="/digitisation/*" element={<Navigate to="/digitisation/scan" replace />} />
 
                 {/* Fallback */}
