@@ -513,3 +513,60 @@
     display: inline-block;
   }
 }
+
+/* ─── Sidebar role pill ──────────────────────────────────────────────── */
+.sidebar-role-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px 20px;
+  padding: 8px 14px;
+  border: 1.5px solid;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.sidebar-role-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* ─── Emoji nav icons ────────────────────────────────────────────────── */
+.nav-emoji-icon {
+  font-size: 17px;
+  line-height: 1;
+  width: 22px;
+  text-align: center;
+  display: inline-block;
+}
+
+/* ─── Danger nav item (Code Red) ─────────────────────────────────────── */
+.nav-item--danger {
+  color: var(--color-danger) !important;
+}
+
+.nav-item--danger:hover,
+.nav-item--danger.active {
+  background: #FEF2F2 !important;
+  color: var(--color-danger) !important;
+}
+
+/* ─── Nav badge ──────────────────────────────────────────────────────── */
+.nav-badge {
+  margin-left: auto;
+  background: var(--color-danger);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 800;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

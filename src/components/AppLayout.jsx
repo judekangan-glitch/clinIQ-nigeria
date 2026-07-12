@@ -1,11 +1,50 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useDemoRole } from '../context/DemoRoleContext';
 import { useConnectivity } from '../hooks/useConnectivity';
+import RoleSwitcher from './RoleSwitcher';
 import './AppLayout.css';
 
-export default function AppLayout({ children, title, showBack = false, backTo }) {
-  const { profile, logout } = useAuth();
+/* ─────────────────────────────────────────────────────────────────────
+   Role-specific navigation definitions
+   ───────────────────────────────────────────────────────────────────── */
+const NAV_ITEMS = {
+  chew: [
+    { label: 'Dashboard', path: '/chew/dashboard', icon: '🏠' },
+    { label: 'New Consultation', path: '/chew/consultation/new', icon: '➕' },
+    { label: 'Patient Records', path: '/chew/patients', icon: '📁' },
+    { label: 'Code Red Alert', path: '/chew/code-red', icon: '🚨', danger: true },
+    { label: 'Lab Interpreter', path: '/chew/lab-interpreter', icon: '🧪' },
+  ],
+  doctor: [
+    { label: 'Dashboard', path: '/doctor/dashboard', icon: '🏠' },
+    { label: 'Pending Reviews', path: '/doctor/dashboard', icon: '📋', badge: 'pending' },
+    { label: 'All Cases', path: '/doctor/dashboard', icon: '📄' },
+    { label: 'Code Red Alerts', path: '/doctor/dashboard', icon: '🚨', danger: true },
+  ],
+  lga_officer: [
+    { label: 'Dashboard', path: '/lga/dashboard', icon: '🏠' },
+    { label: 'Outbreak Monitor', path: '/lga/dashboard', icon: '⚠️' },
+    { label: 'Disease Trends', path: '/lga/dashboard', icon: '📈' },
+    { label: 'PHC Performance', path: '/lga/dashboard', icon: '📊' },
+    { label: 'Supply Alerts', path: '/lga/dashboard', icon: '📦' },
+  ],
+  admin: [
+    { label: 'Dashboard', path: '/admin/dashboard', icon: '🏠' },
+    { label: 'Staff Management', path: '/admin/dashboard', icon: '👥' },
+    { label: 'Digitisation Progress', path: '/admin/dashboard', icon: '📷' },
+    { label: 'PHC Settings', path: '/admin/dashboard', icon: '⚙️' },
+  ],
+  digitisation_officer: [
+    { label: 'Scan Records', path: '/digitisation/scan', icon: '📷' },
+    { label: 'My Progress', path: '/digitisation/scan', icon: '✅' },
+  ],
+};
+
+export default function AppLayout({ children, title, showBack = false, backTo, navItems: propNavItems }) {
+  const { logout } = useAuth();
+  const { currentUser } = useDemoRole();
   const navigate = useNavigate();
   const location = useLocation();
   const online = useConnectivity();
@@ -16,101 +55,23 @@ export default function AppLayout({ children, title, showBack = false, backTo })
     navigate('/login', { replace: true });
   }
 
-  // Get initials for Avatar
   const getInitials = () => {
-    if (!profile?.full_name) return 'U';
-    const parts = profile.full_name.trim().split(/\s+/);
+    const name = currentUser?.name || '';
+    if (!name) return 'U';
+    const parts = name.trim().split(/\s+/);
     if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
     return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
   };
 
-  const getRoleLabel = () => {
-    if (!profile?.role) return '';
-    const map = {
-      chew: 'CHEW',
-      doctor: 'Doctor',
-      admin: 'Admin',
-      lga_officer: 'LGA Officer',
-      digitisation_officer: 'Digitisation'
-    };
-    return map[profile.role] || profile.role.toUpperCase();
-  };
+  const role = currentUser?.role || 'chew';
+  const roleColor = currentUser?.roleColor || '#1B4F8A';
+  const currentNavItems = propNavItems || NAV_ITEMS[role] || NAV_ITEMS.chew;
 
-  const userRole = profile?.role || 'chew';
-
-  // Navigation Items by Role
-  const navItems = {
-    chew: [
-      {
-        label: 'Home',
-        path: '/chew/dashboard',
-        icon: (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-        ),
-      },
-      {
-        label: 'Patients',
-        path: '/chew/patients',
-        icon: (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-          </svg>
-        ),
-      },
-      {
-        label: 'Lab Interpreter',
-        path: '/chew/lab-interpreter',
-        icon: (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="16" y1="13" x2="8" y2="13" />
-            <line x1="16" y1="17" x2="8" y2="17" />
-            <polyline points="10 9 9 9 8 9" />
-          </svg>
-        ),
-      },
-      {
-        label: 'Code Red',
-        path: '/chew/code-red',
-        icon: (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-        ),
-      },
-    ],
-    doctor: [
-      {
-        label: 'Home',
-        path: '/doctor/dashboard',
-        icon: (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-            <polyline points="9 22 9 12 15 12 15 22" />
-          </svg>
-        ),
-      },
-    ],
-  };
-
-  const currentNavItems = navItems[userRole] || navItems.chew;
-
-  const isActivePath = (path) => {
-    return location.pathname.startsWith(path);
-  };
+  const isActivePath = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   return (
     <div className="app-layout">
-      {/* ─── Header ─────────────────────────────────────────────────────────── */}
+      {/* ─── Header ────────────────────────────────────────────────────── */}
       <header className="app-header">
         <div className="header-left">
           {showBack ? (
@@ -156,14 +117,14 @@ export default function AppLayout({ children, title, showBack = false, backTo })
         </div>
 
         <div className="header-right">
-          {/* Connectivity Indicator */}
+          {/* Connectivity */}
           <div className="header-connectivity">
             <span className={`connectivity-dot ${online ? 'online' : 'offline'}`} />
             <span className="connectivity-text">{online ? 'Online' : 'Offline'}</span>
           </div>
 
           {/* Notification bell */}
-          <button className="header-bell" aria-label="Notifications" title="Notifications">
+          <button className="header-bell" aria-label="Notifications">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
@@ -171,32 +132,48 @@ export default function AppLayout({ children, title, showBack = false, backTo })
             </svg>
           </button>
 
-          {/* User Profile */}
+          {/* User avatar + role badge */}
           <div className="header-profile">
-            <div className="user-avatar" title={profile?.full_name || 'User Profile'}>
+            <div
+              className="user-avatar"
+              style={{ background: roleColor }}
+              title={currentUser?.name || 'User'}
+            >
               {getInitials()}
             </div>
-            <span className="role-badge">{getRoleLabel()}</span>
+            <span className="role-badge">{currentUser?.roleLabel || ''}</span>
           </div>
         </div>
       </header>
 
-      {/* ─── Main Wrapper ─────────────────────────────────────────────────── */}
+      {/* ─── Main wrapper ───────────────────────────────────────────────── */}
       <div className="app-main-wrapper">
-        {/* ─── Desktop Sidebar ────────────────────────────────────────────── */}
+        {/* Desktop Sidebar */}
         <aside className="app-sidebar">
           <div className="sidebar-scrollable">
+            {/* Role pill at top of sidebar */}
+            <div className="sidebar-role-pill" style={{ borderColor: roleColor, color: roleColor }}>
+              <span
+                className="sidebar-role-dot"
+                style={{ background: roleColor }}
+              />
+              {currentUser?.roleLabel}
+            </div>
+
             <div className="sidebar-section">
               <span className="sidebar-section-label">Navigation</span>
               <nav className="sidebar-nav">
                 {currentNavItems.map((item) => (
                   <button
-                    key={item.path}
-                    className={`nav-item ${isActivePath(item.path) ? 'active' : ''}`}
+                    key={item.label}
+                    className={`nav-item ${isActivePath(item.path) ? 'active' : ''} ${item.danger ? 'nav-item--danger' : ''}`}
                     onClick={() => navigate(item.path)}
                   >
-                    <span className="nav-icon">{item.icon}</span>
+                    <span className="nav-icon nav-emoji-icon">{item.icon}</span>
                     <span className="nav-label">{item.label}</span>
+                    {item.badge && (
+                      <span className="nav-badge">!</span>
+                    )}
                   </button>
                 ))}
               </nav>
@@ -219,15 +196,14 @@ export default function AppLayout({ children, title, showBack = false, backTo })
           </div>
         </aside>
 
-        {/* ─── Mobile Drawer/Overlay ──────────────────────────────────────── */}
+        {/* Mobile Drawer */}
         {mobileMenuOpen && (
           <div className="mobile-drawer-overlay" onClick={() => setMobileMenuOpen(false)}>
             <div className="mobile-drawer" onClick={(e) => e.stopPropagation()}>
               <div className="drawer-header">
                 <span className="drawer-title">Menu</span>
                 <button className="drawer-close" onClick={() => setMobileMenuOpen(false)}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="2">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="18" y1="6" x2="6" y2="18" />
                     <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
@@ -236,25 +212,28 @@ export default function AppLayout({ children, title, showBack = false, backTo })
 
               <div className="drawer-body">
                 <div className="drawer-profile-info">
-                  <div className="drawer-avatar">{getInitials()}</div>
+                  <div
+                    className="drawer-avatar"
+                    style={{ background: roleColor }}
+                  >
+                    {getInitials()}
+                  </div>
                   <div className="drawer-profile-details">
-                    <span className="drawer-name">{profile?.full_name || 'User'}</span>
-                    <span className="drawer-email">{profile?.email || profile?.phone_number || ''}</span>
-                    <span className="drawer-badge">{getRoleLabel()}</span>
+                    <span className="drawer-name">{currentUser?.name || 'User'}</span>
+                    <span className="drawer-badge" style={{ background: roleColor + '22', color: roleColor }}>
+                      {currentUser?.roleLabel}
+                    </span>
                   </div>
                 </div>
 
                 <nav className="drawer-nav">
                   {currentNavItems.map((item) => (
                     <button
-                      key={item.path}
-                      className={`drawer-nav-item ${isActivePath(item.path) ? 'active' : ''}`}
-                      onClick={() => {
-                        navigate(item.path);
-                        setMobileMenuOpen(false);
-                      }}
+                      key={item.label}
+                      className={`drawer-nav-item ${isActivePath(item.path) ? 'active' : ''} ${item.danger ? 'nav-item--danger' : ''}`}
+                      onClick={() => { navigate(item.path); setMobileMenuOpen(false); }}
                     >
-                      <span className="nav-icon">{item.icon}</span>
+                      <span className="nav-icon nav-emoji-icon">{item.icon}</span>
                       <span className="nav-label">{item.label}</span>
                     </button>
                   ))}
@@ -275,7 +254,7 @@ export default function AppLayout({ children, title, showBack = false, backTo })
           </div>
         )}
 
-        {/* ─── Main Content Area ──────────────────────────────────────────── */}
+        {/* Main Content */}
         <main className="app-main-content">
           <div className="app-container">
             {children}
@@ -283,11 +262,11 @@ export default function AppLayout({ children, title, showBack = false, backTo })
         </main>
       </div>
 
-      {/* ─── Mobile Bottom Nav Bar ────────────────────────────────────────── */}
+      {/* Mobile Bottom Nav */}
       <nav className="mobile-bottom-nav">
         <button
-          className={`bottom-nav-btn ${isActivePath('/chew/dashboard') || isActivePath('/doctor/dashboard') ? 'active' : ''}`}
-          onClick={() => navigate('/')}
+          className={`bottom-nav-btn ${isActivePath('/chew/dashboard') || isActivePath('/doctor/dashboard') || isActivePath('/lga/dashboard') || isActivePath('/admin/dashboard') || isActivePath('/digitisation/scan') ? 'active' : ''}`}
+          onClick={() => navigate(currentUser?.homePath || '/')}
           aria-label="Home"
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -296,7 +275,7 @@ export default function AppLayout({ children, title, showBack = false, backTo })
           <span className="bottom-nav-label">Home</span>
         </button>
 
-        {userRole === 'chew' ? (
+        {role === 'chew' && (
           <button
             className={`bottom-nav-btn ${isActivePath('/chew/patients') ? 'active' : ''}`}
             onClick={() => navigate('/chew/patients')}
@@ -308,31 +287,21 @@ export default function AppLayout({ children, title, showBack = false, backTo })
             </svg>
             <span className="bottom-nav-label">Patients</span>
           </button>
-        ) : (
-          <button
-            className="bottom-nav-btn disabled-btn"
-            disabled
-            aria-label="Patients"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ opacity: 0.3 }}>
-              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-            </svg>
-            <span className="bottom-nav-label" style={{ opacity: 0.3 }}>Patients</span>
-          </button>
         )}
 
-        <button
-          className={`bottom-nav-btn ${isActivePath('/chew/code-red') ? 'active' : ''}`}
-          onClick={() => navigate('/chew/code-red')}
-          aria-label="Alerts"
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-          </svg>
-          <span className="bottom-nav-label">Alerts</span>
-        </button>
+        {role === 'chew' && (
+          <button
+            className={`bottom-nav-btn ${isActivePath('/chew/code-red') ? 'active' : ''}`}
+            onClick={() => navigate('/chew/code-red')}
+            aria-label="Code Red"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+            </svg>
+            <span className="bottom-nav-label">Alerts</span>
+          </button>
+        )}
 
         <button
           className="bottom-nav-btn"
@@ -347,6 +316,9 @@ export default function AppLayout({ children, title, showBack = false, backTo })
           <span className="bottom-nav-label">Menu</span>
         </button>
       </nav>
+
+      {/* ─── Role Switcher FAB (always visible) ─────────────────────────── */}
+      <RoleSwitcher />
     </div>
   );
 }
