@@ -38,7 +38,7 @@ export async function geminiVision(base64Image, mimeType, prompt) {
       contents: [
         {
           parts: [
-            { inline_data: { mime_type: mimeType, data: base64Image } },
+            { inlineData: { mimeType: mimeType, data: base64Image } },
             { text: prompt },
           ],
         },

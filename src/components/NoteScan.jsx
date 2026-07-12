@@ -183,8 +183,8 @@ export default function NoteScan({ onConfirm, onSkip }) {
           {
             parts: [
               {
-                inline_data: {
-                  mime_type: safeMime,
+                inlineData: {
+                  mimeType: safeMime,
                   data: base64,
                 },
               },
