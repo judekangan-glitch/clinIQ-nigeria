@@ -1,0 +1,320 @@
+/* ─── LGA Dashboard Styling ────────────────────────────────────────── */
+
+.lga-dashboard-container {
+  padding-bottom: var(--space-4);
+}
+
+.lga-dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.lga-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.lga-title {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+
+.lga-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+.lga-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Stats Strip */
+.lga-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.lga-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: var(--space-2);
+}
+
+.lga-stat-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.lga-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lga-stat-val {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.lga-stat-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 2px 0;
+}
+
+.lga-stat-change {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* Grids */
+.lga-grid-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 991.98px) {
+  .lga-grid-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lga-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.lga-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.lga-panel-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.lga-panel-legend {
+  display: flex;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+.legend-dot.malaria { background-color: #0E7C7B; }
+.legend-dot.cholera { background-color: #DC2626; }
+.legend-dot.measles { background-color: #D97706; }
+
+/* SVG Graph */
+.lga-chart-container {
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px 0;
+}
+
+.lga-svg-chart {
+  width: 100%;
+  height: auto;
+  min-width: 450px;
+}
+
+.chart-axis-text {
+  font-size: 9px;
+  fill: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Alerts Banner */
+.lga-alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.lga-alert-item {
+  border-radius: 12px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-left-width: 4px;
+  background: var(--color-bg);
+}
+
+.lga-alert-item.critical {
+  border-left-color: var(--color-danger);
+  background-color: #FEF2F2;
+}
+
+.lga-alert-item.warning {
+  border-left-color: var(--color-warning);
+  background-color: #FFFBEB;
+}
+
+.lga-alert-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  margin-bottom: 6px;
+}
+
+.alert-disease-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.alert-tag {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.alert-badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+}
+
+.critical .alert-badge {
+  background-color: #FEE2E2;
+  color: #991B1B;
+}
+
+.warning .alert-badge {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.alert-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* Sub grid list */
+.lga-grid-sub {
+  margin-bottom: var(--space-4);
+}
+
+.lga-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.lga-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.lga-table th {
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--color-border);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lga-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.row-facility-name {
+  font-weight: 700;
+  color: var(--color-text-primary) !important;
+}
+
+/* Progress bar inside table */
+.acc-bar-bg {
+  width: 60px;
+  height: 6px;
+  background-color: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.acc-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+}
+
+/* Status Pill */
+.status-pill {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 99px;
+  display: inline-block;
+  letter-spacing: 0.05em;
+}
+
+.status-pill.active {
+  background-color: #ECFDF5;
+  color: #065F46;
+}
+
+.status-pill.delayed {
+  background-color: #FFFBEB;
+  color: #92400E;
+}
+
+.status-pill.critical {
+  background-color: #FEF2F2;
+  color: #991B1B;
+}
+
+@media (max-width: 575.98px) {
+  .lga-dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

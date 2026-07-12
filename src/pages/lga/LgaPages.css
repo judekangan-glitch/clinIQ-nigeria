@@ -1,0 +1,461 @@
+/* ─── LGA Pages Styling (Outbreak, Trends, Performance, Supply) ───── */
+
+.lga-page-container {
+  padding-bottom: var(--space-4);
+}
+
+.lga-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+@media (max-width: 767.98px) {
+  .lga-page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.lga-page-title {
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-text-primary);
+  margin: 0 0 6px;
+}
+
+.lga-page-sub {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Double column layout */
+.lga-double-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+@media (max-width: 991.98px) {
+  .lga-double-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel-title-lg {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-2);
+}
+
+/* ── Outbreak Alerts list ─────────────────────────────────────────── */
+.alerts-vertical-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.alert-detail-card {
+  border-radius: 12px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid;
+  background: var(--color-bg);
+}
+
+.alert-detail-card.critical { border-left-color: var(--color-danger); }
+.alert-detail-card.warning { border-left-color: var(--color-warning); }
+
+.alert-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.alert-facility-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.status-badge-pill {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+}
+
+.status-badge-pill.critical { background: #FEE2E2; color: #991B1B; }
+.status-badge-pill.warning { background: #FEF3C7; color: #92400E; }
+
+.alert-meta-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.alert-text-body {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
+
+.alert-action-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+/* Risk meter widget */
+.risk-meter-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.risk-level-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #FFF;
+  flex-shrink: 0;
+}
+
+.risk-level-circle.high {
+  background: radial-gradient(circle, var(--color-danger), #B91C1C);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.4);
+}
+
+.risk-num {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.risk-txt {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.risk-breakdown p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 4px 0;
+  line-height: 1.4;
+}
+
+/* Checklist list */
+.checklist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.checklist-item input {
+  margin-top: 3px;
+}
+
+/* ── Disease Trends ──────────────────────────────────────────────── */
+.disease-select-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.trend-chart-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.chart-bar-wrapper {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 220px;
+  border-bottom: 2px solid var(--color-border);
+  padding: 10px 0;
+  gap: 16px;
+}
+
+.chart-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.bars-aligner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  position: relative;
+}
+
+.bar-fill {
+  width: 18px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  transition: height 0.5s ease-in-out;
+  display: flex;
+  justify-content: center;
+}
+
+.bar-fill.count {
+  background: var(--color-secondary);
+}
+
+.bar-fill.baseline {
+  background: var(--color-border);
+}
+
+.bar-val-lbl {
+  position: absolute;
+  top: -18px;
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+}
+
+.bar-val-lbl.base {
+  color: var(--color-text-muted);
+}
+
+.col-lbl-month {
+  margin-top: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+}
+
+.chart-legend-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.legend-marker {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+}
+.legend-marker.count { background: var(--color-secondary); }
+.legend-marker.baseline { background: var(--color-border); }
+
+/* Insights Stack */
+.insights-vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.insight-card-item {
+  border-radius: 10px;
+  padding: 14px;
+  background: var(--color-bg);
+}
+
+.insight-card-item.highlight {
+  border-left: 4px solid var(--color-primary);
+  background: #EFF6FF;
+}
+
+.insight-card-item h3 {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 6px;
+}
+
+.insight-card-item p,
+.insight-card-item li {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 4px 0;
+}
+
+.insight-card-item ul {
+  padding-left: 16px;
+  margin: 0;
+}
+
+/* ── PHC Performance & Table ─────────────────────────────────────── */
+.table-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.performance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.performance-table th {
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--color-border);
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: left;
+}
+
+.performance-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.acc-row-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.p-bar-track {
+  width: 80px;
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.p-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+}
+
+.status-pill-sub {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 99px;
+  letter-spacing: 0.05em;
+}
+
+.status-pill-sub.compliant { background: #ECFDF5; color: #065F46; }
+.status-pill-sub.delayed { background: #FFFBEB; color: #92400E; }
+
+/* ── Supply Alerts list ──────────────────────────────────────────── */
+.supplies-stacked-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.supply-status-card {
+  border-radius: 12px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid;
+  background: var(--color-bg);
+}
+
+.supply-status-card.critical { border-left-color: var(--color-danger); }
+.supply-status-card.warning { border-left-color: var(--color-warning); }
+.supply-status-card.good { border-left-color: var(--color-success); }
+
+.supply-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.supply-item-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  display: block;
+}
+
+.supply-cat-lbl {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.supply-details-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.supply-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+
+.forecast-stat-box {
+  background: var(--color-bg);
+  border-radius: 12px;
+  padding: var(--space-2);
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.forecast-metric {
+  display: block;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--color-primary);
+}
+
+.forecast-lbl {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.forecast-details p {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 6px 0;
+  line-height: 1.45;
+}

@@ -50,6 +50,10 @@ const MyLearning             = lazy(() => import('./pages/chew/MyLearning'));
 const DoctorDashboard        = lazy(() => import('./pages/doctor/DoctorDashboard'));
 const CaseReview             = lazy(() => import('./pages/doctor/CaseReview'));
 const LgaDashboard           = lazy(() => import('./pages/lga/LgaDashboard'));
+const OutbreakMonitor        = lazy(() => import('./pages/lga/OutbreakMonitor'));
+const DiseaseTrends          = lazy(() => import('./pages/lga/DiseaseTrends'));
+const PhcPerformance         = lazy(() => import('./pages/lga/PhcPerformance'));
+const SupplyAlerts           = lazy(() => import('./pages/lga/SupplyAlerts'));
 const AdminDashboard         = lazy(() => import('./pages/admin/AdminDashboard'));
 const DigitisationDashboard  = lazy(() => import('./pages/digitisation/DigitisationDashboard'));
 
@@ -138,6 +142,10 @@ export default function App() {
 
                 {/* ── LGA Officer routes ────────────────────── */}
                 <Route path="/lga/dashboard" element={<RequireAuth><LgaDashboard /></RequireAuth>} />
+                <Route path="/lga/outbreaks" element={<RequireAuth><OutbreakMonitor /></RequireAuth>} />
+                <Route path="/lga/trends" element={<RequireAuth><DiseaseTrends /></RequireAuth>} />
+                <Route path="/lga/performance" element={<RequireAuth><PhcPerformance /></RequireAuth>} />
+                <Route path="/lga/supplies" element={<RequireAuth><SupplyAlerts /></RequireAuth>} />
                 <Route path="/lga/*" element={<Navigate to="/lga/dashboard" replace />} />
 
                 {/* ── Admin routes ──────────────────────────── */}

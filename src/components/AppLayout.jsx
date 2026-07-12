@@ -26,10 +26,10 @@ const NAV_ITEMS = {
   ],
   lga_officer: [
     { label: 'Dashboard', path: '/lga/dashboard', icon: '🏠' },
-    { label: 'Outbreak Monitor', path: '/lga/dashboard', icon: '⚠️' },
-    { label: 'Disease Trends', path: '/lga/dashboard', icon: '📈' },
-    { label: 'PHC Performance', path: '/lga/dashboard', icon: '📊' },
-    { label: 'Supply Alerts', path: '/lga/dashboard', icon: '📦' },
+    { label: 'Outbreak Monitor', path: '/lga/outbreaks', icon: '⚠️' },
+    { label: 'Disease Trends', path: '/lga/trends', icon: '📈' },
+    { label: 'PHC Performance', path: '/lga/performance', icon: '📊' },
+    { label: 'Supply Alerts', path: '/lga/supplies', icon: '📦' },
   ],
   admin: [
     { label: 'Dashboard', path: '/admin/dashboard', icon: '🏠' },
