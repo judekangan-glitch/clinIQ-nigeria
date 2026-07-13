@@ -12,7 +12,7 @@
 .app-header {
   height: 64px;
   background-color: #FFFFFF;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -251,9 +251,12 @@
 
 /* Active Nav Item */
 .nav-item.active {
-  background-color: #EFF6FF;
+  background-color: #F1F5F9;
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: 700;
+  border-left: 3px solid var(--color-primary);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .nav-item.active .nav-icon {
@@ -262,8 +265,11 @@
 
 /* Logout styling */
 .logout-nav-item:hover {
-  background-color: #FEE2E2;
+  background-color: #FFF1F2;
   color: var(--color-danger);
+  border-left: 3px solid var(--color-danger);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .logout-nav-item:hover .nav-icon {
