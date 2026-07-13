@@ -37,6 +37,7 @@ export default function DoctorDashboard() {
   const [reviewedCases, setReviewedCases] = useState([]);
   const [allCases, setAllCases] = useState([]);
   const [activeAlerts, setActiveAlerts] = useState([]);
+  const [selectedAlert, setSelectedAlert] = useState(null);
 
   useEffect(() => {
     fetchDashboardData();
@@ -105,7 +106,7 @@ export default function DoctorDashboard() {
       // Fetch remote alerts
       const remoteAlertEnriched = await Promise.all(alertsData.map(async (alert) => {
         const [patientRes, phcRes] = await Promise.all([
-          supabase.from('patients').select('full_name').eq('id', alert.patient_id).maybeSingle(),
+          supabase.from('patients').select('full_name, phone_number').eq('id', alert.patient_id).maybeSingle(),
           supabase.from('phcs').select('name').eq('id', alert.phc_id).maybeSingle(),
         ]);
         return { ...alert, patient: patientRes.data || null, phc: phcRes.data || null };
@@ -136,6 +137,30 @@ export default function DoctorDashboard() {
       console.error('Doctor dashboard error:', error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleResolveAlert(alertId) {
+    try {
+      // Mark alert as responded in DB
+      await supabase
+        .from('code_red_alerts')
+        .update({ doctor_response_at: new Date().toISOString() })
+        .eq('id', alertId)
+        .then(({ error }) => { if (error) console.warn('Alert update error:', error.message); });
+
+      // Also mark as responded in localStorage
+      const localAlerts = JSON.parse(localStorage.getItem('cliniq_demo_alerts') || '[]');
+      const updatedLocalAlerts = localAlerts.map(a => 
+        a.id === alertId ? { ...a, doctor_response_at: new Date().toISOString() } : a
+      );
+      localStorage.setItem('cliniq_demo_alerts', JSON.stringify(updatedLocalAlerts));
+
+      // Remove from local state immediately
+      setActiveAlerts(prev => prev.filter(a => a.id !== alertId));
+      setSelectedAlert(null);
+    } catch (err) {
+      console.error(err);
     }
   }
 
@@ -207,28 +232,7 @@ export default function DoctorDashboard() {
                   </div>
                   <button
                     className="btn-danger alert-respond-btn"
-                    onClick={async () => {
-                      // Mark alert as responded in DB
-                      await supabase
-                        .from('code_red_alerts')
-                        .update({ doctor_response_at: new Date().toISOString() })
-                        .eq('id', alert.id)
-                        .then(({ error }) => { if (error) console.warn('Alert update error:', error.message); });
-
-                      // Also mark as responded in localStorage
-                      const localAlerts = JSON.parse(localStorage.getItem('cliniq_demo_alerts') || '[]');
-                      const updatedLocalAlerts = localAlerts.map(a => 
-                        a.id === alert.id ? { ...a, doctor_response_at: new Date().toISOString() } : a
-                      );
-                      localStorage.setItem('cliniq_demo_alerts', JSON.stringify(updatedLocalAlerts));
-
-                      // Remove from local state immediately
-                      setActiveAlerts(prev => prev.filter(a => a.id !== alert.id));
-                      // Navigate to consultation if available, otherwise stay
-                      if (alert.consultation_id) {
-                        navigate(`/doctor/cases/${alert.consultation_id}`);
-                      }
-                    }}
+                    onClick={() => setSelectedAlert(alert)}
                   >
                     Respond
                   </button>
@@ -295,6 +299,82 @@ export default function DoctorDashboard() {
         </section>
 
       </div>
+
+      {/* ─── Code Red Response Modal ─── */}
+      {selectedAlert && (
+        <div className="modal-overlay" style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(4px)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10000, padding: 16 }}>
+          <div className="card" style={{ maxWidth: 480, width: '100%', padding: 24, borderRadius: 12, display: 'flex', flexDirection: 'column', gap: 16, border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-hover)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--color-border)', paddingBottom: 12 }}>
+              <h2 style={{ fontSize: 18, color: 'var(--color-danger)', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 8, margin: 0 }}>
+                🚨 Respond to Code Red
+              </h2>
+              <button onClick={() => setSelectedAlert(null)} style={{ background: 'none', border: 'none', fontSize: 24, color: 'var(--color-text-muted)', cursor: 'pointer', lineHeight: 1 }}>&times;</button>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13, color: 'var(--color-text-secondary)' }}>
+              <div><strong>Patient Name:</strong> <span style={{ color: 'var(--color-text-primary)', fontWeight: 'bold' }}>{selectedAlert.patient?.full_name || 'Unknown Patient'}</span></div>
+              <div><strong>Location:</strong> {selectedAlert.phc?.name || 'PHC'}</div>
+              <div><strong>Vitals:</strong> Temp: {selectedAlert.temperature ? `${selectedAlert.temperature}°C` : '—'} · BP: {selectedAlert.blood_pressure || '—'} · Pulse: {selectedAlert.pulse_rate ? `${selectedAlert.pulse_rate} bpm` : '—'}</div>
+              {selectedAlert.description && (
+                <div style={{ marginTop: 6, fontStyle: 'italic', color: '#991B1B', background: '#FFF1F2', padding: 10, borderRadius: 8, border: '1px solid #FECDD3' }}>
+                  "{selectedAlert.description}"
+                </div>
+              )}
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 8 }}>
+              <span style={{ fontSize: 11, fontWeight: '700', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Communication Channels</span>
+              
+              <a href={`tel:${selectedAlert.patient?.phone_number || '+2348000000000'}`} className="btn-secondary" style={{ width: '100%', textDecoration: 'none', display: 'flex', justifyContent: 'center', gap: 8 }}>
+                📞 Normal Phone Call
+              </a>
+
+              <a 
+                href={`https://wa.me/${(selectedAlert.patient?.phone_number || '+2348000000000').replace(/[^0-9+]/g, '')}?text=${encodeURIComponent(`Emergency Response: Hello, this is Dr. ${currentUser?.name || 'Doctor'} responding to the Code Red alert. Patient: ${selectedAlert.patient?.full_name || 'Unknown'}. Vitals: Temp ${selectedAlert.temperature || '—'}°C, BP ${selectedAlert.blood_pressure || '—'}, Pulse ${selectedAlert.pulse_rate || '—'}. Description: ${selectedAlert.description || 'Immediate consultation needed.'}`)}`}
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn-primary" 
+                style={{ width: '100%', background: '#25D366', borderColor: '#25D366', textDecoration: 'none', display: 'flex', justifyContent: 'center', gap: 8 }}
+              >
+                💬 WhatsApp Chat & Message
+              </a>
+
+              <a 
+                href={`https://wa.me/${(selectedAlert.patient?.phone_number || '+2348000000000').replace(/[^0-9+]/g, '')}?text=${encodeURIComponent(`Please join a WhatsApp video call immediately for patient emergency consultation: ${selectedAlert.patient?.full_name || 'Unknown'}`)}`}
+                target="_blank" 
+                rel="noreferrer" 
+                className="btn-primary" 
+                style={{ width: '100%', background: '#0E7C7B', borderColor: '#0E7C7B', textDecoration: 'none', display: 'flex', justifyContent: 'center', gap: 8 }}
+              >
+                📹 WhatsApp Video Call
+              </a>
+            </div>
+
+            <div style={{ display: 'flex', gap: 12, marginTop: 12, borderTop: '1px solid var(--color-border)', paddingTop: 16 }}>
+              <button 
+                className="btn-danger" 
+                style={{ flex: 1 }} 
+                onClick={() => handleResolveAlert(selectedAlert.id)}
+              >
+                Clear & Resolve Alert
+              </button>
+              <button 
+                className="btn-secondary" 
+                style={{ flex: 1 }} 
+                onClick={() => {
+                  // Resolve alert and navigate to consultation detail review
+                  handleResolveAlert(selectedAlert.id);
+                  if (selectedAlert.consultation_id) {
+                    navigate(`/doctor/cases/${selectedAlert.consultation_id}`);
+                  }
+                }}
+              >
+                Resolve & Review Case
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }
