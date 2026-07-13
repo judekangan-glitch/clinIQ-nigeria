@@ -21,12 +21,12 @@
   border: 1px solid var(--color-border);
   height: 48px;
   box-shadow: var(--shadow-card);
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-bar:focus-within {
-  border: 2px solid var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(27,79,138,0.15);
+  border-color: var(--color-primary-light);
+  box-shadow: 0 0 0 4px rgba(27, 79, 138, 0.08);
 }
 
 .search-icon {
@@ -65,7 +65,7 @@
 .search-results {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 10px;
 }
 
 .search-loading {
@@ -89,14 +89,18 @@
   padding: var(--space-2);
   cursor: pointer;
   text-align: left;
-  transition: all 0.15s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-card);
 }
 
 .patient-result-card:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-standard);
+}
+
+.patient-result-card:active {
+  transform: scale(0.99);
 }
 
 .patient-avatar {
@@ -108,7 +112,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   flex-shrink: 0;
   user-select: none;
@@ -123,7 +127,7 @@
 }
 
 .patient-name {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--color-text-primary);
 }
@@ -136,17 +140,18 @@
 
 .meta-chip {
   font-size: 11px;
-  background-color: var(--color-bg);
+  background-color: #F8FAFC;
   color: var(--color-text-secondary);
   padding: 2px 8px;
   border-radius: var(--radius-full);
-  font-weight: 500;
+  font-weight: 600;
   border: 1px solid var(--color-border);
 }
 
 .last-visit {
   font-size: 11px;
   color: var(--color-text-secondary);
+  font-weight: 500;
 }
 
 .chevron-right {
@@ -170,11 +175,25 @@
   max-width: 600px;
   width: 100%;
   padding: 14px !important;
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
-  box-shadow: 0 4px 16px rgba(22, 163, 74, 0.25) !important;
-  height: 48px !important;
-  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+  height: 44px !important;
+  border-radius: var(--radius-md) !important;
+  background-color: var(--color-success) !important;
+  color: #ffffff !important;
+  border: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.add-patient-btn:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35) !important;
+  opacity: 0.95;
+}
+
+.add-patient-btn:active {
+  transform: scale(0.97) !important;
 }
 
 /* Adjustments for desktop */

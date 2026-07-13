@@ -4,43 +4,62 @@
   padding-bottom: var(--space-4);
 }
 
-/* ─── Welcome banner ─────────────────────────────────────────────────── */
+/* ─── Welcome Banner (Premium Dark Mesh Design) ───────────────────────── */
 .welcome-banner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  padding: 28px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
   color: #FFFFFF;
   border-radius: var(--radius-lg);
   margin-bottom: var(--space-4);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.welcome-banner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(14, 124, 123, 0.15) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .welcome-text {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-greeting {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 900;
   color: #FFFFFF;
+  letter-spacing: -0.02em;
 }
 
 .welcome-date {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
+  color: #94A3B8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .welcome-avatar {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,67 +68,75 @@
   color: #FFFFFF;
   flex-shrink: 0;
   user-select: none;
+  position: relative;
+  z-index: 1;
 }
 
 /* ─── Action Cards Grid ──────────────────────────────────────────────── */
 .action-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-2); /* 16px gap */
+  gap: var(--space-2);
 }
 
 .action-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-md);
-  width: 48px;
-  height: 48px;
-  margin-bottom: 4px;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 6px;
+  transition: transform 0.2s ease;
+}
+
+.action-card:hover .action-icon {
+  transform: scale(1.05);
 }
 
 .action-label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: #FFFFFF;
   text-align: center;
 }
 
 /* ─── Glance Section ─────────────────────────────────────────────────── */
 .section-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   margin-bottom: var(--space-2);
 }
 
 .glance-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: var(--space-2); /* 16px gap between card */
+  gap: var(--space-2);
 }
 
 .glance-number {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 900;
   color: var(--color-text-primary);
   line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 .glance-label {
   font-size: 12px;
   color: var(--color-text-secondary);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 /* ─── Recent Consultations ───────────────────────────────────────────── */
 .recent-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1); /* 8px gap */
+  gap: 10px;
 }
 
 .recent-item {
@@ -117,21 +144,25 @@
   background-color: var(--color-surface);
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
-  padding: var(--space-2); /* 16px */
+  padding: 16px var(--space-2);
   cursor: pointer;
   text-align: left;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-card);
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-height: 48px; /* touch target */
+  gap: 10px;
+  min-height: 48px;
 }
 
 .recent-item:hover {
-  border-color: var(--color-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-color: var(--color-primary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-standard);
+}
+
+.recent-item:active {
+  transform: scale(0.99);
 }
 
 .recent-item-top {
@@ -142,8 +173,8 @@
 }
 
 .recent-patient {
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--color-text-primary);
 }
 
@@ -166,6 +197,7 @@
 .recent-date {
   font-size: 11px;
   color: var(--color-text-muted);
+  font-weight: 500;
   white-space: nowrap;
 }
 
@@ -188,10 +220,10 @@
     padding: var(--space-2);
   }
   .welcome-greeting {
-    font-size: 18px;
+    font-size: 19px;
   }
   .action-grid {
-    gap: 8px; /* smaller gap for mobile action buttons */
+    gap: 8px;
   }
   .action-card {
     padding: 16px !important;
@@ -204,7 +236,7 @@
     font-size: 12px;
   }
   .glance-row {
-    grid-template-columns: 1fr; /* stack stat cards on mobile */
+    grid-template-columns: 1fr;
     gap: var(--space-1);
   }
 }
