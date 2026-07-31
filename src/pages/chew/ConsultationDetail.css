@@ -1,0 +1,302 @@
+/* ConsultationDetail.css */
+
+.cd-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.cd-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--color-text-secondary);
+}
+
+/* STATUS BANNER */
+.cd-status-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.cd-status-date {
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* PATIENT HEADER */
+.cd-patient-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+.cd-patient-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cd-patient-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 6px;
+}
+.cd-patient-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.cd-chip {
+  padding: 3px 10px;
+  background: var(--color-surface-alt);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+.cd-consult-date {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* MAIN GRID */
+.cd-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+@media (max-width: 720px) {
+  .cd-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cd-left-col,
+.cd-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* SECTIONS */
+.cd-section {
+  padding: 20px;
+}
+.cd-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 14px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+}
+
+/* COMPLAINT */
+.cd-complaint-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 8px;
+}
+.cd-duration-text {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* SYMPTOMS */
+.cd-symptom-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cd-symptom-tag {
+  padding: 5px 12px;
+  background: #EEF2FF;
+  color: #3730A3;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.cd-other-symptom {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin: 10px 0 0;
+  font-style: italic;
+}
+
+/* VITALS */
+.cd-vitals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 12px;
+}
+.cd-vital-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: var(--color-surface-alt);
+  border-radius: 10px;
+}
+.cd-vital-icon { font-size: 18px; }
+.cd-vital-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+.cd-vital-label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* DIAGNOSIS */
+.cd-diagnosis-text {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+/* DRUGS */
+.cd-drugs-text {
+  font-size: 14px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* AI SECTION */
+.cd-ai-section { border-top: 3px solid #8B5CF6; }
+.cd-ai-list { display: flex; flex-direction: column; gap: 12px; }
+.cd-ai-item {
+  padding: 12px;
+  background: #F5F3FF;
+  border-radius: 8px;
+  border-left: 3px solid #8B5CF6;
+}
+.cd-ai-item-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.cd-ai-rank {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #8B5CF6;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cd-ai-condition {
+  font-size: 14px;
+  font-weight: 700;
+  color: #3730A3;
+  flex: 1;
+}
+.cd-ai-conf {
+  font-size: 12px;
+  color: #6D28D9;
+  font-weight: 600;
+  background: #EDE9FE;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.cd-ai-reasoning {
+  font-size: 12px;
+  color: #4C1D95;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* DOCTOR REVIEW */
+.cd-review-block { display: flex; flex-direction: column; gap: 12px; }
+.cd-review-date {
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+.cd-verdict-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  width: fit-content;
+}
+.cd-verdict-pill.approved { background: #D1FAE5; color: #065F46; }
+.cd-verdict-pill.correction_sent { background: #FEE2E2; color: #991B1B; }
+
+.cd-review-field { display: flex; flex-direction: column; gap: 4px; }
+.cd-review-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+.cd-review-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: #DC2626;
+}
+.cd-review-notes {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  margin: 0;
+  padding: 10px;
+  background: var(--color-surface-alt);
+  border-radius: 8px;
+}
+.cd-pending-review {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 0;
+  padding: 16px;
+  background: #FFFBEB;
+  border-radius: 8px;
+  text-align: center;
+}
+
+/* ACTIONS */
+.cd-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

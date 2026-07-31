@@ -56,12 +56,13 @@ export default function DoctorDashboard() {
           .select('id, consultation_date, chief_complaint, doctor_review_status, patient_id, chew_id, phc_id')
           .eq('doctor_review_status', 'pending')
           .order('created_at', { ascending: false }),
-        supabase
+        profile?.id ? supabase
           .from('doctor_reviews')
           .select('consultation_id')
           .eq('doctor_id', profile.id)
           .gte('created_at', startOfDay.toISOString())
-          .lte('created_at', endOfDay.toISOString()),
+          .lte('created_at', endOfDay.toISOString())
+        : Promise.resolve({ data: [] }),
         supabase
           .from('code_red_alerts')
           .select('id')

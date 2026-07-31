@@ -210,7 +210,21 @@ export default function PatientProfile() {
               stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
             </svg>
-            New Consultation for This Patient
+            New Consultation
+          </button>
+          <button
+            id="mch-tracker-for-patient"
+            className="btn-secondary"
+            onClick={() => navigate(`/chew/mch?patient=${id}`)}
+          >
+            🤰 MCH Tracker
+          </button>
+          <button
+            id="new-referral-for-patient"
+            className="btn-secondary"
+            onClick={() => navigate(`/chew/referral/new?patient=${id}`)}
+          >
+            📋 New Referral
           </button>
         </div>
       </div>

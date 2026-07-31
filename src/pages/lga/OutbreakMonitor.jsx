@@ -1,20 +1,42 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppLayout from '../../components/AppLayout';
 import { useDemoRole } from '../../context/DemoRoleContext';
+import { supabase } from '../../lib/supabase';
 import './LgaPages.css';
+
+function formatRelative(v) {
+  if (!v) return '—';
+  const diff = Math.round((Date.now() - new Date(v).getTime()) / 60000);
+  if (diff < 60) return `${diff}m ago`;
+  if (diff < 1440) return `${Math.round(diff / 60)}h ago`;
+  return `${Math.round(diff / 1440)}d ago`;
+}
 
 export default function OutbreakMonitor() {
   const { currentUser } = useDemoRole();
-  const [alerts, setAlerts] = useState([
-    { id: 1, facility: 'Langtang North PHC', disease: 'Cholera Suspect', count: 3, date: 'Today, 08:30 AM', severity: 'critical', details: 'Severe watery diarrhoea and dehydration. Patients shared water source in Ward 3.', status: 'Active' },
-    { id: 2, facility: 'Panyam PHC', disease: 'Measles Spike', count: 5, date: 'Yesterday', severity: 'warning', details: 'Fever, cough, conjunctivitis, maculopapular rash. paeditric cohort.', status: 'Active' },
-    { id: 3, facility: 'Gindiri PHC', disease: 'Lassa Fever Suspect', count: 1, date: '3 days ago', severity: 'critical', details: 'Adult male presenting with unexplained bleeding and high fever. Isolation protocol active.', status: 'Investigating' }
-  ]);
-
+  const [alerts, setAlerts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [simulating, setSimulating] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Trigger a mock warning
+  useEffect(() => { fetchAlerts(); }, []);
+
+  async function fetchAlerts() {
+    setLoading(true);
+    try {
+      const { data } = await supabase
+        .from('code_red_alerts')
+        .select('id, created_at, description, temperature, blood_pressure, pulse_rate, patient_id, phc_id')
+        .order('created_at', { ascending: false })
+        .limit(20);
+      setAlerts(data || []);
+    } catch (err) {
+      console.error('Outbreak monitor error:', err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const handleTriggerBroadcast = () => {
     setSimulating(true);
     setTimeout(() => {
@@ -50,26 +72,31 @@ export default function OutbreakMonitor() {
           <div className="card">
             <h2 className="panel-title-lg">Active Sentinel Alerts</h2>
             <div className="alerts-vertical-list">
-              {alerts.map(a => (
-                <div key={a.id} className={`alert-detail-card ${a.severity}`}>
-                  <div className="alert-header-row">
-                    <span className="alert-facility-name">🏢 {a.facility}</span>
-                    <span className={`status-badge-pill ${a.severity}`}>{a.severity.toUpperCase()}</span>
-                  </div>
-                  <div className="alert-meta-details">
-                    <span className="disease-badge"><strong>Disease:</strong> {a.disease}</span>
-                    <span className="count-badge"><strong>Cases:</strong> {a.count}</span>
-                    <span className="date-badge">⏱️ {a.date}</span>
-                  </div>
-                  <p className="alert-text-body">{a.details}</p>
-                  <div className="alert-action-strip">
-                    <span className="investigation-status">Status: <strong>{a.status}</strong></span>
-                    <button className="btn-secondary btn-sm" onClick={() => {
-                      alert(`Reviewing detailed lab records and contact tracing lists for ${a.disease} at ${a.facility}.`);
-                    }}>Contact Trace</button>
-                  </div>
-                </div>
-              ))}
+              {loading ? (
+            <p style={{ color: 'var(--color-text-muted)', fontSize: 13, padding: '16px', textAlign: 'center' }}>Loading alerts...</p>
+          ) : alerts.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '24px', color: 'var(--color-text-muted)' }}>
+              <p style={{ fontSize: 28 }}>✅</p>
+              <p style={{ fontWeight: 600 }}>No active Code Red alerts</p>
+            </div>
+          ) : alerts.map(a => (
+            <div key={a.id} className="alert-detail-card critical">
+              <div className="alert-header-row">
+                <span className="alert-facility-name">🚨 Code Red Alert</span>
+                <span className="status-badge-pill critical">CODE RED</span>
+              </div>
+              <div className="alert-meta-details">
+                {a.temperature && <span className="disease-badge"><strong>Temp:</strong> {a.temperature}°C</span>}
+                {a.blood_pressure && <span className="count-badge"><strong>BP:</strong> {a.blood_pressure}</span>}
+                {a.pulse_rate && <span className="count-badge"><strong>Pulse:</strong> {a.pulse_rate} bpm</span>}
+                <span className="date-badge">⏱️ {formatRelative(a.created_at)}</span>
+              </div>
+              <p className="alert-text-body">{a.description || 'Emergency alert filed by CHEW.'}</p>
+              <div className="alert-action-strip">
+                <span className="investigation-status">Status: <strong>Active</strong></span>
+              </div>
+            </div>
+          ))}
             </div>
           </div>
 

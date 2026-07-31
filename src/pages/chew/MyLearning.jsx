@@ -57,11 +57,40 @@ const MODULES = [
   },
 ];
 
+const QUIZZES = {
+  malaria: [
+    { q: 'What is the first-line treatment for uncomplicated malaria in Nigeria?', options: ['Chloroquine + Paracetamol', 'Artemether-Lumefantrine (AL)', 'Quinine + Doxycycline', 'Paracetamol only'], correct: 1 },
+    { q: 'Which test must be done BEFORE treating malaria at a PHC?', options: ['Full Blood Count', 'Urine dipstick', 'Rapid Diagnostic Test (RDT)', 'Malaria slide (microscopy)'], correct: 2 },
+    { q: 'What is the correct action for a patient with cerebral malaria signs?', options: ['Give AL tablets and review next day', 'Send Code Red + refer with IV artesunate if available', 'Double the dose of AL', 'Wait for RDT result before any action'], correct: 1 },
+  ],
+  anc: [
+    { q: 'WHO recommends a minimum of how many ANC contacts?', options: ['4 contacts', '6 contacts', '8 contacts', '10 contacts'], correct: 2 },
+    { q: 'What is an obstetric danger sign requiring immediate referral?', options: ['Mild nausea in 1st trimester', 'Swollen feet in 3rd trimester', 'Severe headache + visual disturbance', 'Heartburn'], correct: 2 },
+    { q: 'At the FIRST ANC contact, what should be routinely done?', options: ['Only take weight and BP', 'Register, do blood tests, start iron/folic acid', 'Order an anomaly scan only', 'Start IPT for malaria only'], correct: 1 },
+  ],
+  hypertension: [
+    { q: 'What BP reading on 2 separate visits confirms hypertension?', options: ['≥ 120/80 mmHg', '≥ 130/85 mmHg', '≥ 140/90 mmHg', '≥ 160/100 mmHg'], correct: 2 },
+    { q: 'Which Grade of hypertension is an EMERGENCY requiring immediate referral?', options: ['Grade 1', 'Grade 2', 'Grade 3 (≥180/≥110)', 'All grades'], correct: 2 },
+    { q: 'First-line antihypertensive for a hypertensive diabetic patient?', options: ['Amlodipine', 'Atenolol', 'Lisinopril', 'Hydralazine'], correct: 2 },
+  ],
+  dehydration: [
+    { q: 'What % body weight loss indicates SEVERE dehydration?', options: ['< 3%', '3–5%', '5–10%', '> 10%'], correct: 3 },
+    { q: 'Homemade ORS formula when sachets are unavailable?', options: ['1L water + 3 tsp sugar + 1 tsp salt', '1L water + 6 tsp sugar + ½ tsp salt', '500ml water + 4 tsp sugar + 1 tsp salt', 'Only use sachets'], correct: 1 },
+    { q: 'For how many days should zinc be given to a child with diarrhoea?', options: ['3 days', '5 days', '7 days', '10 days'], correct: 3 },
+  ],
+  documentation: [
+    { q: 'What does the "S" in SOAP documentation stand for?', options: ['Symptoms', 'Subjective', 'Summary', 'Severity'], correct: 1 },
+    { q: 'What to do when a patient record field is not applicable?', options: ['Leave it blank', 'Cross it out', 'Write N/A', 'Delete the field'], correct: 2 },
+    { q: 'Why is accurate documentation important in ClinIQ?', options: ['To avoid paperwork', 'Each consultation is reviewed by a doctor for quality feedback', 'Only required for severe cases', 'For billing purposes only'], correct: 1 },
+  ],
+};
+
 export default function MyLearning() {
   const { profile } = useAuth();
   const [corrections, setCorrections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeModule, setActiveModule] = useState(null);
+  const [quizState, setQuizState] = useState({}); // { [moduleId]: { answers: [], submitted: false, score: 0 } }
   const [completedModules, setCompletedModules] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem('cliniq_completed_modules') || '[]');
@@ -259,6 +288,62 @@ export default function MyLearning() {
                       >
                         {done ? '✓ Mark as Incomplete' : 'Mark as Complete'}
                       </button>
+
+                      {/* QUIZ */}
+                      {QUIZZES[mod.id] && (() => {
+                        const qs = QUIZZES[mod.id];
+                        const qst = quizState[mod.id] || { answers: {}, submitted: false, score: 0 };
+                        return (
+                          <div className="quiz-block">
+                            <h3 className="quiz-title">📝 Quick Quiz — Test Your Knowledge</h3>
+                            {qs.map((q, qi) => (
+                              <div key={qi} className="quiz-question">
+                                <p className="quiz-q-text">{qi + 1}. {q.q}</p>
+                                <div className="quiz-options">
+                                  {q.options.map((opt, oi) => {
+                                    const selected = qst.answers[qi] === oi;
+                                    const correct = qst.submitted && oi === q.correct;
+                                    const wrong = qst.submitted && selected && oi !== q.correct;
+                                    return (
+                                      <button
+                                        key={oi}
+                                        className={`quiz-option ${selected && !qst.submitted ? 'selected' : ''} ${correct ? 'correct' : ''} ${wrong ? 'wrong' : ''}`}
+                                        disabled={qst.submitted}
+                                        onClick={() => setQuizState(prev => ({ ...prev, [mod.id]: { ...qst, answers: { ...qst.answers, [qi]: oi } } }))}
+                                      >
+                                        {opt}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ))}
+                            {!qst.submitted ? (
+                              <button
+                                className="btn-primary quiz-submit-btn"
+                                disabled={Object.keys(qst.answers).length < qs.length}
+                                onClick={() => {
+                                  const score = qs.reduce((acc, q, qi) => acc + (qst.answers[qi] === q.correct ? 1 : 0), 0);
+                                  setQuizState(prev => ({ ...prev, [mod.id]: { ...qst, submitted: true, score } }));
+                                  if (score >= Math.ceil(qs.length * 0.7)) markComplete(mod.id);
+                                  // Save to Supabase
+                                  if (supabase && profile?.id) {
+                                    supabase.from('learning_quiz_results').insert([{ chew_id: profile.id, module_id: mod.id, score, total: qs.length }]).then(() => {});
+                                  }
+                                }}
+                              >
+                                Submit Quiz
+                              </button>
+                            ) : (
+                              <div className={`quiz-result ${qst.score >= Math.ceil(qs.length * 0.7) ? 'pass' : 'fail'}`}>
+                                {qst.score >= Math.ceil(qs.length * 0.7)
+                                  ? `✅ Passed! ${qst.score}/${qs.length} — Module marked complete.`
+                                  : `❌ Score: ${qst.score}/${qs.length}. Review the content and try again.`}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                 </div>

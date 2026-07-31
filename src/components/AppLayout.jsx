@@ -118,10 +118,15 @@ export default function AppLayout({ children, title, showBack = false, backTo, n
         </div>
 
         <div className="header-right">
-          {/* Connectivity */}
-          <div className="header-connectivity">
+          {/* Connectivity & Sync Status Badge */}
+          <div 
+            className="header-connectivity" 
+            title={online ? 'Connected to ClinIQ Cloud Server' : 'Offline Mode: Changes will sync automatically when reconnected'}
+            style={{ cursor: 'pointer' }}
+          >
             <span className={`connectivity-dot ${online ? 'online' : 'offline'}`} />
-            <span className="connectivity-text">{online ? 'Online' : 'Offline'}</span>
+            <span className="connectivity-text">{online ? 'Cloud Synced' : 'Offline Mode'}</span>
+            {!online && <span style={{ fontSize: 10, background: '#FEF3C7', color: '#92400E', padding: '1px 6px', borderRadius: 10, fontWeight: 700 }}>Local Queue</span>}
           </div>
 
           {/* Notification bell */}

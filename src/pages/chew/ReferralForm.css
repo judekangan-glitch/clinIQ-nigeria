@@ -1,0 +1,169 @@
+/* ReferralForm.css */
+
+.rf-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.rf-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px;
+  color: var(--color-text-secondary);
+}
+
+/* PATIENT CARD */
+.rf-patient-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+}
+.rf-patient-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rf-patient-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+.rf-patient-sub {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+.rf-dx-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 10px;
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* BANNERS */
+.rf-success-banner {
+  background: #D1FAE5;
+  border: 1px solid #10B981;
+  color: #065F46;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* FORM */
+.rf-form {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.rf-form-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* URGENCY */
+.rf-urgency-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rf-urgency-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s;
+}
+.rf-urgency-btn:hover {
+  border-color: var(--color-primary);
+}
+.rf-urgency-btn.active {
+  font-weight: 700;
+}
+
+/* ESCORT */
+.rf-escort-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+.rf-escort-check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* PREVIEW */
+.rf-preview {
+  background: #F8FAFC;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.rf-preview-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin: 0 0 4px;
+}
+.rf-preview-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+}
+.rf-preview-row span:last-child {
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-align: right;
+  max-width: 60%;
+}
+
+/* SUBMIT */
+.rf-submit-btn {
+  width: 100%;
+  margin-top: 4px;
+}

@@ -243,11 +243,14 @@
   z-index: 100;
   display: flex;
   justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .new-consult-btn {
-  max-width: 600px;
-  width: 100%;
+  flex: 1;
+  min-width: 160px;
+  max-width: 280px;
   padding: 14px !important;
   font-size: 14px !important;
   font-weight: 700 !important;

@@ -1,24 +1,93 @@
+import { useEffect, useState } from 'react';
 import AppLayout from '../../components/AppLayout';
 import { useDemoRole } from '../../context/DemoRoleContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../lib/supabase';
 import './LgaDashboard.css';
+
+function formatRelative(v) {
+  if (!v) return '—';
+  const diff = Math.round((Date.now() - new Date(v).getTime()) / 60000);
+  if (diff < 60) return `${diff}m ago`;
+  if (diff < 1440) return `${Math.round(diff / 60)}h ago`;
+  return `${Math.round(diff / 1440)}d ago`;
+}
 
 export default function LgaDashboard() {
   const { currentUser } = useDemoRole();
   const navigate = useNavigate();
 
-  // Mock data for LGA metrics
-  const stats = [
-    { label: 'Active PHCs Reporting', value: '18 / 20', change: '+2 this month', color: '#1B4F8A', icon: '🏥' },
-    { label: 'Total Consultations (Weekly)', value: '1,420', change: '+12% vs last week', color: '#0E7C7B', icon: '👥' },
-    { label: 'Active Outbreak Alerts', value: '3', change: '2 High Risk, 1 Low', color: '#DC2626', icon: '🚨' },
-    { label: 'Vaccine Inventory Level', value: '88%', change: 'Normal levels', color: '#16A34A', icon: '📦' }
-  ];
+  const [statsData, setStatsData] = useState({ consultations: null, alerts: null, phcs: null });
+  const [recentAlerts, setRecentAlerts] = useState([]);
+  const [statsLoading, setStatsLoading] = useState(true);
 
-  const recentAlerts = [
-    { phc: 'Langtang North PHC', disease: 'Cholera suspect', date: 'Today, 08:30 AM', severity: 'critical', desc: '3 cases presenting with severe watery diarrhea and vomiting.' },
-    { phc: 'Panyam PHC', disease: 'Measles spike', date: 'Yesterday', severity: 'warning', desc: '5 paediatric cases reported within 48 hours.' },
-    { phc: 'Gindiri PHC', disease: 'Malaria surge', date: '2 days ago', severity: 'warning', desc: 'Outpatient malaria cases exceeded the historical weekly baseline by 40%.' }
+  useEffect(() => {
+    fetchLiveStats();
+  }, []);
+
+  async function fetchLiveStats() {
+    setStatsLoading(true);
+    try {
+      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
+      const [consultRes, alertRes, recentAlertRes] = await Promise.all([
+        supabase.from('consultations').select('id, phc_id', { count: 'exact' })
+          .gte('created_at', weekAgo),
+        supabase.from('code_red_alerts').select('id', { count: 'exact' })
+          .is('doctor_response_at', null),
+        supabase.from('code_red_alerts')
+          .select('id, created_at, description, temperature, blood_pressure')
+          .order('created_at', { ascending: false })
+          .limit(5),
+      ]);
+
+      // Count distinct PHC IDs in the consultation result
+      const phcSet = new Set((consultRes.data || []).map(c => c.phc_id).filter(Boolean));
+
+      setStatsData({
+        consultations: consultRes.count ?? 0,
+        alerts: alertRes.count ?? 0,
+        phcs: phcSet.size,
+      });
+
+      setRecentAlerts(recentAlertRes.data || []);
+    } catch (err) {
+      console.error('LGA stats error:', err);
+    } finally {
+      setStatsLoading(false);
+    }
+  }
+
+  const stats = [
+    {
+      label: 'Active PHCs Reporting',
+      value: statsLoading ? '…' : `${statsData.phcs ?? '—'}`,
+      change: 'This week',
+      color: '#1B4F8A',
+      icon: '🏥',
+    },
+    {
+      label: 'Consultations (7 days)',
+      value: statsLoading ? '…' : (statsData.consultations ?? '—').toLocaleString(),
+      change: 'Live count',
+      color: '#0E7C7B',
+      icon: '👥',
+    },
+    {
+      label: 'Unresolved Code Reds',
+      value: statsLoading ? '…' : (statsData.alerts ?? '—'),
+      change: statsData.alerts > 0 ? `${statsData.alerts} awaiting doctor` : 'All clear',
+      color: statsData.alerts > 0 ? '#DC2626' : '#16A34A',
+      icon: '🚨',
+    },
+    {
+      label: 'Vaccine Inventory Level',
+      value: '88%',
+      change: 'Normal levels',
+      color: '#16A34A',
+      icon: '📦',
+    },
   ];
 
   return (
@@ -115,23 +184,31 @@ export default function LgaDashboard() {
           {/* ACTIVE OUTBREAKS BANNER */}
           <div className="lga-panel card">
             <div className="lga-panel-header">
-              <h2 className="lga-panel-title">Critical Outbreak Alerts</h2>
-              <button className="btn-link" onClick={() => navigate('/lga/outbreaks')}>Manage</button>
+              <h2 className="lga-panel-title">Recent Code Red Alerts</h2>
+              <button className="btn-link" onClick={() => navigate('/lga/outbreaks')}>View All</button>
             </div>
             <div className="lga-alert-list">
-              {recentAlerts.map((alert, i) => (
-                <div key={i} className={`lga-alert-item ${alert.severity}`}>
-                  <div className="lga-alert-top">
-                    <span className="alert-phc">{alert.phc}</span>
-                    <span className="alert-date">{alert.date}</span>
+              {recentAlerts.length === 0 ? (
+                <p style={{ color: 'var(--color-text-muted)', fontSize: 13, padding: '12px 0', textAlign: 'center' }}>
+                  {statsLoading ? 'Loading alerts...' : '✅ No unresolved Code Red alerts'}
+                </p>
+              ) : (
+                recentAlerts.map((alert) => (
+                  <div key={alert.id} className="lga-alert-item critical">
+                    <div className="lga-alert-top">
+                      <span className="alert-phc">🚨 Code Red</span>
+                      <span className="alert-date">{formatRelative(alert.created_at)}</span>
+                    </div>
+                    <div className="alert-disease-row">
+                      <span className="alert-tag">{alert.description?.slice(0, 60) || 'Emergency alert'}</span>
+                      <span className="alert-badge">CODE RED</span>
+                    </div>
+                    {alert.blood_pressure && (
+                      <p className="alert-desc">BP: {alert.blood_pressure} · Temp: {alert.temperature}°C</p>
+                    )}
                   </div>
-                  <div className="alert-disease-row">
-                    <span className="alert-tag">{alert.disease}</span>
-                    <span className="alert-badge">{alert.severity.toUpperCase()}</span>
-                  </div>
-                  <p className="alert-desc">{alert.desc}</p>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
 

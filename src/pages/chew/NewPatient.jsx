@@ -22,6 +22,7 @@ export default function NewPatient() {
     chronicConditions: '',
   });
 
+  const [consentGiven, setConsentGiven] = useState(false);
   const [error, setError] = useState('');
   const [saving, setSaving] = useState(false);
 
@@ -54,6 +55,11 @@ export default function NewPatient() {
       return;
     }
 
+    if (!consentGiven) {
+      setError('Please confirm that the patient has given consent to data collection (NDPA 2023 requirement).');
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -73,6 +79,7 @@ export default function NewPatient() {
         chronic_conditions: formData.chronicConditions.trim() || 'None',
         phc_id: profile?.phc_id || null,
         hospital_number: generateHospitalNumber(),
+        consent_given_at: new Date().toISOString(),
       };
 
       const { data, error: insertError } = await supabase
@@ -257,6 +264,22 @@ export default function NewPatient() {
               onChange={handleInputChange}
               rows={2}
             />
+          </div>
+
+          {/* NDPA Consent */}
+          <div className="form-field" style={{ borderTop: '1px solid var(--color-border)', paddingTop: 16 }}>
+            <label className="rf-escort-label" style={{ display: 'flex', alignItems: 'flex-start', gap: 10, cursor: 'pointer' }}>
+              <input
+                id="ndpa-consent"
+                type="checkbox"
+                checked={consentGiven}
+                onChange={e => setConsentGiven(e.target.checked)}
+                style={{ marginTop: 2, width: 18, height: 18, accentColor: 'var(--color-primary)', flexShrink: 0, cursor: 'pointer' }}
+              />
+              <span style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
+                <strong>NDPA Consent (Required):</strong> I confirm that the patient has been informed about data collection and has given verbal consent in accordance with the Nigeria Data Protection Act 2023.
+              </span>
+            </label>
           </div>
 
           <div className="form-action">

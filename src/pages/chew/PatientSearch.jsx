@@ -29,10 +29,10 @@ export default function PatientSearch() {
       const { data } = await supabase
         .from('patients')
         .select(`
-          id, full_name, date_of_birth, sex, lga, phone_number,
+          id, full_name, hospital_number, date_of_birth, sex, lga, phone_number,
           consultations (consultation_date)
         `)
-        .or(`full_name.ilike.%${q}%,phone_number.ilike.%${q}%`)
+        .or(`full_name.ilike.%${q}%,phone_number.ilike.%${q}%,hospital_number.ilike.%${q}%,lga.ilike.%${q}%`)
         .order('full_name')
         .limit(30);
 
@@ -72,7 +72,7 @@ export default function PatientSearch() {
               id="patient-search-input"
               type="text"
               className="search-input"
-              placeholder="Search by name or phone number"
+              placeholder="Search by Hospital #, Name, Phone, or LGA..."
               value={query}
               onChange={e => setQuery(e.target.value)}
               autoFocus
